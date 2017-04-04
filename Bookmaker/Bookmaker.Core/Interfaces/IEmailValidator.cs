@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Bookmaker.Core.Interfaces
 {
-    public interface IEmailChecker
+    public interface IEmailValidator
     {
-        bool IsValid(string email);
+        bool IsUnique(string email);
+        bool IsValid(string email);        
     }
 }

@@ -5,9 +5,15 @@ using System.Text;
 
 namespace Bookmaker.Core.Utils
 {
-    public class EmailChecker : IEmailChecker
+    public class EmailValidator : IEmailValidator
     {
-        public static bool IsValid(string email)
+        public bool IsUnique(string email)
+        {
+            //TODO
+            return true;
+        }
+
+        public bool IsValid(string email)
         {
             //TODO
             if (email.Contains("@"))

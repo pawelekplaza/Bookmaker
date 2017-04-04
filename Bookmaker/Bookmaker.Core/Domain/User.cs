@@ -14,6 +14,8 @@ namespace Bookmaker.Core.Domain
         public string Username { get; protected set; }
         public string FullName { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
+        public Wallet Wallet { get; protected set; }
+        public IEnumerable<Bet> Bets { get; protected set; }
 
         protected User()
         {
@@ -21,11 +23,16 @@ namespace Bookmaker.Core.Domain
 
         public User(string email, string username, string password, string salt)
         {
-            if (!EmailChecker.IsValid(email))
-                throw new Exception("Provided email has invalid format!");
+            var emailValidator = new EmailValidator();
+
+            if (!emailValidator.IsValid(email))
+                throw new Exception("Provided email has invalid format.");
+
+            if (!emailValidator.IsUnique(email))
+                throw new Exception("This email address is already in use.");
 
             if (password.Length < 6)
-                throw new Exception("Password must have at least 6 letters!");
+                throw new Exception("Password must have at least 6 letters.");
 
             //TODO: sprawdzenie soli
 
