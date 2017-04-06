@@ -13,7 +13,8 @@ namespace Bookmaker.Infrastructure.Mappers
             => new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDTO>();
-                cfg.CreateMap<City, CityDTO>();                    
+                cfg.CreateMap<City, CityDTO>()
+                    .ForMember(x => x.CountryName, m => m.MapFrom(p => p.Country.Name));
             })
             .CreateMapper();
     }

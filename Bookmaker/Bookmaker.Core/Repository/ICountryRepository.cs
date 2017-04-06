@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bookmaker.Core.Repository
 {
-    public interface ICitiesRepository
+    public interface ICountryRepository
     {
-        Task<City> GetAsync(Guid id);        
-        Task<IEnumerable<City>> GetAllAsync();
-        Task AddAsync(City city);
-        Task UpdateAsync(City city);
+        Task<Country> GetAsync(Guid id);
+        Task<IEnumerable<Country>> GetAllAsync();
+        Task AddAsync(Country country);
+        Task UpdateAsync(Country country);
         Task RemoveAsync(Guid id);
     }
 }
