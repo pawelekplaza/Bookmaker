@@ -83,8 +83,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\app.component.css" />
-    <Content Include="app\app.component.html" />
+    <Content Include="app\Styles\app.component.css" />
+    <Content Include="app\Templates\app.component.html" />
+    <Content Include="bootstrap.css" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="styles.css" />
@@ -111,6 +112,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\Components\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
@@ -122,6 +124,8 @@
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\Models\user.ts" />
+    <TypeScriptCompile Include="app\Services\user.service.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -135,7 +139,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3276</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

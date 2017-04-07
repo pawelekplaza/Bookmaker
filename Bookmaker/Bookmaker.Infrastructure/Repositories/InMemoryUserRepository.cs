@@ -13,7 +13,7 @@ namespace Bookmaker.Infrastructure.Repositories
         private static ISet<User> _users = new HashSet<User>
         {
             new User("em@1.com", "em", "pas13123s", "salt"),
-            new User("ex@2.com", "ex", "pas12312312sx", "saaaalt")
+            new User("eq@2.com", "eq", "pas12312312sx", "saaaalt")
         };
 
         public async Task AddAsync(User user)

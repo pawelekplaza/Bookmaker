@@ -1,4 +1,5 @@
-﻿using Bookmaker.Core.Utils;
+﻿using Bookmaker.Core.Interfaces;
+using Bookmaker.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,9 +18,9 @@ namespace Bookmaker.Core.Domain
         public string Username { get; protected set; }
         public string FullName { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
+        public DateTime LastUpdate { get; protected set; }
         public Wallet Wallet { get; protected set; }
         public IEnumerable<Bet> Bets { get; protected set; }
-        public DateTime LastUpdate { get; protected set; }
 
         protected User()
         {
@@ -27,7 +28,6 @@ namespace Bookmaker.Core.Domain
 
         public User(string email, string username, string password, string salt)
         {
-            //TODO: walidacja wszystkiego
             Id = Guid.NewGuid();
 
             SetEmail(email);
@@ -35,7 +35,7 @@ namespace Bookmaker.Core.Domain
             SetPassword(password);
 
             Salt = salt;
-            CreatedAt = DateTime.UtcNow;
+            SetCreationDate();
         }
 
         public void SetUsername(string username)
@@ -62,6 +62,18 @@ namespace Bookmaker.Core.Domain
             if (Email == email)
             {
                 return;
+            }
+
+            // TODO: to powinno być w infrastructure?
+            IEmailValidator emailValidator = new EmailValidator();
+
+            if (!emailValidator.IsUnique(email))
+            {
+                throw new Exception("Provided email is already in use.");
+            }
+            if (!emailValidator.IsValid(email))
+            {
+                throw new Exception("Provided email is not valid.");
             }
 
             Email = email;
@@ -91,9 +103,30 @@ namespace Bookmaker.Core.Domain
             Update();
         }
 
+        public void SetSalt(string salt)
+        {
+            if (string.IsNullOrWhiteSpace(salt))
+            {
+                throw new Exception("User: salt cannot be empty.");
+            }
+            if (Salt == salt.ToLowerInvariant())
+            {
+                return;
+            }
+
+            Salt = salt;
+            Update();
+        }
+
         private void Update()
         {
             LastUpdate = DateTime.UtcNow;
+        }
+
+        private void SetCreationDate()
+        {
+            CreatedAt = DateTime.UtcNow;
+            Update();
         }
     }
 }

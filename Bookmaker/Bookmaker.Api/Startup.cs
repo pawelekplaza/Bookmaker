@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Bookmaker.Core.Repository;
+using Bookmaker.Infrastructure.Repositories;
+using Bookmaker.Infrastructure.Services;
+using Bookmaker.Infrastructure.Mappers;
 
 namespace Bookmaker.Api
 {
@@ -28,6 +32,9 @@ namespace Bookmaker.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
         }
 
