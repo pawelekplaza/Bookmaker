@@ -4,6 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { User } from '../Models/user';
+import { ErrorMessage } from '../Models/error-message';
 
 @Injectable()
 export class UserService {
@@ -36,11 +37,11 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    add(email: string, username: string, password: string): Promise<User> {
+    add(email: string, username: string, password: string): Promise<string> {
         return this.http
-            .post('http://localhost:5000/user', JSON.stringify({ email: email, username: username, password: password }), { headers: this.headers })
+            .post('http://localhost:5000/user', JSON.stringify({ email: email, password: password, username: username }), { headers: this.headers })
             .toPromise()
-            .then(res => res.json().data as User)
+            .then(response => JSON.stringify(response.json()))
             .catch(this.handleError);
     }
 

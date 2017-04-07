@@ -85,7 +85,6 @@
   <ItemGroup>
     <Content Include="app\Styles\app.component.css" />
     <Content Include="app\Templates\app.component.html" />
-    <Content Include="bootstrap.css" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="styles.css" />
@@ -112,7 +111,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\Components\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
@@ -124,6 +122,7 @@
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\Models\error-message.ts" />
     <TypeScriptCompile Include="app\Models\user.ts" />
     <TypeScriptCompile Include="app\Services\user.service.ts" />
   </ItemGroup>

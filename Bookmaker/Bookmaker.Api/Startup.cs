@@ -11,6 +11,8 @@ using Bookmaker.Core.Repository;
 using Bookmaker.Infrastructure.Repositories;
 using Bookmaker.Infrastructure.Services;
 using Bookmaker.Infrastructure.Mappers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 namespace Bookmaker.Api
 {
@@ -36,6 +38,7 @@ namespace Bookmaker.Api
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +46,14 @@ namespace Bookmaker.Api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowCredentials();
+            });
 
             app.UseMvc();
         }

@@ -34,10 +34,13 @@ namespace Bookmaker.Core.Domain
         public void SetUserId(Guid userId)
         {
             if (userId == null)
+            {
                 throw new Exception("Bet: provided user id is not valid.");
-
+            }
             if (UserId == userId)
+            {
                 return;
+            }
 
             UserId = userId;
             Update();
@@ -46,10 +49,13 @@ namespace Bookmaker.Core.Domain
         public void SetMatchId(Guid matchId)
         {
             if (matchId == null)
+            {
                 throw new Exception("Bet: provided match id is not valid.");
-
+            }
             if (MatchId == matchId)
+            {
                 return;
+            }
 
             MatchId = matchId;
             Update();

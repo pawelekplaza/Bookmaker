@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bookmaker.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")]    
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -28,7 +28,18 @@ namespace Bookmaker.Api.Controllers
             => await _userService.GetAllAsync();
 
         [HttpPost]
-        public async Task CreateUserAsync([FromBody]CreateUser request)
-            => await _userService.RegisterAsync(request.Email, request.Username, request.Password);
+        public async Task<JsonResult> CreateUserAsync([FromBody]CreateUser request)
+        {
+            try
+            {
+                await _userService.RegisterAsync(request.Email, request.Username, request.Password);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = ex.Message });
+            }
+
+            return Json(new { email = request.Email, username = request.Username, password = request.Password });
+        }
     }
 }

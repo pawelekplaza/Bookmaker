@@ -1,15 +1,12 @@
 ﻿<h1>Hello</h1>
 <div>
     <div class="form-group">
-        <input class="form-control" type="email" #email placeholder="Email" />
-        <input class="form-control" #username placeholder="Username" />
-        <input class="form-control" #password placeholder="Password" />
+        <input [(ngModel)]="user.email" placeholder="Email" />
+        <input [(ngModel)]="user.username" placeholder="Username" />
+        <input [(ngModel)]="user.password" placeholder="Password" />
     </div>    
     <div>
-        <button class="btn btn-default" type="submit" (click)="
-                sendPost(email.value, username.value, password.value); 
-                email.value=''; 
-                username.value=''; 
-                password.value=''">Send post</button>
-    </div>
+        <button type="submit" class="btn btn-default" (click)="sendPost();" ng-mouseup="0">Send post</button>        
+        {{errorMessage}}
+    </div>        
 </div>
