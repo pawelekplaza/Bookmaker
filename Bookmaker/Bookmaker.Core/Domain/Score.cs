@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Bookmaker.Core.Domain
 {
     public class Score
-    {
-        public ushort Goals { get; protected set; }
-        public ushort Shots { get; protected set; }
+    {        
+        public int Goals { get; protected set; }
+        public int Shots { get; protected set; }
     }
 }

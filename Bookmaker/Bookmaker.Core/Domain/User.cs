@@ -2,6 +2,7 @@
 using Bookmaker.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -10,15 +11,15 @@ namespace Bookmaker.Core.Domain
     public class User
     {
         private readonly Regex nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
-
-        public Guid Id { get; protected set; }
-        public string Email { get; protected set; }
-        public string Password { get; protected set; }
-        public string Salt { get; protected set; }
+        
+        public Guid Id { get; protected set; }        
+        public string Email { get; protected set; }        
+        public string Password { get; protected set; }        
+        public string Salt { get; protected set; }        
         public string Username { get; protected set; }
-        public string FullName { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime LastUpdate { get; protected set; }
+        public string FullName { get; protected set; }        
+        public DateTime CreatedAt { get; protected set; }        
+        public DateTime LastUpdate { get; protected set; }    
         public Wallet Wallet { get; protected set; }
         public IEnumerable<Bet> Bets { get; protected set; }
 

@@ -12,7 +12,7 @@ namespace Bookmaker.Core.Repository
         Task<User> GetAsync(string email);
         Task<IEnumerable<User>> GetAllAsync();
         Task AddAsync(User user);
-        Task UpdateAsync(User user);
-        Task RemoveAsync(Guid id);
+        Task UpdateAsync(User user);        
+        Task RemoveAsync(string email);
     }
 }

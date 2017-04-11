@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Bookmaker.Core.Domain
 {
     public class Bet
-    {
+    {        
         public Guid Id { get; protected set; }
-        public Guid UserId { get; protected set; }
-        public Guid MatchId { get; protected set; }
-        public Guid TeamId { get; protected set; } // TODO: potrzebne?
-        public int Price { get; protected set; }         
-        public Score Score { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
+        public User User { get; protected set; }
+        public Match Match { get; protected set; }
+        public Team Team { get; protected set; } // TODO: potrzebne?        
+        public int Price { get; protected set; }                 
+        public Score BetScore { get; protected set; }        
+        public DateTime CreatedAt { get; protected set; }        
         public DateTime LastUpdate { get; protected set; }
 
         protected Bet()
@@ -20,56 +22,56 @@ namespace Bookmaker.Core.Domain
 
         }
 
-        public Bet(int price, Guid userId, Guid matchId, Score score)
+        public Bet(int price, User user, Match match, Score score)
         {
             Id = Guid.NewGuid();
             SetPrice(price);
-            SetUserId(userId);
-            SetMatchId(matchId);
+            SetUser(user);
+            SetMatch(match);
             SetScore(score);
 
             SetCreationDate();
         }
 
-        public void SetUserId(Guid userId)
+        public void SetUser(User user)
         {
-            if (userId == null)
+            if (user == null)
             {
-                throw new Exception("Bet: provided user id is not valid.");
+                throw new Exception("Bet: provided user is not valid.");
             }
-            if (UserId == userId)
+            if (User == user)
             {
                 return;
             }
 
-            UserId = userId;
+            User = user;
             Update();
         }
 
-        public void SetMatchId(Guid matchId)
+        public void SetMatch(Match match)
         {
-            if (matchId == null)
+            if (match == null)
             {
-                throw new Exception("Bet: provided match id is not valid.");
+                throw new Exception("Bet: provided match is not valid.");
             }
-            if (MatchId == matchId)
+            if (Match == match)
             {
                 return;
             }
 
-            MatchId = matchId;
+            Match = match;
             Update();
         }
 
-        public void SetTeamId(Guid teamId)
+        public void SetTeamI(Team team)
         {
-            if (teamId == null)
-                throw new Exception("Bet: provided team id is not valid.");
+            if (team == null)
+                throw new Exception("Bet: provided team is not valid.");
 
-            if (TeamId == teamId)
+            if (Team == team)
                 return;
 
-            TeamId = teamId;
+            Team = team;
             Update();
         }
 
@@ -105,10 +107,10 @@ namespace Bookmaker.Core.Domain
             if (score.Shots > 10000)
                 throw new Exception("Bet: cannot bet for more shots than 10000.");
 
-            if (Score == score)
+            if (BetScore == score)
                 return;
 
-            Score = score;
+            BetScore = score;
             Update();
         }
 

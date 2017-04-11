@@ -29,10 +29,11 @@ export class AppComponent {
                 }
                 else {
                     this.clearUserData();
+                    this.errorMessage = '-';
                 }
 
             })
-            .catch(error => console.log(error));
+            .catch(error => { console.log(error); this.errorMessage = 'catch'; });
     }
 
     clearUserData(): void {

@@ -13,6 +13,8 @@ using Bookmaker.Infrastructure.Services;
 using Bookmaker.Infrastructure.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
+using NLog.Extensions.Logging;
+using Bookmaker.Infrastructure.Helpers;
 
 namespace Bookmaker.Api
 {
@@ -23,12 +25,14 @@ namespace Bookmaker.Api
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            ConnectionHelper.SetConnectionString(Configuration["connectionStrings:Bookmaker"]);
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public static IConfigurationRoot Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -39,6 +43,7 @@ namespace Bookmaker.Api
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
             services.AddCors();
+            services.AddTransient<IMailService, LocalMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +51,7 @@ namespace Bookmaker.Api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddNLog();
 
             app.UseCors(builder =>
             {

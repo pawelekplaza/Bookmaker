@@ -11,7 +11,7 @@ namespace Bookmaker.Infrastructure.Repositories
     {
         private static ISet<City> _cities = new HashSet<City>
         {
-            new City("Warsaw", Guid.NewGuid())
+            new City("Warsaw", new Country("Poland"))
         };
 
         public async Task AddAsync(City city)

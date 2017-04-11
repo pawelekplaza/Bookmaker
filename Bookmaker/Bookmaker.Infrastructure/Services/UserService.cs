@@ -20,24 +20,31 @@ namespace Bookmaker.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            var usersDTO = new HashSet<UserDTO>();
+            var usersDTO = new HashSet<UserDto>();
 
             foreach (var user in users)
             {
-                usersDTO.Add(_mapper.Map<User, UserDTO>(user));
+                usersDTO.Add(_mapper.Map<User, UserDto>(user));
             }
 
             return usersDTO;
         }
 
-        public async Task<UserDTO> GetAsync(string email)
+        public async Task<UserDto> GetAsync(string email)
         {
             var user = await _userRepository.GetAsync(email);
 
-            return _mapper.Map<User, UserDTO>(user);
+            return _mapper.Map<User, UserDto>(user);
+        }
+
+        public async Task<UserUpdateDto> GetForUpdateAsync(string email)
+        {
+            var user = await _userRepository.GetAsync(email);
+
+            return _mapper.Map<User, UserUpdateDto>(user);
         }
 
         public async Task RegisterAsync(string email, string username, string password)
@@ -48,10 +55,22 @@ namespace Bookmaker.Infrastructure.Services
                 throw new Exception($"User with email '{email}' already exists.");
             }
 
-            var salt = Guid.NewGuid().ToString("N");
+            var salt = Guid.NewGuid().ToString("N"); // todo: jak powinno generować się sól?
             user = new User(email, username, password, salt);
 
             await _userRepository.AddAsync(user);
+        }
+
+        public async Task UpdateUserAsync(string email, string username, string password)
+        {
+            var userUpdate = new User(email, username, password, Guid.NewGuid().ToString("N"));
+            await _userRepository.UpdateAsync(userUpdate);
+        }
+
+        public async Task RemoveAsync(string email)
+        {
+            await _userRepository.RemoveAsync(email);
+            await Task.CompletedTask;
         }
     }
 }

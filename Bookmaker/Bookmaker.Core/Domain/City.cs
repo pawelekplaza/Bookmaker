@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Bookmaker.Core.Domain
 {
     public class City
-    {
+    {        
         public Guid Id { get; protected set; }
-        public Guid CountryId { get; protected set; }
+        public Country Country { get; protected set; }        
         public string Name { get; protected set; }
 
         protected City ()
@@ -15,22 +16,22 @@ namespace Bookmaker.Core.Domain
 
         }
 
-        public City(string name, Guid countryId)
+        public City(string name, Country country)
         {
             Id = Guid.NewGuid();
             SetName(name);
-            SetCountryId(countryId);
+            SetCountry(country);
         }
 
-        public void SetCountryId(Guid countryId)
+        public void SetCountry(Country country)
         {
-            if (countryId == null)
-                throw new Exception("City: provided country id is not valid.");
+            if (country == null)
+                throw new Exception("City: provided country is not valid.");
 
-            if (CountryId == countryId)
+            if (Country == country)
                 return;
 
-            CountryId = countryId;
+            Country = country;
         }
 
         public void SetName(string name)
