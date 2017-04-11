@@ -64,11 +64,11 @@ namespace Bookmaker.Api.Controllers
             }
             catch (Exception ex)
             {
+                // todel: #ask2
                 return Json(new { message = ex.Message });
             }
 
-            return Json(new { email = request.Email, username = request.Username, password = request.Password });
-            //return Ok();
+            return Json(new { email = request.Email, username = request.Username, password = request.Password });            
         }
 
         [HttpPatch("{email}")]

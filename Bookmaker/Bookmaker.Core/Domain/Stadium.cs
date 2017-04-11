@@ -31,5 +31,38 @@ namespace Bookmaker.Core.Domain
 
             Id = id;
         }
+
+        public void SetCountry(Country country)
+        {
+            if (country == null)
+                throw new Exception("Stadium: provided country is not valid.");
+
+            if (Country == country)
+                return;
+
+            Country = country;
+        }
+
+        public void SetCity(City city)
+        {
+            if (city == null)
+                throw new Exception("Stadium: provided city is not valid.");
+
+            if (City == city)
+                return;
+
+            City = city;
+        }
+
+        public void SetName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new Exception("Stadium: provided stadium name cannot be empty.");
+
+            if (Name == name.ToLowerInvariant())
+                return;
+
+            Name = name;
+        }
     }
 }

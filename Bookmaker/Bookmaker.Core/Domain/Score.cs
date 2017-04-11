@@ -18,7 +18,8 @@ namespace Bookmaker.Core.Domain
 
         public Score(int goals, int shots)
         {
-
+            SetGoals(goals);
+            SetShots(shots);
         }
 
         public void SetId(int id)
@@ -29,6 +30,34 @@ namespace Bookmaker.Core.Domain
             }
 
             Id = id;
+        }
+
+        public void SetGoals(int goals)
+        {
+            if (goals < 0)
+                throw new Exception("Score: number of goals cannot be less than zero.");
+
+            if (goals > 100)
+                throw new Exception("Score: number of goals cannot be greater than 100.");
+
+            if (Goals == goals)
+                return;
+
+            Goals = goals;
+        }
+
+        public void SetShots(int shots)
+        {
+            if (shots < 0)
+                throw new Exception("Score: number of shots cannot be less than zero.");
+
+            if (shots > 10000)
+                throw new Exception("Score: number of shots cannot be greater than 10000.");
+
+            if (Shots == shots)
+                return;
+
+            Shots = shots;
         }
     }
 }

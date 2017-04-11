@@ -1,1 +1,2 @@
 ﻿#ask1: Czy w DbUserRepository zapytania do bazy powinienem robić poprzez Task.Factory.StartNew?
+#ask2: Jak przekazywać informacje do App o błędach (typu "User with email address '...' already exists.")

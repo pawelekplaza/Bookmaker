@@ -18,7 +18,8 @@ namespace Bookmaker.Core.Domain
 
         public Result(Score hostScore, Score guestScore)
         {
-
+            SetHostScore(hostScore);
+            SetGuestScore(guestScore);
         }
 
         public void SetId(int id)
@@ -29,6 +30,28 @@ namespace Bookmaker.Core.Domain
             }
 
             Id = id;
+        }
+
+        public void SetHostScore(Score score)
+        {
+            if (score == null)
+                throw new Exception("Result: provided host score is not valid.");
+
+            if (HostScore == score)
+                return;
+
+            HostScore = score;
+        }
+
+        public void SetGuestScore(Score score)
+        {
+            if (score == null)
+                throw new Exception("Result: provided guest score is not valid.");
+
+            if (GuestScore == score)
+                return;
+
+            GuestScore = score;
         }
     }
 }

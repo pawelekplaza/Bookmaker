@@ -22,11 +22,12 @@ namespace Bookmaker.Core.Domain
 
         }
 
-        public Bet(int price, User user, Match match, Score score)
+        public Bet(int price, User user, Match match, Team team, Score score)
         {            
             SetPrice(price);
             SetUser(user);
             SetMatch(match);
+            SetTeam(team);
             SetScore(score);
 
             SetCreationDate();
@@ -72,7 +73,7 @@ namespace Bookmaker.Core.Domain
             Update();
         }
 
-        public void SetTeamI(Team team)
+        public void SetTeam(Team team)
         {
             if (team == null)
                 throw new Exception("Bet: provided team is not valid.");
@@ -104,17 +105,17 @@ namespace Bookmaker.Core.Domain
             if (score == null)
                 throw new Exception("Bet: provided score is not valid.");
 
-            if (score.Goals < 0)
-                throw new Exception("Bet: goals must be greater than or equal to zero.");
+            //if (score.Goals < 0)
+            //    throw new Exception("Bet: number of goals cannot be less than 0.");
 
-            if (score.Goals > 100)
-                throw new Exception("Bet: cannot bet for more goals than 100.");
+            //if (score.Goals > 100)
+            //    throw new Exception("Bet: cannot bet for more goals than 100.");
 
-            if (score.Shots < 0)
-                throw new Exception("Bet: shots must be greater than or equal to zero.");
+            //if (score.Shots < 0)
+            //    throw new Exception("Bet: shots must be greater than or equal to zero.");
 
-            if (score.Shots > 10000)
-                throw new Exception("Bet: cannot bet for more shots than 10000.");
+            //if (score.Shots > 10000)
+            //    throw new Exception("Bet: cannot bet for more shots than 10000.");
 
             if (Score == score)
                 return;

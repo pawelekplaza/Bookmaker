@@ -8,7 +8,7 @@ namespace Bookmaker.Core.Domain
     public class Team
     {        
         public int Id { get; protected set; }
-        public Stadium Stadium { get; protected set; }        
+        public Stadium Stadium { get; protected set; }
         public string Name { get; protected set; }        
         public IEnumerable<Match> PlayedMatches { get; protected set; }
         public IEnumerable<Match> ScheduledMatches { get; protected set; }
@@ -31,6 +31,28 @@ namespace Bookmaker.Core.Domain
             }
 
             Id = id;
+        }
+
+        public void SetStadium(Stadium stadium)
+        {
+            if (stadium == null)
+                throw new Exception("Team: provided stadium is not valid.");
+
+            if (Stadium == stadium)
+                return;
+
+            Stadium = stadium;
+        }
+
+        public void SetName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new Exception("Team: provided name cannot be empty.");
+
+            if (Name == name.ToLowerInvariant())
+                return;
+
+            Name = name;
         }
     }
 }

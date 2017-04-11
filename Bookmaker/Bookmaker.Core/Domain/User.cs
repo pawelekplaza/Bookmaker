@@ -32,8 +32,8 @@ namespace Bookmaker.Core.Domain
             SetEmail(email);
             SetUsername(username);
             SetPassword(password);
+            SetSalt(salt);
 
-            Salt = salt;
             SetCreationDate();
         }
 
