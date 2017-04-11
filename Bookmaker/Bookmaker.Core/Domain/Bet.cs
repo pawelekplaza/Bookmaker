@@ -11,7 +11,7 @@ namespace Bookmaker.Core.Domain
         public int Id { get; protected set; }
         public User User { get; protected set; }
         public Match Match { get; protected set; }
-        public Team Team { get; protected set; } // TODO: potrzebne?        
+        public Team Team { get; protected set; } // todo
         public int Price { get; protected set; }                 
         public Score Score { get; protected set; }
         public DateTime CreatedAt { get; protected set; }        
