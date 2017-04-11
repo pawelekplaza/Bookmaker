@@ -41,11 +41,12 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"User: Id cannot be set to { id } (less than zero).");
+                throw new Exception($"User: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
         }
+
         public void SetUsername(string username)
         {
             if (!nameRegex.IsMatch(username))

@@ -7,9 +7,29 @@ namespace Bookmaker.Core.Domain
 {
     public class Stadium
     {        
-        public Guid Id { get; protected set; }    
+        public int Id { get; protected set; }    
         public Country Country { get; protected set; }
         public City City { get; protected set; }        
-        public string Name { get; protected set; }        
+        public string Name { get; protected set; }
+
+        protected Stadium()
+        {
+
+        }
+
+        public Stadium(Country country, City city, string name)
+        {
+
+        }
+
+        public void SetId(int id)
+        {
+            if (id < 0)
+            {
+                throw new Exception($"Stadium: Id cannot be set to '{ id }' (less than zero).");
+            }
+
+            Id = id;
+        }
     }
 }

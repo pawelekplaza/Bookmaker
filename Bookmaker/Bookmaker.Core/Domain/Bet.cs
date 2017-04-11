@@ -8,12 +8,12 @@ namespace Bookmaker.Core.Domain
 {
     public class Bet
     {        
-        public Guid Id { get; protected set; }
+        public int Id { get; protected set; }
         public User User { get; protected set; }
         public Match Match { get; protected set; }
         public Team Team { get; protected set; } // TODO: potrzebne?        
         public int Price { get; protected set; }                 
-        public Score BetScore { get; protected set; }        
+        public Score Score { get; protected set; }
         public DateTime CreatedAt { get; protected set; }        
         public DateTime LastUpdate { get; protected set; }
 
@@ -23,14 +23,23 @@ namespace Bookmaker.Core.Domain
         }
 
         public Bet(int price, User user, Match match, Score score)
-        {
-            Id = Guid.NewGuid();
+        {            
             SetPrice(price);
             SetUser(user);
             SetMatch(match);
             SetScore(score);
 
             SetCreationDate();
+        }
+
+        public void SetId(int id)
+        {
+            if (id < 0)
+            {
+                throw new Exception($"Bet: Id cannot be set to '{ id }' (less than zero).");
+            }
+
+            Id = id;
         }
 
         public void SetUser(User user)
@@ -107,10 +116,10 @@ namespace Bookmaker.Core.Domain
             if (score.Shots > 10000)
                 throw new Exception("Bet: cannot bet for more shots than 10000.");
 
-            if (BetScore == score)
+            if (Score == score)
                 return;
 
-            BetScore = score;
+            Score = score;
             Update();
         }
 

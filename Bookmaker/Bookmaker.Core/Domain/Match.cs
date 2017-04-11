@@ -8,7 +8,7 @@ namespace Bookmaker.Core.Domain
 {
     public class Match
     {        
-        public Guid Id { get; protected set; }        
+        public int Id { get; protected set; }        
         public Team HostTeam { get; protected set; }                
         public Team GuestTeam { get; protected set; }        
         public Stadium Stadium { get; protected set; }        
@@ -18,11 +18,21 @@ namespace Bookmaker.Core.Domain
         protected Match()
         {
 
-        }
+        }        
 
         public Match(Team hostTeam, Team guestTeam, Stadium stadium, DateTime startTime)
         {
 
+        }
+
+        public void SetId(int id)
+        {
+            if (id < 0)
+            {
+                throw new Exception($"Match: Id cannot be set to '{ id }' (less than zero).");
+            }
+
+            Id = id;
         }
     }
 }

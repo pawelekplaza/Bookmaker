@@ -40,13 +40,6 @@ namespace Bookmaker.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public async Task<UserUpdateDto> GetForUpdateAsync(string email)
-        {
-            var user = await _userRepository.GetAsync(email);
-
-            return _mapper.Map<User, UserUpdateDto>(user);
-        }
-
         public async Task RegisterAsync(string email, string username, string password)
         {
             var user = await _userRepository.GetAsync(email);
@@ -61,10 +54,20 @@ namespace Bookmaker.Infrastructure.Services
             await _userRepository.AddAsync(user);
         }
 
-        public async Task UpdateUserAsync(string email, string username, string password)
+        public async Task UpdateUserAsync(string email, UserUpdateDto newUserData)
         {
-            var userUpdate = new User(email, username, password, Guid.NewGuid().ToString("N"));
-            await _userRepository.UpdateAsync(userUpdate);
+            var userToUpdate = await _userRepository.GetAsync(email);
+            
+            if (newUserData.Username != null)
+            {
+                userToUpdate.SetUsername(newUserData.Username);
+            }
+            if (newUserData.Password != null)
+            {
+                userToUpdate.SetPassword(newUserData.Password);
+            }
+
+            await _userRepository.UpdateAsync(userToUpdate);
         }
 
         public async Task RemoveAsync(string email)

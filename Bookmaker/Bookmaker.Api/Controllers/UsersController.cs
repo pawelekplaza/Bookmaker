@@ -68,47 +68,22 @@ namespace Bookmaker.Api.Controllers
             }
 
             return Json(new { email = request.Email, username = request.Username, password = request.Password });
+            //return Ok();
         }
 
         [HttpPatch("{email}")]
-        public async Task<IActionResult> UpdateUserAsync(string email, 
-            [FromBody] JsonPatchDocument<UserUpdateDto> patchDoc)
+        public async Task<IActionResult> UpdateUserAsync(string email, [FromBody]UserUpdateDto request)
         {
-            if (patchDoc == null)
-            {
-                return BadRequest();
-            }
-
-            var user = await _userService.GetForUpdateAsync(email);
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
-            var userToUpdate = new UserUpdateDto
-            {
-                Username = user.Username,
-                Password = user.Password
-            };
-
-            patchDoc.ApplyTo(userToUpdate, ModelState);
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
-                await _userService.UpdateUserAsync(email, userToUpdate.Username, userToUpdate.Password);
+                await _userService.UpdateUserAsync(email, request);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return Json(new { message = ex.Message });
             }
 
-            TryValidateModel(userToUpdate);
-
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{email}")]

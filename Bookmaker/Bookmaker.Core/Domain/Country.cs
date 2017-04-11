@@ -7,18 +7,27 @@ namespace Bookmaker.Core.Domain
 {
     public class Country
     {        
-        public Guid Id { get; protected set; }                
-        public string Name { get; protected set; }        
+        public int Id { get; protected set; }                
+        public string Name { get; protected set; }     
 
         protected Country()
         {
 
-        }
+        }        
 
         public Country(string name)
-        {
-            Id = Guid.NewGuid();
+        {            
             SetName(name);
+        }
+
+        public void SetId(int id)
+        {
+            if (id < 0)
+            {
+                throw new Exception($"Country: Id cannot be set to '{ id }' (less than zero).");
+            }
+
+            Id = id;
         }
 
         public void SetName(string name)
