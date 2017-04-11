@@ -59,6 +59,7 @@ namespace Bookmaker.Api.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+
                 await _userService.RegisterAsync(request.Email, request.Username, request.Password);
             }
             catch (Exception ex)

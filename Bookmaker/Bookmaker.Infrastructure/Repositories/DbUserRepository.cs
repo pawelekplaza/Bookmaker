@@ -31,6 +31,7 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
+                // todel: #ask1
                 return await Task.Factory.StartNew(()
                     => connection.Query<User>("dbo.Users_GetAll"));
             }
