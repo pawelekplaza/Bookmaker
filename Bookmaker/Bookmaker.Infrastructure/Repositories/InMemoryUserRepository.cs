@@ -12,12 +12,23 @@ namespace Bookmaker.Infrastructure.Repositories
     {
         private static ISet<User> _users = new HashSet<User>
         {
-            new User("em@1.com", "em", "pas13123s", "salt"),
-            new User("eq@2.com", "eq", "pas12312312sx", "saaaalt")
+            new User("test1@email.com", "em", "pas13123s", "salt"),
+            new User("test2@email.com", "eq", "pas12312312sx", "saaaalt")
         };
+
+        public InMemoryUserRepository()
+        {
+            int i = 0;
+            foreach(var user in _users)
+            {
+                user.SetId(i++);                
+            }
+        }
 
         public async Task AddAsync(User user)
         {
+            var maxId = _users.Max(v => v.Id);
+            user.SetId(maxId + 1);
             _users.Add(user);
             await Task.CompletedTask;
         }
@@ -25,8 +36,8 @@ namespace Bookmaker.Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetAllAsync()
             => await Task.FromResult(_users);
 
-        public async Task<User> GetAsync(Guid id)
-            => await Task.FromResult(_users.SingleOrDefault(x => x.Id == id));
+        //public async Task<User> GetAsync(string id)
+        //    => await Task.FromResult(_users.SingleOrDefault(x => x.Id == id));
 
         public async Task<User> GetAsync(string email)
             => await Task.FromResult(_users.SingleOrDefault(x => x.Email == email.ToLowerInvariant()));

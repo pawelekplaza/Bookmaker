@@ -12,7 +12,7 @@ namespace Bookmaker.Core.Domain
     {
         private readonly Regex nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
         
-        public Guid Id { get; protected set; }        
+        public int Id { get; protected set; }        
         public string Email { get; protected set; }        
         public string Password { get; protected set; }        
         public string Salt { get; protected set; }        
@@ -29,8 +29,6 @@ namespace Bookmaker.Core.Domain
 
         public User(string email, string username, string password, string salt)
         {
-            Id = Guid.NewGuid();
-
             SetEmail(email);
             SetUsername(username);
             SetPassword(password);
@@ -39,6 +37,15 @@ namespace Bookmaker.Core.Domain
             SetCreationDate();
         }
 
+        public void SetId(int id)
+        {
+            if (id < 0)
+            {
+                throw new Exception($"User: Id cannot be set to { id } (less than zero).");
+            }
+
+            Id = id;
+        }
         public void SetUsername(string username)
         {
             if (!nameRegex.IsMatch(username))

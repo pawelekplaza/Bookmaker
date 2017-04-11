@@ -19,7 +19,7 @@ namespace Bookmaker.Infrastructure.Repositories
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
                 var listToAdd = new List<User> { user };
-                var executeString = "dbo.Users_Insert @Id, @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate, @Wallet";
+                var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate";
                 
                 // todo: czy DateTime będzie działać, Wallet, co z IEnumerable?
                 await Task.Factory.StartNew(()
@@ -27,11 +27,12 @@ namespace Bookmaker.Infrastructure.Repositories
             }            
         }
 
-        public Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-
+                return await Task.Factory.StartNew(()
+                    => connection.Query<User>("dbo.Users_GetAll"));
             }
         }
 
@@ -50,6 +51,11 @@ namespace Bookmaker.Infrastructure.Repositories
                     return null;
                 }
 
+                if (output.Count == 0)
+                {
+                    return null;
+                }
+
                 if (output.Count > 1)
                 {
                     throw new Exception($"DbUserRepository: More than one user with email '{ email }' found.");
@@ -59,9 +65,15 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
-        public Task RemoveAsync(string email)
+        public async Task RemoveAsync(string email)
         {
-            throw new NotImplementedException();
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var executeString = "dbo.Users_RemoveByEmail @Email";
+
+                await Task.Factory.StartNew(()
+                    => connection.Execute(executeString, new { Email = email }));
+            }
         }
 
         public Task UpdateAsync(User user)

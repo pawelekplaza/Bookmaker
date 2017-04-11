@@ -11,14 +11,10 @@ namespace Bookmaker.Infrastructure.DTO
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(4)]
-        [MaxLength(50)]
+        [Required]        
         public string Username { get; set; }
 
-        [Required]
-        [MinLength(6)]
-        [MaxLength(100)]        
+        [Required]        
         public string Password { get; set; }
     }
 }

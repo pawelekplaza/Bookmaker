@@ -26,11 +26,29 @@ namespace Bookmaker.Api.Controllers
 
         [HttpGet("{email}")]
         public async Task<UserDto> GetAsync(string email)
-            => await _userService.GetAsync(email);
+        {
+            try
+            {
+                return await _userService.GetAsync(email);                
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         [HttpGet("get/all")]
         public async Task<IEnumerable<UserDto>> GetAllAsync()
-            => await _userService.GetAllAsync();
+        {
+            try
+            {
+                return await _userService.GetAllAsync();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync([FromBody]UserCreateDto request)

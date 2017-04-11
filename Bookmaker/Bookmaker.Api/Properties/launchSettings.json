@@ -14,7 +14,7 @@
       "launchUrl": "users/get/all",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "connectionStrings:Bookmaker": "Server=.;Database=Bookmaker;Trusted_Connection=True;"
+        "connectionStrings:Bookmaker": "Server=(localdb)\\MSSQLLocalDB;Database=Bookmaker;Trusted_Connection=True;"
       }
     },
     "Bookmaker.Api": {

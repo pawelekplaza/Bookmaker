@@ -7,12 +7,7 @@ namespace Bookmaker.Infrastructure.DTO
 {
     public class UserUpdateDto
     {
-        [MinLength(4)]
-        [MaxLength(50)]
-        public string Username { get; set; }
-
-        [MinLength(6)]
-        [MaxLength(100)]
+        public string Username { get; set; }        
         public string Password { get; set; }
     }
 }
