@@ -21,7 +21,7 @@ namespace Bookmaker.Infrastructure.Repositories
                 var listToAdd = new List<User> { user };
                 var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate";
                 
-                // todo: czy DateTime będzie działać, Wallet, co z IEnumerable?
+                // todo: Co z IEnumerable?
                 await Task.Factory.StartNew(()
                     => connection.Execute(executeString, listToAdd));
             }            

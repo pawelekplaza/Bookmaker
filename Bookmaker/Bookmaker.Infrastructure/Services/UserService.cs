@@ -48,7 +48,8 @@ namespace Bookmaker.Infrastructure.Services
                 throw new Exception($"User with email '{email}' already exists.");
             }
 
-            var salt = Guid.NewGuid().ToString("N"); // todo: jak powinno generować się sól?
+            // #ask3
+            var salt = Guid.NewGuid().ToString("N");
             user = new User(email, username, password, salt);
 
             await _userRepository.AddAsync(user);
@@ -56,6 +57,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task UpdateUserAsync(string email, UserUpdateDto newUserData)
         {
+            // #ask4
             var userToUpdate = await _userRepository.GetAsync(email);
             
             if (newUserData.Username != null)
