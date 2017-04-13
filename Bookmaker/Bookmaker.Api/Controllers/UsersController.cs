@@ -71,12 +71,13 @@ namespace Bookmaker.Api.Controllers
             return Json(new { email = request.Email, username = request.Username, password = request.Password });            
         }
 
-        [HttpPatch("{email}")]
+        [HttpPut("{email}")]
         public async Task<IActionResult> UpdateUserAsync(string email, [FromBody]UserUpdateDto request)
         {
             try
             {
-                await _userService.UpdateUserAsync(email, request);
+                request.Email = email;
+                await _userService.UpdateUserAsync(request);
             }
             catch (Exception ex)
             {

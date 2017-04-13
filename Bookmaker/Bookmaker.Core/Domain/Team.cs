@@ -9,9 +9,8 @@ namespace Bookmaker.Core.Domain
     {        
         public int Id { get; protected set; }
         public Stadium Stadium { get; protected set; }
-        public string Name { get; protected set; }        
-        public IEnumerable<Match> PlayedMatches { get; protected set; }
-        public IEnumerable<Match> ScheduledMatches { get; protected set; }
+        public string Name { get; protected set; }
+        public IEnumerable<Match> Matches { get; protected set; }
 
         protected Team()
         {
@@ -20,7 +19,8 @@ namespace Bookmaker.Core.Domain
 
         public Team(Stadium stadium, string name)
         {
-
+            SetStadium(stadium);
+            SetName(name);
         }
 
         public void SetId(int id)

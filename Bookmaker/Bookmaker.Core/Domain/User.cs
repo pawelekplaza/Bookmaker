@@ -21,6 +21,7 @@ namespace Bookmaker.Core.Domain
         public DateTime CreatedAt { get; protected set; }        
         public DateTime LastUpdate { get; protected set; }    
         public Wallet Wallet { get; protected set; }
+        public int WalletId => Wallet.Id;
         public IEnumerable<Bet> Bets { get; protected set; }
 
         protected User()
@@ -33,6 +34,7 @@ namespace Bookmaker.Core.Domain
             SetUsername(username);
             SetPassword(password);
             SetSalt(salt);
+            SetWallet();
 
             SetCreationDate();
         }
@@ -127,6 +129,15 @@ namespace Bookmaker.Core.Domain
             Update();
         }
 
+        public void SetFullName(string fullName)
+        {
+            if (fullName == null)
+                throw new Exception("User: full name cannot be empty.");
+
+            FullName = fullName;
+            Update();
+        }
+
         private void Update()
         {
             LastUpdate = DateTime.UtcNow;
@@ -136,6 +147,11 @@ namespace Bookmaker.Core.Domain
         {
             CreatedAt = DateTime.UtcNow;
             Update();
+        }
+
+        private void SetWallet()
+        {
+            Wallet = new Wallet(1000);
         }
     }
 }

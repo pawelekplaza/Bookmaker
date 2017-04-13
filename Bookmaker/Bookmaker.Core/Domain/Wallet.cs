@@ -7,8 +7,7 @@ namespace Bookmaker.Core.Domain
 {
     public class Wallet
     {
-        public int Id { get; protected set; }
-        public User User { get; protected set; }       
+        public int Id { get; protected set; }        
         public int Points { get; protected set; }
 
         protected Wallet()
@@ -16,9 +15,9 @@ namespace Bookmaker.Core.Domain
 
         }
 
-        public Wallet(User user, int points)
+        public Wallet(int points)
         {
-
+            SetPoints(points);
         }
 
         public void SetId(int id)
@@ -29,17 +28,6 @@ namespace Bookmaker.Core.Domain
             }
 
             Id = id;
-        }
-
-        public void SetUser(User user)
-        {
-            if (user == null)
-                throw new Exception("Wallet: provided user is not valid.");
-
-            if (User == user)
-                return;
-
-            User = user;
         }
 
         public void SetPoints(int points)

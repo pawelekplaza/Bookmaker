@@ -55,19 +55,23 @@ namespace Bookmaker.Infrastructure.Services
             await _userRepository.AddAsync(user);
         }
 
-        public async Task UpdateUserAsync(string email, UserUpdateDto newUserData)
+        public async Task UpdateUserAsync(UserUpdateDto newUserData)
         {
             // #ask4
-            var userToUpdate = await _userRepository.GetAsync(email);
-            
-            if (newUserData.Username != null)
-            {
-                userToUpdate.SetUsername(newUserData.Username);
-            }
-            if (newUserData.Password != null)
-            {
+
+            if (newUserData == null)
+                return;
+
+            var userToUpdate = await _userRepository.GetAsync(newUserData.Email);
+
+            if (!string.IsNullOrWhiteSpace(newUserData.FullName))
+                userToUpdate.SetFullName(newUserData.FullName);
+
+            if (!string.IsNullOrWhiteSpace(newUserData.Password))
                 userToUpdate.SetPassword(newUserData.Password);
-            }
+
+            if (!string.IsNullOrWhiteSpace(newUserData.Username))
+                userToUpdate.SetUsername(newUserData.Username);
 
             await _userRepository.UpdateAsync(userToUpdate);
         }

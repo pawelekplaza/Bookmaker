@@ -19,7 +19,7 @@ namespace Bookmaker.Infrastructure.Repositories
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
                 var listToAdd = new List<User> { user };
-                var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate";
+                var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate, @WalletId";
                 
                 // todo: Co z IEnumerable?
                 await Task.Factory.StartNew(()
@@ -77,9 +77,15 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
-        public Task UpdateAsync(User user)
+        public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var executeString = "dbo.Users_UpdateUser @Email, @Username, @Password, @FullName";
+
+                await Task.Factory.StartNew(()
+                    => connection.Execute(executeString, new { Email = user.Email, Username = user.Username, Password = user.Password, FullName = user.FullName }));
+            }
         }
     }
 }

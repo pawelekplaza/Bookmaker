@@ -11,6 +11,7 @@ namespace Bookmaker.Core.Domain
         public Country Country { get; protected set; }
         public City City { get; protected set; }        
         public string Name { get; protected set; }
+        public IEnumerable<Match> Matches { get; protected set; }
 
         protected Stadium()
         {
@@ -19,7 +20,9 @@ namespace Bookmaker.Core.Domain
 
         public Stadium(Country country, City city, string name)
         {
-
+            SetCountry(country);
+            SetCity(city);
+            SetName(name);
         }
 
         public void SetId(int id)

@@ -10,6 +10,7 @@ namespace Bookmaker.Core.Domain
         public int Id { get; protected set; }
         public Country Country { get; protected set; }        
         public string Name { get; protected set; }
+        public IEnumerable<Stadium> Stadiums { get; protected set; }
 
         protected City ()
         {

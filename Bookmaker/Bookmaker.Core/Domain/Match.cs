@@ -14,6 +14,7 @@ namespace Bookmaker.Core.Domain
         public Stadium Stadium { get; protected set; }        
         public DateTime StartTime { get; protected set; }
         public Result Result { get; protected set; }
+        public IEnumerable<Bet> Bets { get; protected set; }
 
         protected Match()
         {

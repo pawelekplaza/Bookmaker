@@ -10,6 +10,7 @@ namespace Bookmaker.Core.Domain
         public int Id { get; protected set; }        
         public Score HostScore { get; protected set; }        
         public Score GuestScore { get; protected set; }
+        public IEnumerable<Match> Matches { get; protected set; }
 
         protected Result()
         {

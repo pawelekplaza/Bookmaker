@@ -8,10 +8,10 @@ namespace Bookmaker.Infrastructure.Services
 {
     public interface IUserService
     {
-        Task<UserDto> GetAsync(string email);        
+        Task<UserDto> GetAsync(string email);
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task RemoveAsync(string email);
         Task RegisterAsync(string email, string username, string password);
-        Task UpdateUserAsync(string email, UserUpdateDto newUserData);
+        Task UpdateUserAsync(UserUpdateDto newUserData);
     }
 }
