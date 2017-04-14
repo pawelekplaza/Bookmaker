@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bookmaker.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,7 +34,7 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"Match: Id cannot be set to '{ id }' (less than zero).");
+                throw new InvalidDataException($"Match: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
@@ -42,7 +43,7 @@ namespace Bookmaker.Core.Domain
         public void SetHostTeam(Team team)
         {
             if (team == null)
-                throw new Exception("Match: provided host team is not valid.");
+                throw new InvalidDataException("Match: provided host team is not valid.");
 
             if (HostTeam == team)
                 return;
@@ -53,7 +54,7 @@ namespace Bookmaker.Core.Domain
         public void SetGuestTeam(Team team)
         {
             if (team == null)
-                throw new Exception("Match: provided guest team is not valid.");
+                throw new InvalidDataException("Match: provided guest team is not valid.");
 
             if (GuestTeam == team)
                 return;
@@ -64,7 +65,7 @@ namespace Bookmaker.Core.Domain
         public void SetStadium(Stadium stadium)
         {
             if (stadium == null)
-                throw new Exception("Match: provided stadium is not valid.");
+                throw new InvalidDataException("Match: provided stadium is not valid.");
 
             if (Stadium == stadium)
                 return;
@@ -75,7 +76,7 @@ namespace Bookmaker.Core.Domain
         public void SetResult(Result result)
         {
             if (result == null)
-                throw new Exception("Match: provided result is not valid.");
+                throw new InvalidDataException("Match: provided result is not valid.");
 
             if (Result == result)
                 return;
@@ -86,7 +87,7 @@ namespace Bookmaker.Core.Domain
         public void SetStartTime(DateTime time)
         {
             if (time == null)
-                throw new Exception("Match: provided start time is not valid.");
+                throw new InvalidDataException("Match: provided start time is not valid.");
 
             if (StartTime == time)
                 return;

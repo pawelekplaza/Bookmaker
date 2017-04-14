@@ -40,6 +40,11 @@ namespace Bookmaker.Api
             // Add framework services.
             services.AddScoped<IUserRepository, DbUserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICountryRepository, DbCountryRepository>();
+            services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IScoreRepository, DbScoreRepository>();
+            services.AddScoped<IScoreService, ScoreService>();
+
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
             services.AddCors();

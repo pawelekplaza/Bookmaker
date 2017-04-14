@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bookmaker.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -27,7 +28,7 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"Result: Id cannot be set to '{ id }' (less than zero).");
+                throw new InvalidDataException($"Result: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
@@ -36,7 +37,7 @@ namespace Bookmaker.Core.Domain
         public void SetHostScore(Score score)
         {
             if (score == null)
-                throw new Exception("Result: provided host score is not valid.");
+                throw new InvalidDataException("Result: provided host score is not valid.");
 
             if (HostScore == score)
                 return;
@@ -47,7 +48,7 @@ namespace Bookmaker.Core.Domain
         public void SetGuestScore(Score score)
         {
             if (score == null)
-                throw new Exception("Result: provided guest score is not valid.");
+                throw new InvalidDataException("Result: provided guest score is not valid.");
 
             if (GuestScore == score)
                 return;

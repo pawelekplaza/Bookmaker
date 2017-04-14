@@ -39,7 +39,7 @@ export class UserService {
 
     add(email: string, username: string, password: string): Promise<string> {
         return this.http
-            .post('http://localhost:5000/users', JSON.stringify({ email: email, password: password, username: username }), { headers: this.headers })
+            .post('http://localhost:5000/api/users', JSON.stringify({ email: email, password: password, username: username }), { headers: this.headers })
             .toPromise()
             .then(response => JSON.stringify(response.json()))
             .catch(this.handleError);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Bookmaker.Core.Domain;
+using Bookmaker.Core.Utils;
 
 namespace Bookmaker.Infrastructure.Repositories
 {
@@ -55,7 +56,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
             if (userToUpdate == null)
             {
-                throw new Exception($"User with email'{ user.Email }' does not exist.");
+                throw new InvalidDataException($"User with email'{ user.Email }' does not exist.");
             }
             
             userToUpdate.SetUsername(user.Username);

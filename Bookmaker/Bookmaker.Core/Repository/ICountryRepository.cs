@@ -8,10 +8,11 @@ namespace Bookmaker.Core.Repository
 {
     public interface ICountryRepository
     {
-        Task<Country> GetAsync(Guid id);
+        Task<Country> GetAsync(int id);
+        Task<Country> GetAsync(string name);
         Task<IEnumerable<Country>> GetAllAsync();
-        Task AddAsync(Country country);
+        Task CreateAsync(Country country);
         Task UpdateAsync(Country country);
-        Task RemoveAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

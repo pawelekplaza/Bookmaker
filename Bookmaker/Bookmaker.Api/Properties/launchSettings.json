@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "users/get/all",
+      "launchUrl": "api/users",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "connectionStrings:Bookmaker": "Server=(localdb)\\MSSQLLocalDB;Database=Bookmaker;Trusted_Connection=True;"
@@ -20,7 +20,7 @@
     "Bookmaker.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "users/get/all",
+      "launchUrl": "api/users",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

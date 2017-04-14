@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bookmaker.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,7 +38,7 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"Bet: Id cannot be set to '{ id }' (less than zero).");
+                throw new InvalidDataException($"Bet: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
@@ -47,7 +48,7 @@ namespace Bookmaker.Core.Domain
         {
             if (user == null)
             {
-                throw new Exception("Bet: provided user is not valid.");
+                throw new InvalidDataException("Bet: provided user is not valid.");
             }
             if (User == user)
             {
@@ -62,7 +63,7 @@ namespace Bookmaker.Core.Domain
         {
             if (match == null)
             {
-                throw new Exception("Bet: provided match is not valid.");
+                throw new InvalidDataException("Bet: provided match is not valid.");
             }
             if (Match == match)
             {
@@ -76,7 +77,7 @@ namespace Bookmaker.Core.Domain
         public void SetTeam(Team team)
         {
             if (team == null)
-                throw new Exception("Bet: provided team is not valid.");
+                throw new InvalidDataException("Bet: provided team is not valid.");
 
             if (Team == team)
                 return;
@@ -88,10 +89,10 @@ namespace Bookmaker.Core.Domain
         public void SetPrice(int price)
         {
             if (price <= 0)
-                throw new Exception("Bet: price must be greater than zero.");
+                throw new InvalidDataException("Bet: price must be greater than zero.");
 
             if (price > 1000000)
-                throw new Exception("Bet: price cannot be greater than 1000000.");
+                throw new InvalidDataException("Bet: price cannot be greater than 1000000.");
 
             if (Price == price)
                 return;
@@ -103,19 +104,7 @@ namespace Bookmaker.Core.Domain
         public void SetScore(Score score)
         {
             if (score == null)
-                throw new Exception("Bet: provided score is not valid.");
-
-            //if (score.Goals < 0)
-            //    throw new Exception("Bet: number of goals cannot be less than 0.");
-
-            //if (score.Goals > 100)
-            //    throw new Exception("Bet: cannot bet for more goals than 100.");
-
-            //if (score.Shots < 0)
-            //    throw new Exception("Bet: shots must be greater than or equal to zero.");
-
-            //if (score.Shots > 10000)
-            //    throw new Exception("Bet: cannot bet for more shots than 10000.");
+                throw new InvalidDataException("Bet: provided score is not valid.");
 
             if (Score == score)
                 return;

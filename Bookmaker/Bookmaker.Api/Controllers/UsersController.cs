@@ -1,4 +1,5 @@
-﻿using Bookmaker.Infrastructure.DTO;
+﻿using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.DTO;
 using Bookmaker.Infrastructure.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace Bookmaker.Api.Controllers
 {
-    [Route("[controller]")]    
+    [Produces("application/json")]
+    [Route("api/Users")]    
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -24,6 +26,7 @@ namespace Bookmaker.Api.Controllers
             _mailService = mailService;
         }
 
+        // GET: api/Users/test@email.com
         [HttpGet("{email}")]
         public async Task<UserDto> GetAsync(string email)
         {
@@ -32,12 +35,13 @@ namespace Bookmaker.Api.Controllers
                 return await _userService.GetAsync(email);                
             }
             catch (Exception)
-            {
+            {                
                 return null;
             }
         }
 
-        [HttpGet("get/all")]
+        // GET: api/Users
+        [HttpGet]
         public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
             try
@@ -50,6 +54,7 @@ namespace Bookmaker.Api.Controllers
             }
         }
 
+        // POST: api/Users
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync([FromBody]UserCreateDto request)
         {
@@ -60,9 +65,9 @@ namespace Bookmaker.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _userService.RegisterAsync(request.Email, request.Username, request.Password);
+                await _userService.RegisterAsync(request);
             }
-            catch (Exception ex)
+            catch (InvalidDataException ex)
             {
                 // todel: #ask2
                 return Json(new { message = ex.Message });
@@ -71,6 +76,7 @@ namespace Bookmaker.Api.Controllers
             return Json(new { email = request.Email, username = request.Username, password = request.Password });            
         }
 
+        // PUT: api/Users
         [HttpPut("{email}")]
         public async Task<IActionResult> UpdateUserAsync(string email, [FromBody]UserUpdateDto request)
         {
@@ -79,7 +85,7 @@ namespace Bookmaker.Api.Controllers
                 request.Email = email;
                 await _userService.UpdateUserAsync(request);
             }
-            catch (Exception ex)
+            catch (InvalidDataException ex)
             {
                 return Json(new { message = ex.Message });
             }
@@ -87,6 +93,7 @@ namespace Bookmaker.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/Users/test@email.com
         [HttpDelete("{email}")]
         public async Task<IActionResult> DeleteUserAsync(string email)
         {
@@ -101,9 +108,13 @@ namespace Bookmaker.Api.Controllers
             {
                 await _userService.RemoveAsync(email);
             }
-            catch (Exception ex)
+            catch (InvalidDataException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
             }
 
             var mailFrom = Startup.Configuration["mailSettings:mailFromAddress"];

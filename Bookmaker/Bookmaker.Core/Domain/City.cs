@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bookmaker.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -27,7 +28,7 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"City: Id cannot be set to '{ id }' (less than zero).");
+                throw new InvalidDataException($"City: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
@@ -36,7 +37,7 @@ namespace Bookmaker.Core.Domain
         public void SetCountry(Country country)
         {
             if (country == null)
-                throw new Exception("City: provided country is not valid.");
+                throw new InvalidDataException("City: provided country is not valid.");
 
             if (Country == country)
                 return;
@@ -47,7 +48,7 @@ namespace Bookmaker.Core.Domain
         public void SetName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new Exception("City: name cannot be empty.");
+                throw new InvalidDataException("City: name cannot be empty.");
 
             if (Name == name.ToLowerInvariant())
                 return;

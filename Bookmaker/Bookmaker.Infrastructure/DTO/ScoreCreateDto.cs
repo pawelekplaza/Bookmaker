@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Bookmaker.Infrastructure.DTO
 {
-    public class ScoreDto
+    public class ScoreCreateDto
     {
-        public int Id { get; set; }
-        public int? Shots { get; set; }
         public int? Goals { get; set; }
+        public int? Shots { get; set; }
     }
 }

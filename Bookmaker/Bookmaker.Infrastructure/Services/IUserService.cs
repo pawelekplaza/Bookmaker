@@ -11,7 +11,7 @@ namespace Bookmaker.Infrastructure.Services
         Task<UserDto> GetAsync(string email);
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task RemoveAsync(string email);
-        Task RegisterAsync(string email, string username, string password);
+        Task RegisterAsync(UserCreateDto user);
         Task UpdateUserAsync(UserUpdateDto newUserData);
     }
 }

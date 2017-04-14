@@ -11,30 +11,30 @@ namespace Bookmaker.Core.Domain
     public class User
     {
         private readonly Regex nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
+        private const int _defaultWalletPoints = 1000;
         
         public int Id { get; protected set; }        
         public string Email { get; protected set; }        
         public string Password { get; protected set; }        
         public string Salt { get; protected set; }        
         public string Username { get; protected set; }
-        public string FullName { get; protected set; }        
+        public string FullName { get; protected set; }
+        public int WalletPoints { get; protected set; }
         public DateTime CreatedAt { get; protected set; }        
-        public DateTime LastUpdate { get; protected set; }    
-        public Wallet Wallet { get; protected set; }
-        public int WalletId => Wallet.Id;
+        public DateTime LastUpdate { get; protected set; }            
         public IEnumerable<Bet> Bets { get; protected set; }
 
         protected User()
         {
         }
 
-        public User(string email, string username, string password, string salt)
+        public User(string email, string username, string password, string salt, int walletPoints = _defaultWalletPoints)
         {
             SetEmail(email);
             SetUsername(username);
             SetPassword(password);
             SetSalt(salt);
-            SetWallet();
+            SetWalletPoints(walletPoints);
 
             SetCreationDate();
         }
@@ -43,7 +43,7 @@ namespace Bookmaker.Core.Domain
         {
             if (id < 0)
             {
-                throw new Exception($"User: Id cannot be set to '{ id }' (less than zero).");
+                throw new InvalidDataException($"User: Id cannot be set to '{ id }' (less than zero).");
             }
 
             Id = id;
@@ -51,10 +51,21 @@ namespace Bookmaker.Core.Domain
 
         public void SetUsername(string username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new InvalidDataException("Username cannot be empty.");
+            }
+
+            if (username.Length < 2)
+            {
+                throw new InvalidDataException("Username cannot be shorter than 2 characters.");
+            }
+
             if (!nameRegex.IsMatch(username))
             {
-                throw new Exception("Username is invalid.");
+                throw new InvalidDataException("Username contains invalid characters.");
             }
+
             if (Username == username)
             {
                 return;
@@ -68,8 +79,9 @@ namespace Bookmaker.Core.Domain
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new Exception("Email cannot be empty.");
+                throw new InvalidDataException("Email cannot be empty.");
             }
+
             if (Email == email)
             {
                 return;
@@ -80,11 +92,12 @@ namespace Bookmaker.Core.Domain
 
             if (!emailValidator.IsUnique(email))
             {
-                throw new Exception("Provided email is already in use.");
+                throw new InvalidDataException("Provided email is already in use.");
             }
+
             if (!emailValidator.IsValid(email))
             {
-                throw new Exception("Provided email is not valid.");
+                throw new InvalidDataException("Provided email is not valid.");
             }
 
             Email = email;
@@ -95,16 +108,19 @@ namespace Bookmaker.Core.Domain
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new Exception("Password cannot be empty.");
+                throw new InvalidDataException("Password cannot be empty.");
             }
+
             if (password.Length < 4)
             {
-                throw new Exception("Password must contain at least 4 characters.");
+                throw new InvalidDataException("Password must contain at least 4 characters.");
             }
+
             if (password.Length > 100)
             {
-                throw new Exception("Password cannot contain more than 100 characters.");
+                throw new InvalidDataException("Password cannot contain more than 100 characters.");
             }
+
             if (Password == password)
             {
                 return;
@@ -118,11 +134,7 @@ namespace Bookmaker.Core.Domain
         {
             if (string.IsNullOrWhiteSpace(salt))
             {
-                throw new Exception("User: salt cannot be empty.");
-            }
-            if (Salt == salt.ToLowerInvariant())
-            {
-                return;
+                throw new InvalidDataException("User: salt cannot be empty.");
             }
 
             Salt = salt;
@@ -131,10 +143,27 @@ namespace Bookmaker.Core.Domain
 
         public void SetFullName(string fullName)
         {
-            if (fullName == null)
-                throw new Exception("User: full name cannot be empty.");
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                throw new InvalidDataException("Full name cannot be empty.");
+            }
 
             FullName = fullName;
+            Update();
+        }
+
+        public void SetWalletPoints(int points)
+        {
+            if (points < 0)
+                throw new InvalidDataException("User: cannot set less than zero wallet points.");
+
+            if (points > 1000000)
+                throw new InvalidDataException("User: cannot set more than 1000000 wallet points.");
+
+            if (WalletPoints == points)
+                return;
+
+            WalletPoints = points;
             Update();
         }
 
@@ -147,11 +176,6 @@ namespace Bookmaker.Core.Domain
         {
             CreatedAt = DateTime.UtcNow;
             Update();
-        }
-
-        private void SetWallet()
-        {
-            Wallet = new Wallet(1000);
-        }
+        }        
     }
 }

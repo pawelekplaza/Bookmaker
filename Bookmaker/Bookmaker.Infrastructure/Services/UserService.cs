@@ -6,6 +6,7 @@ using Bookmaker.Infrastructure.DTO;
 using Bookmaker.Core.Repository;
 using AutoMapper;
 using Bookmaker.Core.Domain;
+using Bookmaker.Core.Utils;
 
 namespace Bookmaker.Infrastructure.Services
 {
@@ -40,46 +41,50 @@ namespace Bookmaker.Infrastructure.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public async Task RegisterAsync(string email, string username, string password)
+        public async Task RegisterAsync(UserCreateDto user)
         {
-            var user = await _userRepository.GetAsync(email);
-            if (user != null)
+            var newUser = await _userRepository.GetAsync(user.Email);
+            if (newUser != null)
             {
-                throw new Exception($"User with email '{email}' already exists.");
+                throw new InvalidDataException($"User with email '{ user.Email }' already exists.");
             }
 
             // #ask3
             var salt = Guid.NewGuid().ToString("N");
-            user = new User(email, username, password, salt);
+            newUser = new User(user.Email, user.Username, user.Password, salt);
 
-            await _userRepository.AddAsync(user);
+            await _userRepository.AddAsync(newUser);
         }
 
-        public async Task UpdateUserAsync(UserUpdateDto newUserData)
+        public async Task UpdateUserAsync(UserUpdateDto user)
         {
             // #ask4
 
-            if (newUserData == null)
+            if (user == null)
                 return;
 
-            var userToUpdate = await _userRepository.GetAsync(newUserData.Email);
+            var userToUpdate = await _userRepository.GetAsync(user.Email);
 
-            if (!string.IsNullOrWhiteSpace(newUserData.FullName))
-                userToUpdate.SetFullName(newUserData.FullName);
+            if (userToUpdate == null)
+            {
+                throw new InvalidDataException($"User with email '{ user.Email }' does not exist.");
+            }
 
-            if (!string.IsNullOrWhiteSpace(newUserData.Password))
-                userToUpdate.SetPassword(newUserData.Password);
+            if (!string.IsNullOrWhiteSpace(user.FullName))
+                userToUpdate.SetFullName(user.FullName);
 
-            if (!string.IsNullOrWhiteSpace(newUserData.Username))
-                userToUpdate.SetUsername(newUserData.Username);
+            if (!string.IsNullOrWhiteSpace(user.Password))
+                userToUpdate.SetPassword(user.Password);
+
+            if (!string.IsNullOrWhiteSpace(user.Username))
+                userToUpdate.SetUsername(user.Username);
 
             await _userRepository.UpdateAsync(userToUpdate);
         }
 
         public async Task RemoveAsync(string email)
         {
-            await _userRepository.RemoveAsync(email);
-            await Task.CompletedTask;
+            await _userRepository.RemoveAsync(email);            
         }
     }
 }

@@ -9,6 +9,7 @@ using Bookmaker.Infrastructure.Helpers;
 using System.Data;
 using Dapper;
 using System.Linq;
+using Bookmaker.Core.Utils;
 
 namespace Bookmaker.Infrastructure.Repositories
 {
@@ -19,7 +20,7 @@ namespace Bookmaker.Infrastructure.Repositories
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
                 var listToAdd = new List<User> { user };
-                var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @CreatedAt, @LastUpdate, @WalletId";
+                var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @WalletPoints, @CreatedAt, @LastUpdate";
                 
                 // todo: Co z IEnumerable?
                 await Task.Factory.StartNew(()
@@ -46,7 +47,11 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var output = connection.Query<User>("dbo.Users_GetByEmail @Email", new { Email = email }).ToList(); // TODO: add stored procedure  select * from Users where Email = '{ email }'
+                List<User> output = new List<User>();
+
+                await Task.Factory.StartNew(()
+                    => output = connection.Query<User>("dbo.Users_GetByEmail @Email", new { Email = email }).ToList());
+                
                 if (output == null)
                 {
                     return null;
@@ -59,10 +64,10 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 if (output.Count > 1)
                 {
-                    throw new Exception($"DbUserRepository: More than one user with email '{ email }' found.");
+                    throw new InvalidDataException($"DbUserRepository: More than one user with email '{ email }' found.");
                 }
 
-                return await Task.FromResult(output[0]);
+                return output[0];
             }
         }
 

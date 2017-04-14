@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Bookmaker.Infrastructure.DTO
 {
-    public class CountryDto
+    public class CountryCreateDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

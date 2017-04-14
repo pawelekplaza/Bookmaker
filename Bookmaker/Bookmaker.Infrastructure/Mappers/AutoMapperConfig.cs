@@ -14,8 +14,13 @@ namespace Bookmaker.Infrastructure.Mappers
             {
                 cfg.CreateMap<User, UserDto>();
                 cfg.CreateMap<User, UserUpdateDto>();
-                cfg.CreateMap<City, CityDto>(); // TODO: jak to mapować?
-                    //.ForMember(x => x.CountryName, m => m.MapFrom(p => p.Country.Name));
+                cfg.CreateMap<City, CityDto>();
+                cfg.CreateMap<Country, CountryDto>();
+                cfg.CreateMap<Score, ScoreDto>();
+
+
+                // TODO: jak to mapować?
+                //.ForMember(x => x.CountryName, m => m.MapFrom(p => p.Country.Name));
             })
             .CreateMapper();
     }
