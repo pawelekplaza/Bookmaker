@@ -8,11 +8,11 @@ namespace Bookmaker.Core.Repository
 {
     public interface ICityRepository
     {
-        Task<City> GetAsync(Guid id);
+        Task CreateAsync(City city);
+        Task<City> GetAsync(int id);
         Task<IEnumerable<City>> GetAsync(string name);
-        Task<IEnumerable<City>> GetAllAsync();
-        Task AddAsync(City city);
+        Task<IEnumerable<City>> GetAllAsync();        
         Task UpdateAsync(City city);
-        Task RemoveAsync(Guid id);
+        Task DeleteAsync(int id);
     }
 }

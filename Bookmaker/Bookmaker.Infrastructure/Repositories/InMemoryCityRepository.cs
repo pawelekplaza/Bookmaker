@@ -14,7 +14,7 @@ namespace Bookmaker.Infrastructure.Repositories
             new City("Warsaw", new Country("Poland"))
         };
 
-        public async Task AddAsync(City city)
+        public async Task CreateAsync(City city)
         {
             
         }
@@ -24,22 +24,22 @@ namespace Bookmaker.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<City> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<City>> GetAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task RemoveAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
         public async Task UpdateAsync(City city)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<City> GetAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<City>> GetAsync(string name)
         {
             throw new NotImplementedException();
         }

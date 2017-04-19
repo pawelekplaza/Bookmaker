@@ -44,6 +44,8 @@ namespace Bookmaker.Api
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IScoreRepository, DbScoreRepository>();
             services.AddScoped<IScoreService, ScoreService>();
+            services.AddScoped<ICityRepository, DbCityRepository>();            
+            services.AddScoped<ICityService, CityService>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
