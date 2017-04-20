@@ -10,7 +10,7 @@ namespace Bookmaker.Core.Domain
 {
     public class User
     {
-        private readonly Regex nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
+        private readonly Regex _nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
         private const int _defaultWalletPoints = 1000;
         
         public int Id { get; protected set; }        
@@ -61,7 +61,7 @@ namespace Bookmaker.Core.Domain
                 throw new InvalidDataException("Username cannot be shorter than 2 characters.");
             }
 
-            if (!nameRegex.IsMatch(username))
+            if (!_nameRegex.IsMatch(username))
             {
                 throw new InvalidDataException("Username contains invalid characters.");
             }

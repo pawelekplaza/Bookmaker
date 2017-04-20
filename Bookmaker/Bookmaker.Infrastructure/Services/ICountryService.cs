@@ -8,9 +8,11 @@ namespace Bookmaker.Infrastructure.Services
 {
     public interface ICountryService
     {
-        Task<CountryDto> GetAsync(int id);
-        Task<CountryDto> GetAsync(string name);
+        Task<CountryDto> GetByIdAsync(int id);
+        Task<CountryDto> GetByNameAsync(string name);
         Task<IEnumerable<CountryDto>> GetAllAsync();
+        Task<IEnumerable<CityDto>> GetCitiesAsync(int countryId);
+        Task<IEnumerable<StadiumDto>> GetStadiumsAsync(int countryId);
         Task CreateAsync(CountryCreateDto country);
         Task UpdateAsync(CountryUpdateDto country);
         Task DeleteAsync(int id);

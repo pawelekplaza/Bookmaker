@@ -13,82 +13,83 @@ using Bookmaker.Core.Utils;
 namespace Bookmaker.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Countries")]
-    public class CountriesController : Controller
+    [Route("api/Cities")]
+    public class CitiesController : Controller
     {
-        private readonly ICountryService _countryService;
-        private ILogger _logger;
+        private readonly ICityService _cityService;
+        private readonly ILogger _logger;
 
-        public CountriesController(ICountryService countryService, ILogger<CountriesController> logger)
+        public CitiesController(ICityService cityService, ILogger<CitiesController> logger)
         {
-            _countryService = countryService;
+            _cityService = cityService;
             _logger = logger;
         }
 
-        // GET: api/Countries
+        // GET: api/Cities
         [HttpGet]
-        public async Task<IEnumerable<CountryDto>> GetAllAsync()
+        public async Task<IEnumerable<CityDto>> GetAllAsync()
         {
             try
             {
-                return await _countryService.GetAllAsync();
+                return await _cityService.GetAllAsync();
             }
             catch (Exception)
             {
+                _logger.LogInformation("Could not get any city.");
                 return null;
             }
         }
 
-        // GET: api/Countries/5
+        // GET: api/Cities/5
         [HttpGet("{id}")]
-        public async Task<CountryDto> GetAsync(int id)
+        public async Task<CityDto> GetAsync(int id)
         {
             try
             {
-                return await _countryService.GetByIdAsync(id);
+                return await _cityService.GetAsync(id);
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not get city with id '{ id }'.");
                 return null;
             }
         }
 
-        [HttpGet("{id}/cities")]
-        public async Task<IEnumerable<CityDto>> GetCitiesAsync(int id)
+        [HttpGet("name/{name}")]
+        public async Task<IEnumerable<CityDto>> GetAsync(string name)
         {
             try
             {
-                return await _countryService.GetCitiesAsync(id);
+                return await _cityService.GetAsync(name);
             }
             catch (Exception)
             {
-                _logger.LogInformation($"Could not get any city for country with id '{ id }'.");
+                _logger.LogInformation($"Could not get any city with name '{ name }'.");
                 return null;
             }
         }
-
 
         [HttpGet("{id}/stadiums")]
         public async Task<IEnumerable<StadiumDto>> GetStadiumsAsync(int id)
         {
             try
             {
-                return await _countryService.GetStadiumsAsync(id);
+                return await _cityService.GetStadiumsAsync(id);
             }
             catch (Exception)
             {
-                _logger.LogInformation($"Could not get any stadium for country with id '{ id }'.");
+                _logger.LogInformation($"Could not get any stadium for city with id '{ id }'.");
                 return null;
             }
         }
-         
-        // POST: api/Countries
+
+        // POST: api/Cities
         [HttpPost]
-        public async Task<IActionResult> PostAsyc([FromBody]CountryCreateDto request)
+        public async Task<IActionResult> PostAsync([FromBody]CityCreateDto request)
         {
             try
             {
-                await _countryService.CreateAsync(request);
+                await _cityService.CreateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
@@ -101,55 +102,41 @@ namespace Bookmaker.Api.Controllers
             }
         }
         
-        // PUT: api/Countries/5
-        [HttpPut("{name}")]
-        public async Task<IActionResult> PutAsync(string name, [FromBody]CountryUpdateDto request)
+        // PUT: api/Cities/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody]CityUpdateDto request)
         {
             try
             {
-                var countryToUpdate = await _countryService.GetByNameAsync(name);
-                
-                if (countryToUpdate == null)
-                {
-                    return NotFound();
-                }
+                request.Id = id;
 
-                request.Id = countryToUpdate.Id;
-                
-                await _countryService.UpdateAsync(request);
+                await _cityService.UpdateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
             {
                 return Json(new { message = ex.Message });
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return BadRequest();
             }
         }
         
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{name}")]
-        public async Task<IActionResult> Delete(string name)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
-                var countryToDelete = await _countryService.GetByNameAsync(name);
-
-                if (countryToDelete == null)
-                {
-                    return NotFound();
-                }
-
-                await _countryService.DeleteAsync(countryToDelete.Id);
+                await _cityService.DeleteAsync(id);
                 return NoContent();
             }
             catch (InvalidDataException ex)
             {
                 return Json(new { message = ex.Message });
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return BadRequest();
             }

@@ -1,0 +1,141 @@
+﻿using Bookmaker.Core.Repository;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Bookmaker.Core.Domain;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using Bookmaker.Infrastructure.Helpers;
+using Dapper;
+using Bookmaker.Infrastructure.DTO;
+using System.Linq;
+using Bookmaker.Core.Utils;
+
+namespace Bookmaker.Infrastructure.Repositories
+{
+    public class DbResultRepository : IResultRepository
+    {
+        public async Task CreateAsync(Result result)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {                
+                var listToAdd = new List<ResultDto>
+                {
+                    new ResultDto { Id = result.Id, HostScoreId = result.HostScore.Id, GuestScoreId = result.GuestScore.Id }
+                };
+
+                var executeString = "dbo.Results_Insert @HostScoreId, @GuestScoreId";
+
+                await Task.Factory.StartNew(()
+                    => connection.Execute(executeString, listToAdd));
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var executeString = "dbo.Results_DeleteById @Id";
+
+                await Task.Factory.StartNew(()
+                    => connection.Execute(executeString, new { Id = id }));
+            }
+        }
+
+        public async Task<IEnumerable<Result>> GetAllAsync()
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var resultDtos = await Task.Factory.StartNew(()
+                    => connection.Query<ResultDto>("dbo.Results_GetAll"));
+
+                var results = new List<Result>();
+
+                foreach (var result in resultDtos)
+                {
+                    var hostScore = await GetScore(result.HostScoreId);
+                    var guestScore = await GetScore(result.GuestScoreId);
+
+                    var newResult = new Result(hostScore, guestScore);
+                    newResult.SetId(result.Id);
+
+                    results.Add(newResult);
+                }
+
+                return results;
+            }
+        }
+
+        public async Task<Result> GetByIdAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var resultDto = await Task.Factory.StartNew(()
+                    => connection.Query<ResultDto>("dbo.Results_GetById @Id", new { Id = id }).ToList());
+
+                if (resultDto == null)
+                {
+                    return null;
+                }
+
+                if (resultDto.Count == 0)
+                {
+                    return null;
+                }
+
+                if (resultDto.Count > 1)
+                {
+                    throw new InvalidDataException($"More than one result with id '{ id }' found.");
+                }
+
+                var hostScore = await GetScore(resultDto[0].HostScoreId);
+                var guestScore = await GetScore(resultDto[0].GuestScoreId);
+                var result = new Result(hostScore, guestScore);
+                result.SetId(resultDto[0].Id);
+
+                return result;
+            }
+        }
+
+        public async Task UpdateAsync(Result result)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var executeString = "dbo.Results_UpdateById @Id, @HostScoreId, @GuestScoreId";
+
+                await Task.Factory.StartNew(()
+                    => connection.Execute(executeString, new { Id = result.Id, HostScoreId = result.HostScore.Id, GuestScoreId = result.GuestScore.Id }));
+            }
+        }
+
+        private async Task<Score> GetScore(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var scoreDto = await Task.Factory.StartNew(()
+                    => connection.Query<ScoreDto>("dbo.Scores_GetById @Id", new { Id = id }).ToList());
+
+                if (scoreDto == null)
+                {
+                    return null;
+                }
+
+                if (scoreDto.Count == 0)
+                {
+                    return null;
+                }
+
+                if (scoreDto.Count > 1)
+                {
+                    return null;
+                }
+
+                var score = new Score(scoreDto[0].Goals, scoreDto[0].Shots);
+                score.SetId(scoreDto[0].Id);
+
+                return score;
+            }
+        }
+    }
+}

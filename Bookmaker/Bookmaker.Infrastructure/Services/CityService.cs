@@ -25,7 +25,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task CreateAsync(CityCreateDto city)
         {
-            var country = await _countryRepository.GetAsync(city.CountryId);
+            var country = await _countryRepository.GetByIdAsync(city.CountryId);
             
             if (country == null)
             {
@@ -91,6 +91,19 @@ namespace Bookmaker.Infrastructure.Services
             return citiesDto;
         }
 
+        public async Task<IEnumerable<StadiumDto>> GetStadiumsAsync(int cityId)
+        {
+            var stadiums = await _cityRepository.GetStadiumsAsync(cityId);
+            var stadiumsDto = new HashSet<StadiumDto>();
+
+            foreach (var stadium in stadiums)
+            {
+                stadiumsDto.Add(_mapper.Map<Stadium, StadiumDto>(stadium));
+            }
+
+            return stadiumsDto;
+        }
+
         public async Task UpdateAsync(CityUpdateDto city)
         {
             var cityToUpdate = await _cityRepository.GetAsync(city.Id.Value);
@@ -102,7 +115,7 @@ namespace Bookmaker.Infrastructure.Services
 
             if (city.CountryId != null)
             {
-                var country = await _countryRepository.GetAsync(city.CountryId.Value);
+                var country = await _countryRepository.GetByIdAsync(city.CountryId.Value);
 
                 if (country == null)
                 {

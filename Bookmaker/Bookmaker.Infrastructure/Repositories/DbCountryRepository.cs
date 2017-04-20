@@ -10,6 +10,7 @@ using Dapper;
 using System.Linq;
 using Bookmaker.Core.Repository;
 using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.DTO;
 
 namespace Bookmaker.Infrastructure.Repositories
 {
@@ -47,7 +48,7 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
-        public async Task<Country> GetAsync(int id)
+        public async Task<Country> GetByIdAsync(int id)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
@@ -75,7 +76,7 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
-        public async Task<Country> GetAsync(string name)
+        public async Task<Country> GetByNameAsync(string name)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
@@ -103,6 +104,55 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<City>> GetCitiesAsync(int countryId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                List<CityDto> output = new List<CityDto>();
+
+                await Task.Factory.StartNew(()
+                    => output = connection.Query<CityDto>("dbo.Countries_GetCities @Id", new { Id = countryId }).ToList());
+
+                var resultList = new List<City>();
+
+                foreach (var city in output)
+                {
+                    var country = await GetByIdAsync(city.CountryId);
+                    var newCity = new City(city.Name, country);
+                    newCity.SetId(city.Id);
+
+                    resultList.Add(newCity);
+                }
+
+                return resultList;
+            }
+        }
+
+        public async Task<IEnumerable<Stadium>> GetStadiumsAsync(int countryId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                List<StadiumDto> output = new List<StadiumDto>();
+
+                await Task.Factory.StartNew(()
+                    => output = connection.Query<StadiumDto>("dbo.Countries_GetStadiums @Id", new { Id = countryId }).ToList());
+
+                var resultList = new List<Stadium>();
+
+                foreach (var stadium in output)
+                {
+                    var city = await GetCityAsync(stadium.CityId);
+
+                    var newStadium = new Stadium(city.Country, city, stadium.Name);
+                    newStadium.SetId(stadium.Id);
+
+                    resultList.Add(newStadium);
+                }
+
+                return resultList;
+            }
+        }
+
         /// <summary>
         /// Updates country by id.
         /// </summary>     
@@ -115,6 +165,37 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 await Task.Factory.StartNew(()
                     => connection.Execute(executeString, new { Id = country.Id, Name = country.Name }));
+            }
+        }
+
+        private async Task<City> GetCityAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var cityDto = await Task.Factory.StartNew(()
+                    => connection.Query<CityDto>("dbo.Cities_GetById @Id", new { Id = id }).ToList());
+
+                if (cityDto == null)
+                {
+                    return null;
+                }
+
+                if (cityDto.Count == 0)
+                {
+                    return null;
+                }
+
+                if (cityDto.Count > 1)
+                {
+                    return null;
+                }
+
+                var country = await GetByIdAsync(cityDto[0].CountryId);
+
+                var city = new City(cityDto[0].Name, country);
+                city.SetId(cityDto[0].Id);
+
+                return city;
             }
         }
     }

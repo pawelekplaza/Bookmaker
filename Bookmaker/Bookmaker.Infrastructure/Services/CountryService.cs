@@ -23,7 +23,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task CreateAsync(CountryCreateDto country)
         {
-            var newCountry = await _countryRepository.GetAsync(country.Name);
+            var newCountry = await _countryRepository.GetByNameAsync(country.Name);
             if (newCountry != null)
             {
                 throw new InvalidDataException($"Country with name '{ country.Name }' already exists.");
@@ -36,7 +36,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task DeleteAsync(int id)
         {
-            var countryToDelete = await _countryRepository.GetAsync(id);
+            var countryToDelete = await _countryRepository.GetByIdAsync(id);
 
             if (countryToDelete == null)
             {
@@ -59,21 +59,47 @@ namespace Bookmaker.Infrastructure.Services
             return countriesDto;
         }
 
-        public async Task<CountryDto> GetAsync(int id)
+        public async Task<CountryDto> GetByIdAsync(int id)
         {
-            var country = await _countryRepository.GetAsync(id);
+            var country = await _countryRepository.GetByIdAsync(id);
             return _mapper.Map<Country, CountryDto>(country);
         }
 
-        public async Task<CountryDto> GetAsync(string name)
+        public async Task<CountryDto> GetByNameAsync(string name)
         {
-            var country = await _countryRepository.GetAsync(name);
+            var country = await _countryRepository.GetByNameAsync(name);
             return _mapper.Map<Country, CountryDto>(country);
+        }
+
+        public async Task<IEnumerable<CityDto>> GetCitiesAsync(int countryId)
+        {
+            var cities = await _countryRepository.GetCitiesAsync(countryId);
+            var citiesDto = new HashSet<CityDto>();
+
+            foreach (var city in cities)
+            {
+                citiesDto.Add(_mapper.Map<City, CityDto>(city));
+            }
+
+            return citiesDto;
+        }
+
+        public async Task<IEnumerable<StadiumDto>> GetStadiumsAsync(int countryId)
+        {
+            var stadiums = await _countryRepository.GetStadiumsAsync(countryId);
+            var stadiumsDto = new HashSet<StadiumDto>();
+
+            foreach (var stadium in stadiums)
+            {
+                stadiumsDto.Add(_mapper.Map<Stadium, StadiumDto>(stadium));
+            }
+
+            return stadiumsDto;
         }
 
         public async Task UpdateAsync(CountryUpdateDto country)
         {            
-            var countryToUpdate = await _countryRepository.GetAsync(country.Id);
+            var countryToUpdate = await _countryRepository.GetByIdAsync(country.Id);
 
             if (countryToUpdate == null)
             {

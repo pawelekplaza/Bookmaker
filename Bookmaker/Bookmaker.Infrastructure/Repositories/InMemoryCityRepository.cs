@@ -43,5 +43,10 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Stadium>> GetStadiumsAsync(int cityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

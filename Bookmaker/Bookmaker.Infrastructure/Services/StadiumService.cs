@@ -28,7 +28,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task CreateAsync(StadiumDto stadium)
         {
-            var country = await _countryRepository.GetAsync(stadium.CountryId);
+            var country = await _countryRepository.GetByIdAsync(stadium.CountryId);
 
             if (country == null)
             {
@@ -113,7 +113,7 @@ namespace Bookmaker.Infrastructure.Services
 
             if (stadium.CountryId != null)
             {
-                var country = await _countryRepository.GetAsync(stadium.CountryId.Value);
+                var country = await _countryRepository.GetByIdAsync(stadium.CountryId.Value);
 
                 if (country == null)
                 {

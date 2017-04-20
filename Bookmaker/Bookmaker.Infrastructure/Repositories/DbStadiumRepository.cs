@@ -63,7 +63,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 foreach (var stadium in listOfDtos)
                 {
-                    var country = await _countryRepository.GetAsync(stadium.CountryId);
+                    var country = await _countryRepository.GetByIdAsync(stadium.CountryId);
                     var city = await _cityRepository.GetAsync(stadium.CityId);
 
                     var stadiumToAdd = new Stadium(country, city, stadium.Name);
@@ -100,7 +100,7 @@ namespace Bookmaker.Infrastructure.Repositories
                     throw new InvalidDataException($"More than one stadium with id'{ id }' found.");
                 }
 
-                var country = await _countryRepository.GetAsync(output[0].CountryId);
+                var country = await _countryRepository.GetByIdAsync(output[0].CountryId);
                 var city = await _cityRepository.GetAsync(output[0].CityId);
 
                 var result = new Stadium(country, city, output[0].Name);

@@ -61,7 +61,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 foreach (var city in listOfDtos)
                 {
-                    var country = await _countryRepository.GetAsync(city.CountryId);
+                    var country = await _countryRepository.GetByIdAsync(city.CountryId);
 
                     var newCity = new City(city.Name, country);
                     newCity.SetId(city.Id);
@@ -97,7 +97,7 @@ namespace Bookmaker.Infrastructure.Repositories
                     throw new InvalidDataException($"More than one city with id'{ id }' found.");
                 }
 
-                var country = await _countryRepository.GetAsync(output[0].CountryId);
+                var country = await _countryRepository.GetByIdAsync(output[0].CountryId);
 
                 var resultCity = new City(output[0].Name, country);
                 resultCity.SetId(output[0].Id);
@@ -120,12 +120,38 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 foreach (var city in output)
                 {
-                    var country = await _countryRepository.GetAsync(city.CountryId);
+                    var country = await _countryRepository.GetByIdAsync(city.CountryId);
 
                     var newCity = new City(city.Name, country);
                     newCity.SetId(city.Id);
 
                     resultList.Add(newCity);
+                }
+
+                return resultList;
+            }
+        }
+
+        public async Task<IEnumerable<Stadium>> GetStadiumsAsync(int cityId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                List<StadiumDto> output = new List<StadiumDto>();
+
+                await Task.Factory.StartNew(()
+                    => output = connection.Query<StadiumDto>("dbo.Cities_GetStadiums @Id", new { Id = cityId }).ToList());
+
+                var resultList = new List<Stadium>();
+
+                foreach (var stadium in output)
+                {
+                    var city = await GetAsync(stadium.CityId);
+                    var country = await _countryRepository.GetByIdAsync(stadium.CountryId);
+
+                    var newStadium = new Stadium(country, city, stadium.Name);
+                    newStadium.SetId(stadium.Id);
+
+                    resultList.Add(newStadium);
                 }
 
                 return resultList;

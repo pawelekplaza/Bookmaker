@@ -11,7 +11,8 @@ namespace Bookmaker.Core.Repository
         Task CreateAsync(City city);
         Task<City> GetAsync(int id);
         Task<IEnumerable<City>> GetAsync(string name);
-        Task<IEnumerable<City>> GetAllAsync();        
+        Task<IEnumerable<City>> GetAllAsync();
+        Task<IEnumerable<Stadium>> GetStadiumsAsync(int cityId);
         Task UpdateAsync(City city);
         Task DeleteAsync(int id);
     }
