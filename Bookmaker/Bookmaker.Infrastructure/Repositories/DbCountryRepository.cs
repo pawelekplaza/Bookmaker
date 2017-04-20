@@ -16,6 +16,13 @@ namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbCountryRepository : ICountryRepository
     {
+        private readonly ICommonDataProvider _commonDataProvider;
+
+        public DbCountryRepository()
+        {
+            _commonDataProvider = new CommonDataProvider();
+        }
+
         public async Task CreateAsync(Country country)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
@@ -140,8 +147,8 @@ namespace Bookmaker.Infrastructure.Repositories
                 var resultList = new List<Stadium>();
 
                 foreach (var stadium in output)
-                {
-                    var city = await GetCityAsync(stadium.CityId);
+                {                    
+                    var city = await _commonDataProvider.GetCityAsync(stadium.CityId);
 
                     var newStadium = new Stadium(city.Country, city, stadium.Name);
                     newStadium.SetId(stadium.Id);
@@ -166,37 +173,6 @@ namespace Bookmaker.Infrastructure.Repositories
                 await Task.Factory.StartNew(()
                     => connection.Execute(executeString, new { Id = country.Id, Name = country.Name }));
             }
-        }
-
-        private async Task<City> GetCityAsync(int id)
-        {
-            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                var cityDto = await Task.Factory.StartNew(()
-                    => connection.Query<CityDto>("dbo.Cities_GetById @Id", new { Id = id }).ToList());
-
-                if (cityDto == null)
-                {
-                    return null;
-                }
-
-                if (cityDto.Count == 0)
-                {
-                    return null;
-                }
-
-                if (cityDto.Count > 1)
-                {
-                    return null;
-                }
-
-                var country = await GetByIdAsync(cityDto[0].CountryId);
-
-                var city = new City(cityDto[0].Name, country);
-                city.SetId(cityDto[0].Id);
-
-                return city;
-            }
-        }
+        }        
     }
 }

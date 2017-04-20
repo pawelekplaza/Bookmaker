@@ -1,6 +1,6 @@
 ﻿using Bookmaker.Core.Utils;
 using Bookmaker.Infrastructure.DTO;
-using Bookmaker.Infrastructure.Services;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

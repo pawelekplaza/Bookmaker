@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using Bookmaker.Infrastructure.DTO;
-using Bookmaker.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 
 namespace Bookmaker.Api.Controllers
 {

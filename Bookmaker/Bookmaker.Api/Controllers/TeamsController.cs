@@ -13,89 +13,88 @@ using Bookmaker.Infrastructure.ServicesInterfaces;
 namespace Bookmaker.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Scores")]
-    public class ScoresController : Controller
+    [Route("api/Teams")]
+    public class TeamsController : Controller
     {
-        private readonly IScoreService _scoreService;
+        private readonly ITeamService _teamService;
         private readonly ILogger _logger;
 
-        public ScoresController(IScoreService scoreService, ILogger<ScoresController> logger)
+        public TeamsController(ITeamService teamService, ILogger<TeamsController> logger)
         {
-            _scoreService = scoreService;
+            _teamService = teamService;
             _logger = logger;
         }
 
-        // GET: api/Scores
+        // GET: api/Teams
         [HttpGet]
-        public async Task<IEnumerable<ScoreDto>> GetAllAsync()
+        public async Task<IEnumerable<TeamDto>> GetAllAsync()
         {
             try
             {
-                return await _scoreService.GetAllAsync();
+                return await _teamService.GetAllAsync();
             }
             catch (Exception)
             {
+                _logger.LogInformation("Could not get any team.");
                 return null;
             }
         }
 
-        // GET: api/Scores/5
+        // GET: api/Teams/5
         [HttpGet("{id}")]
-        public async Task<ScoreDto> GetAsync(int id)
+        public async Task<TeamDto> GetAsync(int id)
         {
             try
             {
-                return await _scoreService.GetAsync(id);
+                return await _teamService.GetByIdAsync(id);
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not get team with id '{ id }'.");
                 return null;
             }
         }
         
-        // POST: api/Scores
+        // POST: api/Teams
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody]ScoreCreateDto request)
+        public async Task<IActionResult> PostAsync([FromBody]TeamDto request)
         {
             try
             {
-                await _scoreService.CreateAsync(request);
+                await _teamService.CreateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation($"Could not create new team.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not create new team.");
                 return BadRequest();
             }
         }
         
-        // PUT: api/Scores/5
+        // PUT: api/Teams/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody]ScoreUpdateDto request)
+        public async Task<IActionResult> PutAsync(int id, [FromBody]TeamUpdateDto request)
         {
             try
             {
-                var scoreToUpdate = await _scoreService.GetAsync(id);
-
-                if (scoreToUpdate == null)
-                {
-                    return NotFound();
-                }
-
                 request.Id = id;
 
-                await _scoreService.UpdateAsync(request);
+                await _teamService.UpdateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation($"Could not update team with id '{ id }'.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not update team with id '{ id }'.");
                 return BadRequest();
             }
         }
@@ -106,22 +105,17 @@ namespace Bookmaker.Api.Controllers
         {
             try
             {
-                var scoreToDelete = await _scoreService.GetAsync(id);
-
-                if (scoreToDelete == null)
-                {
-                    return NotFound();
-                }
-
-                await _scoreService.DeleteAsync(id);
+                await _teamService.DeleteAsync(id);
                 return NoContent();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation($"Could not delete team with id '{ id }'.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not delete team with id '{ id }'.");
                 return BadRequest();
             }
         }

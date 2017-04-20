@@ -7,6 +7,7 @@ using Bookmaker.Core.Repository;
 using AutoMapper;
 using Bookmaker.Core.Domain;
 using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 
 namespace Bookmaker.Infrastructure.Services
 {

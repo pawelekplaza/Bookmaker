@@ -8,6 +8,7 @@ using AutoMapper;
 using Bookmaker.Core.Utils;
 using Bookmaker.Core.Domain;
 using System.Linq;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 
 namespace Bookmaker.Infrastructure.Services
 {

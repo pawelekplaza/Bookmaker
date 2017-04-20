@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bookmaker.Infrastructure.Services
+namespace Bookmaker.Infrastructure.ServicesInterfaces
 {
     public interface ICountryService
     {

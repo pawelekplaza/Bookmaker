@@ -16,6 +16,13 @@ namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbResultRepository : IResultRepository
     {
+        private readonly ICommonDataProvider _commonDataProvider;
+
+        public DbResultRepository()
+        {
+            _commonDataProvider = new CommonDataProvider();
+        }
+
         public async Task CreateAsync(Result result)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
@@ -53,9 +60,9 @@ namespace Bookmaker.Infrastructure.Repositories
                 var results = new List<Result>();
 
                 foreach (var result in resultDtos)
-                {
-                    var hostScore = await GetScore(result.HostScoreId);
-                    var guestScore = await GetScore(result.GuestScoreId);
+                {                    
+                    var hostScore = await _commonDataProvider.GetScoreAsync(result.HostScoreId);
+                    var guestScore = await _commonDataProvider.GetScoreAsync(result.GuestScoreId);
 
                     var newResult = new Result(hostScore, guestScore);
                     newResult.SetId(result.Id);
@@ -88,9 +95,9 @@ namespace Bookmaker.Infrastructure.Repositories
                 {
                     throw new InvalidDataException($"More than one result with id '{ id }' found.");
                 }
-
-                var hostScore = await GetScore(resultDto[0].HostScoreId);
-                var guestScore = await GetScore(resultDto[0].GuestScoreId);
+                
+                var hostScore = await _commonDataProvider.GetScoreAsync(resultDto[0].HostScoreId);
+                var guestScore = await _commonDataProvider.GetScoreAsync(resultDto[0].GuestScoreId);
                 var result = new Result(hostScore, guestScore);
                 result.SetId(resultDto[0].Id);
 
@@ -107,35 +114,6 @@ namespace Bookmaker.Infrastructure.Repositories
                 await Task.Factory.StartNew(()
                     => connection.Execute(executeString, new { Id = result.Id, HostScoreId = result.HostScore.Id, GuestScoreId = result.GuestScore.Id }));
             }
-        }
-
-        private async Task<Score> GetScore(int id)
-        {
-            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                var scoreDto = await Task.Factory.StartNew(()
-                    => connection.Query<ScoreDto>("dbo.Scores_GetById @Id", new { Id = id }).ToList());
-
-                if (scoreDto == null)
-                {
-                    return null;
-                }
-
-                if (scoreDto.Count == 0)
-                {
-                    return null;
-                }
-
-                if (scoreDto.Count > 1)
-                {
-                    return null;
-                }
-
-                var score = new Score(scoreDto[0].Goals, scoreDto[0].Shots);
-                score.SetId(scoreDto[0].Id);
-
-                return score;
-            }
-        }
+        }        
     }
 }

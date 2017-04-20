@@ -13,89 +13,88 @@ using Bookmaker.Infrastructure.ServicesInterfaces;
 namespace Bookmaker.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Scores")]
-    public class ScoresController : Controller
+    [Route("api/Results")]
+    public class ResultsController : Controller
     {
-        private readonly IScoreService _scoreService;
+        private readonly IResultService _resultService;
         private readonly ILogger _logger;
 
-        public ScoresController(IScoreService scoreService, ILogger<ScoresController> logger)
+        public ResultsController(IResultService resultService, ILogger<ResultsController> logger)
         {
-            _scoreService = scoreService;
+            _resultService = resultService;
             _logger = logger;
         }
 
-        // GET: api/Scores
+        // GET: api/Results
         [HttpGet]
-        public async Task<IEnumerable<ScoreDto>> GetAllAsync()
+        public async Task<IEnumerable<ResultDto>> GetAllAsync()
         {
             try
             {
-                return await _scoreService.GetAllAsync();
+                return await _resultService.GetAllAsync();
             }
             catch (Exception)
             {
+                _logger.LogInformation("Could not get any result.");
                 return null;
             }
         }
 
-        // GET: api/Scores/5
+        // GET: api/Results/5
         [HttpGet("{id}")]
-        public async Task<ScoreDto> GetAsync(int id)
+        public async Task<ResultDto> GetAsync(int id)
         {
             try
             {
-                return await _scoreService.GetAsync(id);
+                return await _resultService.GetByIdAsync(id);
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not get result with id '{ id }'.");
                 return null;
             }
         }
         
-        // POST: api/Scores
+        // POST: api/Results
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody]ScoreCreateDto request)
+        public async Task<IActionResult> PostAsync([FromBody]ResultDto request)
         {
             try
             {
-                await _scoreService.CreateAsync(request);
+                await _resultService.CreateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation("Could not create new result.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation("Could not create new result.");
                 return BadRequest();
             }
         }
         
-        // PUT: api/Scores/5
+        // PUT: api/Results/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody]ScoreUpdateDto request)
+        public async Task<IActionResult> PutAsync(int id, [FromBody]ResultUpdateDto request)
         {
             try
             {
-                var scoreToUpdate = await _scoreService.GetAsync(id);
-
-                if (scoreToUpdate == null)
-                {
-                    return NotFound();
-                }
-
                 request.Id = id;
 
-                await _scoreService.UpdateAsync(request);
+                await _resultService.UpdateAsync(request);
                 return Ok();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation($"Could not update result with id '{ id }'.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not update result with id '{ id }'.");
                 return BadRequest();
             }
         }
@@ -106,22 +105,17 @@ namespace Bookmaker.Api.Controllers
         {
             try
             {
-                var scoreToDelete = await _scoreService.GetAsync(id);
-
-                if (scoreToDelete == null)
-                {
-                    return NotFound();
-                }
-
-                await _scoreService.DeleteAsync(id);
+                await _resultService.DeleteAsync(id);
                 return NoContent();
             }
             catch (InvalidDataException ex)
             {
+                _logger.LogInformation($"Could not delete result with id '{ id }'.");
                 return Json(new { message = ex.Message });
             }
             catch (Exception)
             {
+                _logger.LogInformation($"Could not delete result with id '{ id }'.");
                 return BadRequest();
             }
         }

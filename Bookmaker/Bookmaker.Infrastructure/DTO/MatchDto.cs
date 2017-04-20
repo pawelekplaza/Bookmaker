@@ -4,7 +4,13 @@ using System.Text;
 
 namespace Bookmaker.Infrastructure.DTO
 {
-    class MatchDto
+    public class MatchDto
     {
+        public int Id { get; set; }
+        public int HostTeamId { get; set; }
+        public int GuestTeamId { get; set; }
+        public int StadiumId { get; set; }
+        public DateTime StartTime { get; set; }
+        public int? ResultId { get; set; }
     }
 }

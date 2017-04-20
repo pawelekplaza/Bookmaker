@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using NLog.Extensions.Logging;
 using Bookmaker.Infrastructure.Helpers;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 
 namespace Bookmaker.Api
 {
@@ -58,6 +59,9 @@ namespace Bookmaker.Api
 
             services.AddScoped<ITeamRepository, DbTeamRepository>();
             services.AddScoped<ITeamService, TeamService>();
+
+            services.AddScoped<IMatchRepository, DbMatchRepository>();
+            services.AddScoped<IMatchService, MatchService>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();

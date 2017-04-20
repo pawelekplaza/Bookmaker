@@ -16,11 +16,11 @@ namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbCityRepository : ICityRepository
     {
-        private readonly ICountryRepository _countryRepository;
+        private readonly ICommonDataProvider _commonDataProvider;
 
         public DbCityRepository()
         {
-            _countryRepository = new DbCountryRepository();
+            _commonDataProvider = new CommonDataProvider();
         }
 
         public async Task CreateAsync(City city)
@@ -60,8 +60,8 @@ namespace Bookmaker.Infrastructure.Repositories
                 var resultList = new List<City>();
 
                 foreach (var city in listOfDtos)
-                {
-                    var country = await _countryRepository.GetByIdAsync(city.CountryId);
+                {                    
+                    var country = await _commonDataProvider.GetCountryAsync(city.CountryId);
 
                     var newCity = new City(city.Name, country);
                     newCity.SetId(city.Id);
@@ -96,8 +96,8 @@ namespace Bookmaker.Infrastructure.Repositories
                 {
                     throw new InvalidDataException($"More than one city with id'{ id }' found.");
                 }
-
-                var country = await _countryRepository.GetByIdAsync(output[0].CountryId);
+                
+                var country = await _commonDataProvider.GetCountryAsync(output[0].CountryId);
 
                 var resultCity = new City(output[0].Name, country);
                 resultCity.SetId(output[0].Id);
@@ -119,8 +119,8 @@ namespace Bookmaker.Infrastructure.Repositories
                 var resultList = new List<City>();
 
                 foreach (var city in output)
-                {
-                    var country = await _countryRepository.GetByIdAsync(city.CountryId);
+                {                    
+                    var country = await _commonDataProvider.GetCountryAsync(city.CountryId);
 
                     var newCity = new City(city.Name, country);
                     newCity.SetId(city.Id);
@@ -145,8 +145,8 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 foreach (var stadium in output)
                 {
-                    var city = await GetAsync(stadium.CityId);
-                    var country = await _countryRepository.GetByIdAsync(stadium.CountryId);
+                    var city = await GetAsync(stadium.CityId);                    
+                    var country = await _commonDataProvider.GetCountryAsync(stadium.CountryId);
 
                     var newStadium = new Stadium(country, city, stadium.Name);
                     newStadium.SetId(stadium.Id);

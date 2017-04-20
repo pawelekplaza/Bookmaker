@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Bookmaker.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 using System.Collections;
 using Bookmaker.Infrastructure.DTO;
 using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.ServicesInterfaces;
 
 namespace Bookmaker.Api.Controllers
 {

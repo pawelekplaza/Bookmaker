@@ -16,6 +16,13 @@ namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbTeamRepository : ITeamRepository
     {
+        private readonly ICommonDataProvider _commonDataProvider;
+
+        public DbTeamRepository()
+        {
+            _commonDataProvider = new CommonDataProvider();
+        }
+
         public async Task CreateAsync(Team team)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
@@ -129,74 +136,14 @@ namespace Bookmaker.Infrastructure.Repositories
                     return null;
                 }
 
-                var country = await GetCountryAsync(stadiumDto[0].CountryId);
-                var city = await GetCityAsync(stadiumDto[0].CityId);
+                var country = await _commonDataProvider.GetCountryAsync(stadiumDto[0].CountryId);
+                var city = await _commonDataProvider.GetCityAsync(stadiumDto[0].CityId);
 
                 var stadium = new Stadium(country, city, stadiumDto[0].Name);
                 stadium.SetId(stadiumDto[0].Id);
 
                 return stadium;
             }
-        }
-
-        private async Task<Country> GetCountryAsync(int id)
-        {
-            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                var countryDto = await Task.Factory.StartNew(()
-                    => connection.Query<CountryDto>("dbo.Countries_GetById @Id", new { Id = id }).ToList());
-
-                if (countryDto == null)
-                {
-                    return null;
-                }
-
-                if (countryDto.Count == 0)
-                {
-                    return null;
-                }
-
-                if (countryDto.Count > 1)
-                {
-                    return null;
-                }
-
-                var country = new Country(countryDto[0].Name);
-                country.SetId(countryDto[0].Id);
-
-                return country;
-            }
-        }
-
-        private async Task<City> GetCityAsync(int id)
-        {
-            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                var cityDto = await Task.Factory.StartNew(()
-                    => connection.Query<CityDto>("dbo.Cities_GetById @Id", new { Id = id }).ToList());
-
-                if (cityDto == null)
-                {
-                    return null;
-                }
-
-                if (cityDto.Count == 0)
-                {
-                    return null;
-                }
-
-                if (cityDto.Count > 1)
-                {
-                    return null;
-                }
-
-                var country = await GetCountryAsync(cityDto[0].CountryId);
-
-                var city = new City(cityDto[0].Name, country);
-                city.SetId(cityDto[0].Id);
-
-                return city;
-            }
-        }
+        }        
     }
 }
