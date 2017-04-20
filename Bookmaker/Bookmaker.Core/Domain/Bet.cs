@@ -29,9 +29,7 @@ namespace Bookmaker.Core.Domain
             SetUser(user);
             SetMatch(match);
             SetTeam(team);
-            SetScore(score);
-
-            SetCreationDate();
+            SetScore(score);            
         }
 
         public void SetId(int id)
@@ -56,7 +54,6 @@ namespace Bookmaker.Core.Domain
             }
 
             User = user;
-            Update();
         }
 
         public void SetMatch(Match match)
@@ -71,7 +68,6 @@ namespace Bookmaker.Core.Domain
             }
 
             Match = match;
-            Update();
         }
 
         public void SetTeam(Team team)
@@ -83,7 +79,6 @@ namespace Bookmaker.Core.Domain
                 return;
 
             Team = team;
-            Update();
         }
 
         public void SetPrice(int price)
@@ -98,7 +93,6 @@ namespace Bookmaker.Core.Domain
                 return;
 
             Price = price;
-            Update();
         }
 
         public void SetScore(Score score)
@@ -110,18 +104,37 @@ namespace Bookmaker.Core.Domain
                 return;
 
             Score = score;
-            Update();
         }
 
-        private void Update()
+        public void SetCreatedAt(DateTime createdAt)
         {
-            LastUpdate = DateTime.UtcNow;
+            if (createdAt == null)
+            {
+                throw new InvalidDataException("Bet: created time cannot be empty.");
+            }
+
+            CreatedAt = createdAt;
         }
 
-        private void SetCreationDate()
+        public void SetLastUpdate(DateTime lastUpdate)
+        {
+            if (lastUpdate == null)
+            {
+                throw new InvalidDataException("Bet: updated time cannot be empty.");
+            }
+
+            LastUpdate = lastUpdate;
+        }
+
+        public void ResetCreationDate()
         {
             CreatedAt = DateTime.UtcNow;
             Update();
         }
+
+        public void Update()
+        {
+            LastUpdate = DateTime.UtcNow;
+        }        
     }
 }

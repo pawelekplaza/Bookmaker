@@ -71,6 +71,32 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
+        public async Task<User> GetByIdAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var user = await Task.Factory.StartNew(()
+                    => connection.Query<User>("dbo.Users_GetById @Id", new { Id = id }).ToList());
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                if (user.Count == 0)
+                {
+                    return null;
+                }
+
+                if (user.Count > 1)
+                {
+                    throw new InvalidDataException($"More than one user with id '{ id }' found.");
+                }
+
+                return user[0];
+            }
+        }
+
         public async Task RemoveAsync(string email)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))

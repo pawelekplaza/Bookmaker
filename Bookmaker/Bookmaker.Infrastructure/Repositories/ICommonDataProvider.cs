@@ -14,5 +14,7 @@ namespace Bookmaker.Infrastructure.Repositories
         Task<Team> GetTeamAsync(int id);
         Task<Stadium> GetStadiumAsync(int id);
         Task<Result> GetResultAsync(int id);
+        Task<User> GetUserAsync(int id);
+        Task<Match> GetMatchAsync(int id);
     }
 }

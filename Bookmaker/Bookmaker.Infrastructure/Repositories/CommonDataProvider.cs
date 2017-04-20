@@ -197,5 +197,70 @@ namespace Bookmaker.Infrastructure.Repositories
                 return result;
             }
         }
+
+        public async Task<User> GetUserAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var user = await Task.Factory.StartNew(()
+                    => connection.Query<User>("dbo.Users_GetById @Id", new { Id = id }).ToList());
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                if (user.Count == 0)
+                {
+                    return null;
+                }
+
+                if (user.Count > 1)
+                {
+                    return null;
+                }
+
+                return user[0];
+            }
+        }
+
+        public async Task<Match> GetMatchAsync(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var matchDto = await Task.Factory.StartNew(()
+                    => connection.Query<MatchDto>("dbo.Matches_GetById @Id", new { Id = id }).ToList());
+
+                if (matchDto == null)
+                {
+                    return null;
+                }
+
+                if (matchDto.Count == 0)
+                {
+                    return null;
+                }
+
+                if (matchDto.Count > 1)
+                {
+                    return null;
+                }
+
+                var hostTeam = await GetTeamAsync(matchDto[0].HostTeamId);
+                var guestTeam = await GetTeamAsync(matchDto[0].GuestTeamId);
+                var stadium = await GetStadiumAsync(matchDto[0].StadiumId);
+
+                var match = new Match(hostTeam, guestTeam, stadium, matchDto[0].StartTime);
+                match.SetId(matchDto[0].Id);
+
+                if (matchDto[0].ResultId.HasValue)
+                {
+                    var result = await GetResultAsync(matchDto[0].ResultId.Value);
+                    match.SetResult(result);
+                }
+
+                return match;
+            }
+        }
     }
 }

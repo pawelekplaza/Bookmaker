@@ -43,6 +43,11 @@ namespace Bookmaker.Infrastructure.Repositories
         public async Task<User> GetAsync(string email)
             => await Task.FromResult(_users.SingleOrDefault(x => x.Email == email.ToLowerInvariant()));
 
+        public Task<User> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task RemoveAsync(string email)
         {
             var user = await GetAsync(email);

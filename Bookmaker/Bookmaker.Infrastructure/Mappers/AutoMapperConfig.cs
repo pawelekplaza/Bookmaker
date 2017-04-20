@@ -37,6 +37,12 @@ namespace Bookmaker.Infrastructure.Mappers
                     .ForMember(x => x.GuestTeamId, m => m.MapFrom(p => p.GuestTeam.Id))
                     .ForMember(x => x.StadiumId, m => m.MapFrom(p => p.Stadium.Id))
                     .ForMember(x => x.ResultId, m => m.MapFrom(p => p.Result.Id));
+
+                cfg.CreateMap<Bet, BetDto>()
+                    .ForMember(x => x.MatchId, m => m.MapFrom(p => p.Match.Id))
+                    .ForMember(x => x.ScoreId, m => m.MapFrom(p => p.Score.Id))
+                    .ForMember(x => x.TeamId, m => m.MapFrom(p => p.Score.Id))
+                    .ForMember(x => x.UserId, m => m.MapFrom(p => p.User.Id));
             })
             .CreateMapper();
     }
