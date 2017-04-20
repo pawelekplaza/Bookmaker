@@ -56,6 +56,9 @@ namespace Bookmaker.Api
             services.AddScoped<IResultRepository, DbResultRepository>();
             services.AddScoped<IResultService, ResultService>();
 
+            services.AddScoped<ITeamRepository, DbTeamRepository>();
+            services.AddScoped<ITeamService, TeamService>();
+
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddMvc();
             services.AddCors();
