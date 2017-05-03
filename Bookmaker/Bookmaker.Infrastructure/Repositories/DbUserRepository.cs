@@ -21,53 +21,42 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var listToAdd = new List<User> { user };
                 var executeString = "dbo.Users_Insert @Email, @Password, @Salt, @Username, @FullName, @WalletPoints, @CreatedAt, @LastUpdate";
-                
-                // todo: Co z IEnumerable?
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+
+                await connection.ExecuteAsync(executeString, listToAdd);
             }            
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                // todel: #ask1
-                return await Task.Factory.StartNew(()
-                    => connection.Query<User>("dbo.Users_GetAll"));
+            {                
+                return await connection.QueryAsync<User>("dbo.Users_GetAll");
             }
-        }
-
-        public Task<User> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<User> GetAsync(string email)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<User> output = new List<User>();
-
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<User>("dbo.Users_GetByEmail @Email", new { Email = email }).ToList());
+                var queryResult = await connection.QueryAsync<User>("dbo.Users_GetByEmail @Email", new { Email = email });
+                var user = queryResult.ToList();                
                 
-                if (output == null)
+                if (user == null)
                 {
                     return null;
                 }
 
-                if (output.Count == 0)
+                if (user.Count == 0)
                 {
                     return null;
                 }
 
-                if (output.Count > 1)
+                if (user.Count > 1)
                 {
                     throw new InvalidDataException($"DbUserRepository: More than one user with email '{ email }' found.");
                 }
 
-                return output[0];
+                return user[0];
             }
         }
 
@@ -75,8 +64,8 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var user = await Task.Factory.StartNew(()
-                    => connection.Query<User>("dbo.Users_GetById @Id", new { Id = id }).ToList());
+                var queryResult = await connection.QueryAsync<User>("dbo.Users_GetById @Id", new { Id = id });
+                var user = queryResult.ToList();                
 
                 if (user == null)
                 {
@@ -103,8 +92,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Users_RemoveByEmail @Email";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Email = email }));
+                await connection.ExecuteAsync(executeString, new { Email = email });
             }
         }
 
@@ -114,8 +102,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Users_UpdateUser @Email, @Username, @Password, @FullName";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Email = user.Email, Username = user.Username, Password = user.Password, FullName = user.FullName }));
+                await connection.ExecuteAsync(executeString, new { Email = user.Email, Username = user.Username, Password = user.Password, FullName = user.FullName });
             }
         }
     }

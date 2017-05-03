@@ -46,8 +46,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 var executeString = "dbo.Matches_Insert @HostTeamId, @GuestTeamId, @StadiumId, @StartTime, @ResultId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));               
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -57,8 +56,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Matches_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -66,12 +64,11 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var matchesDto = await Task.Factory.StartNew(()
-                    => connection.Query<MatchDto>("dbo.Matches_GetAll"));
+                var matchDtos = await connection.QueryAsync<MatchDto>("dbo.Matches_GetAll");
 
                 var matches = new List<Match>();
 
-                foreach (var match in matchesDto)
+                foreach (var match in matchDtos)
                 {
                     var hostTeam = await _commonDataProvider.GetTeamAsync(match.HostTeamId);
                     var guestTeam = await _commonDataProvider.GetTeamAsync(match.GuestTeamId);
@@ -97,8 +94,8 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var matchDto = await Task.Factory.StartNew(()
-                    => connection.Query<MatchDto>("dbo.Matches_GetById @Id", new { Id = id }).ToList());
+                var queryResult = await connection.QueryAsync<MatchDto>("dbo.Matches_GetById @Id", new { Id = id });
+                var matchDto = queryResult.ToList();
 
                 if (matchDto == null)
                 {
@@ -146,8 +143,7 @@ namespace Bookmaker.Infrastructure.Repositories
                     executeObject.ResultId = match.Result.Id;
                 }
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, executeObject));              
+                await connection.ExecuteAsync(executeString, executeObject);
             }
         }        
     }

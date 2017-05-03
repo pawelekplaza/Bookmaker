@@ -30,8 +30,7 @@ namespace Bookmaker.Infrastructure.Repositories
                 var listToAdd = new List<Country> { country };
                 var executeString = "dbo.Countries_Insert @Name";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -41,8 +40,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Countries_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -50,8 +48,7 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                return await Task.Factory.StartNew(()
-                    => connection.Query<Country>("dbo.Countries_GetAll"));
+                return await connection.QueryAsync<Country>("dbo.Countries_GetAll");
             }
         }
 
@@ -59,27 +56,25 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<Country> output = new List<Country>();
+                var queryResult = await connection.QueryAsync<Country>("dbo.Countries_GetById @Id", new { Id = id });
+                var countryDtos = queryResult.ToList();                
 
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<Country>("dbo.Countries_GetById @Id", new { Id = id }).ToList());
-
-                if (output == null)
+                if (countryDtos == null)
                 {
                     return null;
                 }
 
-                if (output.Count == 0)
+                if (countryDtos.Count == 0)
                 {
                     return null;
                 }
 
-                if (output.Count > 1)
+                if (countryDtos.Count > 1)
                 {
                     throw new InvalidDataException($"More than one country with id '{ id }' found.");
                 }
 
-                return output[0];
+                return countryDtos[0];
             }
         }
 
@@ -87,27 +82,25 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<Country> output = new List<Country>();
+                var queryResult = await connection.QueryAsync<Country>("dbo.Countries_GetByName @Name", new { Name = name });
+                var countryDtos = queryResult.ToList();
 
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<Country>("dbo.Countries_GetByName @Name", new { Name = name }).ToList());
-
-                if (output == null)
+                if (countryDtos == null)
                 {
                     return null;
                 }
 
-                if (output.Count == 0)
+                if (countryDtos.Count == 0)
                 {
                     return null;
                 }
 
-                if (output.Count > 1)
+                if (countryDtos.Count > 1)
                 {
                     throw new InvalidDataException($"More than one country with name '{ name }' found.");
                 }
 
-                return output[0];                
+                return countryDtos[0];                
             }
         }
 
@@ -115,14 +108,12 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<CityDto> output = new List<CityDto>();
-
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<CityDto>("dbo.Countries_GetCities @Id", new { Id = countryId }).ToList());
+                var queryResult = await connection.QueryAsync<CityDto>("dbo.Countries_GetCities @Id", new { Id = countryId });
+                var cityDtos = queryResult.ToList();
 
                 var resultList = new List<City>();
 
-                foreach (var city in output)
+                foreach (var city in cityDtos)
                 {
                     var country = await GetByIdAsync(city.CountryId);
                     var newCity = new City(city.Name, country);
@@ -139,14 +130,12 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<StadiumDto> output = new List<StadiumDto>();
-
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<StadiumDto>("dbo.Countries_GetStadiums @Id", new { Id = countryId }).ToList());
+                var queryResult = await connection.QueryAsync<StadiumDto>("dbo.Countries_GetStadiums @Id", new { Id = countryId });
+                var stadiumDtos = queryResult.ToList();                
 
                 var resultList = new List<Stadium>();
 
-                foreach (var stadium in output)
+                foreach (var stadium in stadiumDtos)
                 {                    
                     var city = await _commonDataProvider.GetCityAsync(stadium.CityId);
 
@@ -170,8 +159,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Countries_UpdateById @Id, @Name";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = country.Id, Name = country.Name }));
+                await connection.ExecuteAsync(executeString, new { Id = country.Id, Name = country.Name });
             }
         }        
     }

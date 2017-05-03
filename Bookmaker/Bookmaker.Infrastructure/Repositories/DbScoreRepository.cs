@@ -22,8 +22,7 @@ namespace Bookmaker.Infrastructure.Repositories
                 var listToAdd = new List<Score> { score };
                 var executeString = "dbo.Scores_Insert @Goals, @Shots";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -33,8 +32,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Scores_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -42,8 +40,7 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                return await Task.Factory.StartNew(()
-                    => connection.Query<Score>("dbo.Scores_GetAll"));
+                return await connection.QueryAsync<Score>("dbo.Scores_GetAll");
             }
         }
 
@@ -51,27 +48,25 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<Score> output = new List<Score>();
+                var queryResult = await connection.QueryAsync<Score>("dbo.Scores_GetById @Id", new { Id = id });
+                var scoreDto = queryResult.ToList();                
 
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<Score>("dbo.Scores_GetById @Id", new { Id = id }).ToList());
-
-                if (output == null)
+                if (scoreDto == null)
                 {
                     return null;
                 }        
 
-                if (output.Count == 0)
+                if (scoreDto.Count == 0)
                 {
                     return null;
                 }
 
-                if (output.Count > 1)
+                if (scoreDto.Count > 1)
                 {
                     throw new InvalidDataException($"More than one score with id'{ id }' found.");
                 }
 
-                return output[0];
+                return scoreDto[0];
             }
         }
 
@@ -81,8 +76,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Scores_UpdateById @Id, @Goals, @Shots";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = score.Id, Goals = score.Goals, Shots = score.Shots }));
+                await connection.ExecuteAsync(executeString, new { Id = score.Id, Goals = score.Goals, Shots = score.Shots });
             }
         }
     }

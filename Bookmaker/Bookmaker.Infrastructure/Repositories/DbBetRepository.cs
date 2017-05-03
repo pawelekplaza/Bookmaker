@@ -43,8 +43,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 var executeString = "dbo.Bets_Insert @UserId, @MatchId, @ScoreId, @TeamId, @Price, @CreatedAt, @LastUpdate";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -54,8 +53,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Bets_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -63,8 +61,7 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var betsDto = await Task.Factory.StartNew(()
-                    => connection.Query<BetDto>("dbo.Bets_GetAll"));
+                var betsDto = await connection.QueryAsync<BetDto>("dbo.Bets_GetAll");
 
                 var bets = new List<Bet>();
 
@@ -91,8 +88,8 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var betDto = await Task.Factory.StartNew(()
-                    => connection.Query<BetDto>("dbo.Bets_GetById @Id", new { Id = id }).ToList());
+                var queryResult = await connection.QueryAsync<BetDto>("dbo.Bets_GetById @Id", new { Id = id });
+                var betDto = queryResult.ToList();
 
                 if (betDto == null)
                 {
@@ -141,8 +138,7 @@ namespace Bookmaker.Infrastructure.Repositories
                     LastUpdate = bet.LastUpdate
                 };
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, executeObject));
+                await connection.ExecuteAsync(executeString, executeObject);
             }
         }
     }

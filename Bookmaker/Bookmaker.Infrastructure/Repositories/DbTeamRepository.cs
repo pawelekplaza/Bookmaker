@@ -34,8 +34,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 var executeString = "dbo.Teams_Insert @Name, @StadiumId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -45,8 +44,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Teams_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -54,14 +52,13 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var teamsDto = await Task.Factory.StartNew(()
-                    => connection.Query<TeamDto>("dbo.Teams_GetAll"));
+                var teamDtos = await connection.QueryAsync<TeamDto>("dbo.Teams_GetAll");
 
                 var teams = new List<Team>();
 
-                foreach (var team in teamsDto)
+                foreach (var team in teamDtos)
                 {
-                    var stadium = await GetStadiumAsync(team.StadiumId);
+                    var stadium = await _commonDataProvider.GetStadiumAsync(team.StadiumId);
                     var newTeam = new Team(stadium, team.Name);
                     newTeam.SetId(team.Id);
 
@@ -76,8 +73,8 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var teamDto = await Task.Factory.StartNew(()
-                    => connection.Query<TeamDto>("dbo.Teams_GetById @Id", new { Id = id }).ToList());
+                var queryResult = await connection.QueryAsync<TeamDto>("dbo.Teams_GetById @Id", new { Id = id });
+                var teamDto = queryResult.ToList();                
 
                 if (teamDto == null)
                 {
@@ -94,7 +91,7 @@ namespace Bookmaker.Infrastructure.Repositories
                     throw new InvalidDataException($"More than one team with id '{ id }' found.");
                 }
 
-                var stadium = await GetStadiumAsync(teamDto[0].StadiumId);
+                var stadium = await _commonDataProvider.GetStadiumAsync(teamDto[0].StadiumId);
 
                 var team = new Team(stadium, teamDto[0].Name);
                 team.SetId(teamDto[0].Id);
@@ -109,41 +106,8 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Teams_Update @Id, @Name, @StadiumId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = team.Id, Name = team.Name, StadiumId = team.Stadium.Id }));
+                await connection.ExecuteAsync(executeString, new { Id = team.Id, Name = team.Name, StadiumId = team.Stadium.Id });
             }
-        }
-
-        private async Task<Stadium> GetStadiumAsync(int id)
-        {
-            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
-            {
-                var stadiumDto = await Task.Factory.StartNew(()
-                    => connection.Query<StadiumDto>("dbo.Stadiums_GetById @Id", new { Id = id }).ToList());
-
-                if (stadiumDto == null)
-                {
-                    return null; 
-                }
-
-                if (stadiumDto.Count == 0)
-                {
-                    return null;
-                }
-
-                if (stadiumDto.Count > 1)
-                {
-                    return null;
-                }
-
-                var country = await _commonDataProvider.GetCountryAsync(stadiumDto[0].CountryId);
-                var city = await _commonDataProvider.GetCityAsync(stadiumDto[0].CityId);
-
-                var stadium = new Stadium(country, city, stadiumDto[0].Name);
-                stadium.SetId(stadiumDto[0].Id);
-
-                return stadium;
-            }
-        }        
+        }     
     }
 }

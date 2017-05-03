@@ -34,8 +34,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 var executeString = "dbo.Results_Insert @HostScoreId, @GuestScoreId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -45,8 +44,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Results_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -54,8 +52,7 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var resultDtos = await Task.Factory.StartNew(()
-                    => connection.Query<ResultDto>("dbo.Results_GetAll"));
+                var resultDtos = await connection.QueryAsync<ResultDto>("dbo.Results_GetAll");
 
                 var results = new List<Result>();
 
@@ -78,8 +75,8 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var resultDto = await Task.Factory.StartNew(()
-                    => connection.Query<ResultDto>("dbo.Results_GetById @Id", new { Id = id }).ToList());
+                var queryResult = await connection.QueryAsync<ResultDto>("dbo.Results_GetById @Id", new { Id = id });
+                var resultDto = queryResult.ToList();
 
                 if (resultDto == null)
                 {
@@ -111,8 +108,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Results_UpdateById @Id, @HostScoreId, @GuestScoreId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = result.Id, HostScoreId = result.HostScore.Id, GuestScoreId = result.GuestScore.Id }));
+                await connection.ExecuteAsync(executeString, new { Id = result.Id, HostScoreId = result.HostScore.Id, GuestScoreId = result.GuestScore.Id });
             }
         }        
     }

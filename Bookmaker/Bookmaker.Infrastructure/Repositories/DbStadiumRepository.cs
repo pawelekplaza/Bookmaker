@@ -16,13 +16,11 @@ namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbStadiumRepository : IStadiumRepository
     {
-        private readonly ICityRepository _cityRepository;
-        private readonly ICountryRepository _countryRepository;
+        private readonly ICommonDataProvider _commonDataProvider;
 
         public DbStadiumRepository()
         {
-            _cityRepository = new DbCityRepository();
-            _countryRepository = new DbCountryRepository();
+            _commonDataProvider = new CommonDataProvider();
         }
 
         public async Task CreateAsync(Stadium stadium)
@@ -36,8 +34,7 @@ namespace Bookmaker.Infrastructure.Repositories
 
                 var executeString = "dbo.Stadiums_Insert @Name, @CityId, @CountryId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, listToAdd));                    
+                await connection.ExecuteAsync(executeString, listToAdd);
             }
         }
 
@@ -47,8 +44,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Stadiums_DeleteById @Id";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = id }));
+                await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
 
@@ -56,15 +52,14 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var listOfDtos = await Task.Factory.StartNew(()
-                    => connection.Query<StadiumDto>("dbo.Stadiums_GetAll"));
+                var listOfDtos = await connection.QueryAsync<StadiumDto>("dbo.Stadiums_GetAll");
 
                 var resultList = new List<Stadium>();
 
                 foreach (var stadium in listOfDtos)
-                {
-                    var country = await _countryRepository.GetByIdAsync(stadium.CountryId);
-                    var city = await _cityRepository.GetAsync(stadium.CityId);
+                {                    
+                    var country = await _commonDataProvider.GetCountryAsync(stadium.CountryId);
+                    var city = await _commonDataProvider.GetCityAsync(stadium.CityId);
 
                     var stadiumToAdd = new Stadium(country, city, stadium.Name);
                     stadiumToAdd.SetId(stadium.Id);
@@ -80,31 +75,29 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                List<StadiumDto> output = new List<StadiumDto>();
+                var queryResult = await connection.QueryAsync<StadiumDto>("dbo.Stadiums_GetById @Id", new { Id = id });
+                var stadiumDto = queryResult.ToList();                
 
-                await Task.Factory.StartNew(()
-                    => output = connection.Query<StadiumDto>("dbo.Stadiums_GetById @Id", new { Id = id }).ToList());
-
-                if (output == null)
+                if (stadiumDto == null)
                 {
                     return null;
                 }
 
-                if (output.Count == 0)
+                if (stadiumDto.Count == 0)
                 {
                     return null;
                 }
 
-                if (output.Count > 1)
+                if (stadiumDto.Count > 1)
                 {
                     throw new InvalidDataException($"More than one stadium with id'{ id }' found.");
                 }
 
-                var country = await _countryRepository.GetByIdAsync(output[0].CountryId);
-                var city = await _cityRepository.GetAsync(output[0].CityId);
+                var country = await _commonDataProvider.GetCountryAsync(stadiumDto[0].CountryId);
+                var city = await _commonDataProvider.GetCityAsync(stadiumDto[0].CityId);
 
-                var result = new Stadium(country, city, output[0].Name);
-                result.SetId(output[0].Id);
+                var result = new Stadium(country, city, stadiumDto[0].Name);
+                result.SetId(stadiumDto[0].Id);
 
                 return result;
             }
@@ -116,8 +109,7 @@ namespace Bookmaker.Infrastructure.Repositories
             {
                 var executeString = "dbo.Stadiums_UpdateById @Id, @Name, @CityId, @CountryId";
 
-                await Task.Factory.StartNew(()
-                    => connection.Execute(executeString, new { Id = stadium.Id, Name = stadium.Name, CityId = stadium.City.Id, CountryId = stadium.Country.Id }));
+                await connection.ExecuteAsync(executeString, new { Id = stadium.Id, Name = stadium.Name, CityId = stadium.City.Id, CountryId = stadium.Country.Id });
             }
         }
     }
