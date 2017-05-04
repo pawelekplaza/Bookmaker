@@ -42,6 +42,12 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
+                var stadiumsInCity = await GetStadiumsAsync(id);
+                if (stadiumsInCity != null)
+                {
+                    throw new InvalidDataException($"Cannot delete the city with id '{ id }' if there is a stadium.");
+                }
+
                 var executeString = "dbo.Cities_DeleteById @Id";
 
                 await connection.ExecuteAsync(executeString, new { Id = id });

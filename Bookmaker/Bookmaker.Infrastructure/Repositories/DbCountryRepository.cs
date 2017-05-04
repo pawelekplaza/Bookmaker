@@ -38,8 +38,19 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var executeString = "dbo.Countries_DeleteById @Id";
+                var citiesInCountry = await GetCitiesAsync(id);
+                if (citiesInCountry != null)
+                {
+                    throw new InvalidDataException($"Cannot delete a country with id '{ id }' if there is a city.");
+                }
 
+                var stadiumsInCountry = await GetStadiumsAsync(id);            
+                if (stadiumsInCountry != null)
+                {
+                    throw new InvalidDataException($"Cannot delete a country with id '{ id }' if there is a stadium.");
+                }
+
+                var executeString = "dbo.Countries_DeleteById @Id";
                 await connection.ExecuteAsync(executeString, new { Id = id });
             }
         }
