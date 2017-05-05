@@ -11,6 +11,7 @@ namespace Bookmaker.Infrastructure.ServicesInterfaces
         Task CreateAsync(StadiumDto stadium);
         Task<StadiumDto> GetAsync(int id);
         Task<IEnumerable<StadiumDto>> GetAllAsync();
+        Task<IEnumerable<MatchDto>> GetMatchesAsync(int stadiumId);
         Task UpdateAsync(StadiumUpdateDto stadium);
         Task DeleteAsync(int id);
     }

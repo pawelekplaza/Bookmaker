@@ -10,6 +10,7 @@ namespace Bookmaker.Infrastructure.ServicesInterfaces
     {
         Task CreateAsync(ResultDto result);
         Task<IEnumerable<ResultDto>> GetAllAsync();
+        Task<IEnumerable<MatchDto>> GetMatchesAsync(int resultId);
         Task<ResultDto> GetByIdAsync(int id);
         Task UpdateAsync(ResultUpdateDto result);
         Task DeleteAsync(int id);
