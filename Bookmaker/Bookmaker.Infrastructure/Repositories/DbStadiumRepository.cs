@@ -103,6 +103,31 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<Match>> GetMatchesAsync(int stadiumId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var queryResult = await connection.QueryAsync<MatchDto>("dbo.Stadiums_GetMatches @Id", new { Id = stadiumId });
+                var matchDtos = queryResult.ToList();
+
+                var resultList = new List<Match>();
+
+                foreach (var match in matchDtos)
+                {
+                    var hostTeam = await _commonDataProvider.GetTeamAsync(match.HostTeamId);
+                    var guestTeam = await _commonDataProvider.GetTeamAsync(match.GuestTeamId);
+                    var stadium = await _commonDataProvider.GetStadiumAsync(match.StadiumId);
+
+                    var newMatch = new Match(hostTeam, guestTeam, stadium, match.StartTime);
+                    newMatch.SetId(match.Id);
+
+                    resultList.Add(newMatch);
+                }
+
+                return resultList;
+            }
+        }
+
         public async Task UpdateAsync(Stadium stadium)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))

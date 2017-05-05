@@ -11,6 +11,7 @@ namespace Bookmaker.Core.Repository
         Task<User> GetAsync(string email);
         Task<User> GetByIdAsync(int id);
         Task<IEnumerable<User>> GetAllAsync();
+        Task<IEnumerable<Bet>> GetBetsAsync(int userId);
         Task AddAsync(User user);
         Task UpdateAsync(User user);        
         Task RemoveAsync(string email);

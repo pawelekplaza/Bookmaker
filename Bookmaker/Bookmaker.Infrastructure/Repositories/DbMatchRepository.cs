@@ -90,6 +90,32 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
+        public async Task<IEnumerable<Bet>> GetBetsAsync(int matchId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var queryResult = await connection.QueryAsync<BetDto>("dbo.Matches_GetBets @Id", new { Id = matchId });
+                var betDtos = queryResult.ToList();
+
+                var resultList = new List<Bet>();
+
+                foreach (var bet in betDtos)
+                {
+                    var user = await _commonDataProvider.GetUserAsync(bet.UserId);
+                    var match = await _commonDataProvider.GetMatchAsync(bet.MatchId);
+                    var team = await _commonDataProvider.GetTeamAsync(bet.TeamId);
+                    var score = await _commonDataProvider.GetScoreAsync(bet.ScoreId);
+
+                    var newBet = new Bet(bet.Price, user, match, team, score);
+                    newBet.SetId(bet.Id);
+
+                    resultList.Add(newBet);
+                }
+
+                return resultList;
+            }
+        }
+
         public async Task<Match> GetByIdAsync(int id)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))

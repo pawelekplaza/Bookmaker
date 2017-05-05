@@ -10,6 +10,7 @@ namespace Bookmaker.Core.Repository
     {
         Task CreateAsync(Score score);
         Task<IEnumerable<Score>> GetAllAsync();
+        Task<IEnumerable<Bet>> GetBetsAsync(int scoreId);
         Task<Score> GetAsync(int id);
         Task UpdateAsync(Score score);
         Task DeleteAsync(int id);

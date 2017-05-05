@@ -10,11 +10,19 @@ using System.Data;
 using Dapper;
 using System.Linq;
 using Bookmaker.Core.Utils;
+using Bookmaker.Infrastructure.DTO;
 
 namespace Bookmaker.Infrastructure.Repositories
 {
     public class DbUserRepository : IUserRepository
     {
+        private readonly ICommonDataProvider _commonDataProvider;
+
+        public DbUserRepository()
+        {
+            _commonDataProvider = new CommonDataProvider();
+        }
+
         public async Task AddAsync(User user)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
@@ -57,6 +65,32 @@ namespace Bookmaker.Infrastructure.Repositories
                 }
 
                 return user[0];
+            }
+        }
+
+        public async Task<IEnumerable<Bet>> GetBetsAsync(int userId)
+        {
+            using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
+            {
+                var queryResult = await connection.QueryAsync<BetDto>("dbo.Users_GetBets @Id", new { Id = userId });
+                var betDtos = queryResult.ToList();
+
+                var resultList = new List<Bet>();
+
+                foreach (var bet in betDtos)
+                {
+                    var user = await _commonDataProvider.GetUserAsync(bet.UserId);
+                    var match = await _commonDataProvider.GetMatchAsync(bet.MatchId);
+                    var team = await _commonDataProvider.GetTeamAsync(bet.TeamId);
+                    var score = await _commonDataProvider.GetScoreAsync(bet.ScoreId);
+
+                    var newBet = new Bet(bet.Price, user, match, team, score);
+                    newBet.SetId(bet.Id);
+
+                    resultList.Add(newBet);
+                }
+
+                return resultList;
             }
         }
 

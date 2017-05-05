@@ -10,6 +10,7 @@ namespace Bookmaker.Core.Repository
     {
         Task CreateAsync(Match match);
         Task<IEnumerable<Match>> GetAllAsync();
+        Task<IEnumerable<Bet>> GetBetsAsync(int matchId);
         Task<Match> GetByIdAsync(int id);
         Task UpdateAsync(Match match);
         Task DeleteAsync(int id);
