@@ -85,6 +85,9 @@
   <ItemGroup>
     <Content Include="app\Styles\app.component.css" />
     <Content Include="app\Templates\app.component.html" />
+    <Content Include="bootstrap-theme.css" />
+    <Content Include="bootstrap.css" />
+    <Content Include="bootstrap.js" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="styles.css" />

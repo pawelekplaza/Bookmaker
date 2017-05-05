@@ -1,8 +1,18 @@
-﻿h1 {
+﻿/*h1 {
     font-size: 300% !important;
     color: #369 !important;
-}
+}*/
 
 form-control {
     width: 300px !important;
+}
+
+#topBanner {
+    position: center;
+    width: 80%;
+    background: #94a3ff;
+}
+
+#topBannerTitle {
+    color: white;
 }
