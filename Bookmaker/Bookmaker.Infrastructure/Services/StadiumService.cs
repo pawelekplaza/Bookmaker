@@ -91,6 +91,19 @@ namespace Bookmaker.Infrastructure.Services
             return _mapper.Map<Stadium, StadiumDto>(stadium);
         }
 
+        public async Task<IEnumerable<MatchDto>> GetMatchesAsync(int stadiumId)
+        {
+            var matches = await _stadiumRepository.GetMatchesAsync(stadiumId);
+            var matchDtos = new HashSet<MatchDto>();
+
+            foreach (var match in matches)
+            {
+                matchDtos.Add(_mapper.Map<Match, MatchDto>(match));
+            }
+
+            return matchDtos;
+        }
+
         public async Task UpdateAsync(StadiumUpdateDto stadium)
         {
             var stadiumToUpdate = await _stadiumRepository.GetAsync(stadium.Id);

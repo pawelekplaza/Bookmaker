@@ -59,6 +59,19 @@ namespace Bookmaker.Infrastructure.Services
             return _mapper.Map<Score, ScoreDto>(score);
         }
 
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(int scoreId)
+        {
+            var bets = await _scoreRepository.GetBetsAsync(scoreId);
+            var betDtos = new HashSet<BetDto>();
+
+            foreach (var bet in bets)
+            {
+                betDtos.Add(_mapper.Map<Bet, BetDto>(bet));
+            }
+
+            return betDtos;
+        }
+
         public async Task UpdateAsync(ScoreUpdateDto score)
         {
             var scoreToUpdate = await _scoreRepository.GetAsync(score.Id);

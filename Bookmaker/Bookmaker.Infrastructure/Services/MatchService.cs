@@ -93,6 +93,19 @@ namespace Bookmaker.Infrastructure.Services
             return matchesDto;
         }
 
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(int matchId)
+        {
+            var bets = await _matchRepository.GetBetsAsync(matchId);
+            var betDtos = new HashSet<BetDto>();
+
+            foreach (var bet in bets)
+            {
+                betDtos.Add(_mapper.Map<Bet, BetDto>(bet));
+            }
+
+            return betDtos;
+        }
+
         public async Task<MatchDto> GetByIdAsync(int id)
         {
             var match = await _matchRepository.GetByIdAsync(id);

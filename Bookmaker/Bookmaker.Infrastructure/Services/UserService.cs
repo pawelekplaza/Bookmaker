@@ -87,5 +87,18 @@ namespace Bookmaker.Infrastructure.Services
         {
             await _userRepository.RemoveAsync(email);            
         }
+
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(int userId)
+        {
+            var bets = await _userRepository.GetBetsAsync(userId);
+            var betDtos = new HashSet<BetDto>();
+
+            foreach (var bet in bets)
+            {
+                betDtos.Add(_mapper.Map<Bet, BetDto>(bet));
+            }
+
+            return betDtos;
+        }
     }
 }

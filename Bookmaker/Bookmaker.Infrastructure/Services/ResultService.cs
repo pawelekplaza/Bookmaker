@@ -76,6 +76,19 @@ namespace Bookmaker.Infrastructure.Services
             return _mapper.Map<Result, ResultDto>(result);
         }
 
+        public async Task<IEnumerable<MatchDto>> GetMatchesAsync(int resultId)
+        {
+            var matches = await _resultRepository.GetMatchesAsync(resultId);
+            var matchDtos = new HashSet<MatchDto>();
+
+            foreach(var match in matches)
+            {
+                matchDtos.Add(_mapper.Map<Match, MatchDto>(match));
+            }
+
+            return matchDtos;
+        }
+
         public async Task UpdateAsync(ResultUpdateDto result)
         {
             var resultToUpdate = await _resultRepository.GetByIdAsync(result.Id);
