@@ -88,7 +88,7 @@ namespace Bookmaker.Infrastructure.Services
             await _userRepository.RemoveAsync(email);            
         }
 
-        public async Task<IEnumerable<BetDto>> GetBetsAsync(int userId)
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(string email)
         {
             var bets = await _userRepository.GetBetsAsync(userId);
             var betDtos = new HashSet<BetDto>();

@@ -45,10 +45,25 @@ namespace Bookmaker.Api.Controllers
         {
             try
             {
-                return await _scoreService.GetAsync(id);
+                return await _scoreService.GetAsync(id);                
             }
             catch (Exception)
             {
+                return null;
+            }
+        }
+
+        // GET: api/Scores/5/
+        [HttpGet("{id}/bets")]
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(int id)
+        {
+            try
+            {
+                return await _scoreService.GetBetsAsync(id);
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation($"Could not get any bet for score with id '{ id }'.");
                 return null;
             }
         }

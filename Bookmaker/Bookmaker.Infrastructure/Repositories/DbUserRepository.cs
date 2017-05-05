@@ -68,11 +68,11 @@ namespace Bookmaker.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Bet>> GetBetsAsync(int userId)
+        public async Task<IEnumerable<Bet>> GetBetsAsync(string userEmail)
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var queryResult = await connection.QueryAsync<BetDto>("dbo.Users_GetBets @Id", new { Id = userId });
+                var queryResult = await connection.QueryAsync<BetDto>("dbo.Users_GetBets @Email", new { Email = userEmail });
                 var betDtos = queryResult.ToList();
 
                 var resultList = new List<Bet>();

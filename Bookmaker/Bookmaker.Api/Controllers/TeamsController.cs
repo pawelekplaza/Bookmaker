@@ -30,7 +30,7 @@ namespace Bookmaker.Api.Controllers
         public async Task<IEnumerable<TeamDto>> GetAllAsync()
         {
             try
-            {
+            {                
                 return await _teamService.GetAllAsync();
             }
             catch (Exception)
@@ -51,6 +51,21 @@ namespace Bookmaker.Api.Controllers
             catch (Exception)
             {
                 _logger.LogInformation($"Could not get team with id '{ id }'.");
+                return null;
+            }
+        }
+
+        // GET: api/Teams/5/matches
+        [HttpGet("{id}/matches")]
+        public async Task<IEnumerable<MatchDto>> GetMatchesAsync(int id)
+        {
+            try
+            {
+                return await _teamService.GetMatchesAsync(id);
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation($"Could not get any match for team with id '{ id }'.");
                 return null;
             }
         }

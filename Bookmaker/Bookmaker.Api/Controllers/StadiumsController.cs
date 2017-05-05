@@ -45,12 +45,27 @@ namespace Bookmaker.Api.Controllers
         public async Task<StadiumDto> GetAsync(int id)
         {
             try
-            {
+            {                
                 return await _stadiumService.GetAsync(id);
             }
             catch (Exception)
             {
                 _logger.LogInformation($"Could not get stadium with id '{ id }'.");
+                return null;
+            }
+        }
+
+        // GET: api/Stadiums/5/matches
+        [HttpGet("{id}/matches")]
+        public async Task<IEnumerable<MatchDto>> GetMatchesAsync(int id)
+        {
+            try
+            {
+                return await _stadiumService.GetMatchesAsync(id);
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation($"Could not get any match for stadium with id '{ id }'.");
                 return null;
             }
         }

@@ -54,6 +54,21 @@ namespace Bookmaker.Api.Controllers
             }
         }
 
+        // GET: api/Users/test@email.com/bets
+        [HttpGet("{email}/bets")]
+        public async Task<IEnumerable<BetDto>> GetBetsAsync(string email)
+        {
+            try
+            {
+                return await _userService.GetBetsAsync(email);
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation($"Could not get any bet for user with email '{ email }'.");
+                return null;
+            }
+        }
+
         // POST: api/Users
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync([FromBody]UserCreateDto request)

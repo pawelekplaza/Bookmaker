@@ -10,7 +10,7 @@ namespace Bookmaker.Infrastructure.ServicesInterfaces
     {
         Task<UserDto> GetAsync(string email);
         Task<IEnumerable<UserDto>> GetAllAsync();
-        Task<IEnumerable<BetDto>> GetBetsAsync(int userId);
+        Task<IEnumerable<BetDto>> GetBetsAsync(string email);
         Task RemoveAsync(string email);
         Task RegisterAsync(UserCreateDto user);
         Task UpdateUserAsync(UserUpdateDto newUserData);

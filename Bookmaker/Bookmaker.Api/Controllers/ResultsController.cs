@@ -54,6 +54,21 @@ namespace Bookmaker.Api.Controllers
                 return null;
             }
         }
+
+        // GET: api/Results/5/matches
+        [HttpGet("{id}/matches")]
+        public async Task<IEnumerable<MatchDto>> GetMatchesAsync(int id)
+        {
+            try
+            {
+                return await _resultService.GetMatchesAsync(id);
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation($"Could not get any match for result with id '{ id }'.");
+                return null;
+            }
+        }
         
         // POST: api/Results
         [HttpPost]
