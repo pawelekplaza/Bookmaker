@@ -90,7 +90,7 @@ namespace Bookmaker.Infrastructure.Services
 
         public async Task<IEnumerable<BetDto>> GetBetsAsync(string email)
         {
-            var bets = await _userRepository.GetBetsAsync(userId);
+            var bets = await _userRepository.GetBetsAsync(email);
             var betDtos = new HashSet<BetDto>();
 
             foreach (var bet in bets)
