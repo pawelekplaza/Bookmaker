@@ -2,20 +2,25 @@ import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { UserService } from './Services/user.service';
-import { User } from './Models/user';
+import { IUser } from './Models/user';
 import { ErrorMessage } from './Models/error-message';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'Templates/app.component.html',
+    templateUrl: 'app.component.html',
     styleUrls: [
-        'Styles/app.component.css'
+        'app.component.css'
     ],
     moduleId: module.id
 })
 export class AppComponent {
-    name = 'Bookmaker';
-    user = new User('', '', '');
+    name: string = "The Bookmaker";
+    user: IUser =
+    {
+        email: '',
+        password: '',
+        username: ''
+    };
     errorMessage: string;
 
     constructor(private userService: UserService) { }

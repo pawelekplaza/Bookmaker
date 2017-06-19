@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { User } from '../Models/user';
+import { IUser } from '../Models/user';
 import { ErrorMessage } from '../Models/error-message';
 
 @Injectable()
@@ -13,22 +13,22 @@ export class UserService {
 
     constructor(private http: Http) { }
 
-    getAll(): Promise<User[]> {
+    getAll(): Promise<IUser[]> {
         return this.http.get(this.userUrl)
             .toPromise()
-            .then(response => response.json().data as User[])
+            .then(response => response.json().data as IUser[])
             .catch(this.handleError);
     }
 
-    get(id: number): Promise<User> {
+    get(id: number): Promise<IUser> {
         const url = `${this.userUrl}/${id}`;
         return this.http.get(url)
             .toPromise()
-            .then(response => response.json().data as User)
+            .then(response => response.json().data as IUser)
             .catch(this.handleError);
     }
 
-    update(user: User): Promise<User> {
+    update(user: IUser): Promise<IUser> {
         const url = `${this.userUrl}/${user.email}`;
         return this.http
             .put(url, JSON.stringify(user), { headers: this.headers })

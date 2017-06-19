@@ -1,0 +1,25 @@
+﻿<div>
+    <nav class="navi-bar">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="navbar-header">
+                        <a class="navbar-brand">{{ name }}</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a [routerLink]="['/home']">Home</a></li>
+                        <li><a [routerLink]="['/matches']">Matches</a></li>
+                        <li><a href="#">Teams</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </nav>
+</div>

@@ -83,13 +83,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\Styles\app.component.css" />
-    <Content Include="app\Templates\app.component.html" />
+    <Content Include="app\Home\home.component.css" />
+    <Content Include="app\Home\home.component.html" />
+    <Content Include="app\app.component.css" />
+    <Content Include="app\Footer\footer.component.css" />
+    <Content Include="app\app.component.html" />
+    <Content Include="app\Footer\footer.component.html" />
+    <Content Include="app\Matches\matches-list.component.css" />
+    <Content Include="app\Matches\matches-list.component.html" />
+    <Content Include="app\Navbar\navbar.component.html" />
     <Content Include="bootstrap-theme.css" />
     <Content Include="bootstrap.css" />
     <Content Include="bootstrap.js" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
+    <Content Include="jquery-3.2.1.min.js" />
+    <Content Include="Resources\loading.gif" />
     <Content Include="styles.css" />
     <Content Include="systemjs.config.extras.js" />
     <Content Include="systemjs.config.js" />
@@ -106,6 +115,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
+    <Content Include="app\Navbar\navbar.component.css" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -124,10 +134,22 @@
   <ItemGroup>
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
+    <TypeScriptCompile Include="app\Footer\footer.component.ts" />
+    <TypeScriptCompile Include="app\Footer\footer.module.ts" />
+    <TypeScriptCompile Include="app\Home\home.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\Matches\match.module.ts" />
+    <TypeScriptCompile Include="app\Matches\match.service.ts" />
+    <TypeScriptCompile Include="app\Matches\match.ts" />
+    <TypeScriptCompile Include="app\Matches\matches-list.component.ts" />
     <TypeScriptCompile Include="app\Models\error-message.ts" />
     <TypeScriptCompile Include="app\Models\user.ts" />
+    <TypeScriptCompile Include="app\Navbar\navbar.component.ts" />
     <TypeScriptCompile Include="app\Services\user.service.ts" />
+    <TypeScriptCompile Include="app\Shared\shared.module.ts" />
+    <TypeScriptCompile Include="app\Teams\team.module.ts" />
+    <TypeScriptCompile Include="app\Teams\team.service.ts" />
+    <TypeScriptCompile Include="app\Teams\team.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
