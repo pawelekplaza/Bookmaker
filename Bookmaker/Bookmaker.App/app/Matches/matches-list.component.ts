@@ -19,14 +19,16 @@ export class MatchesListComponent implements OnInit {
 
     ngOnInit(): void {
         this._matchService.getMatches()
-            .subscribe(v => {
-                this.matches = v;
+            .subscribe(v => this.matches = v,
+                    error => this.errorMessage = <any>error);        
+    }
 
-                this.matches.forEach((item, index) => {
-                    this._teamService.getTeam(this.matches[index].hostTeamId).subscribe(v => this.matches[index].hostTeamName = v.name);
-                    this._teamService.getTeam(this.matches[index].guestTeamId).subscribe(v => this.matches[index].guestTeamName = v.name);
-                });
+    goToDetails(id: number): void {
+        alert(`Match id: ${id}`);
+    }
 
-            }, error => this.errorMessage = <any>error);        
-    }    
+    addMoreContent(): void {
+        this.matches.push(this.matches[0]);
+        this.matches.push(this.matches[1]);
+    }
 }

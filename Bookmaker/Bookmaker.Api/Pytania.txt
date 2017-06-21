@@ -2,6 +2,7 @@
 #ask2: Jak przekazywać informacje do App o błędach (typu "User with email address '...' already exists.")
 #ask3: Jak generować sól?
 #ask4: Jak wykonuje się update?
+#ask5: Czy tak powinno robić się dto jeśli model posiada obce klucze?
 
 # Jak powinna wyglądać struktura katalogów w Angularze?
 

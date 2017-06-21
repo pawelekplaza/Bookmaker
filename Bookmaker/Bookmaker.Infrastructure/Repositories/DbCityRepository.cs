@@ -45,7 +45,10 @@ namespace Bookmaker.Infrastructure.Repositories
                 var stadiumsInCity = await GetStadiumsAsync(id);
                 if (stadiumsInCity != null)
                 {
-                    throw new InvalidDataException($"Cannot delete the city with id '{ id }' if there is a stadium.");
+                    if (stadiumsInCity.Count() > 0)
+                    {
+                        throw new InvalidDataException($"Cannot delete the city with id '{ id }' if there is a stadium.");
+                    }
                 }
 
                 var executeString = "dbo.Cities_DeleteById @Id";
