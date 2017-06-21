@@ -1,0 +1,2 @@
+﻿- dodać do bazy role userów
+- do account controllera dodać logowanie (post zwracający odpowiedni token) 
