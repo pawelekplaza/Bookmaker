@@ -5,6 +5,7 @@
     guestTeamId: number;
     guestTeamName: string;
     stadiumId: number;
+    stadiumName: string;
     startTime: Date;
     resultId: number;
 }

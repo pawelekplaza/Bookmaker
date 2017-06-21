@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 //import { SharedModule } from '../Shared/shared.module';
 import { IMatch } from './match';
@@ -15,20 +16,17 @@ export class MatchesListComponent implements OnInit {
     matches: IMatch[];
     errorMessage: string;
 
-    constructor(private _matchService: MatchService, private _teamService: TeamService) { }
+    constructor(private _matchService: MatchService,
+        private _teamService: TeamService,
+        private _router: Router) { }
 
     ngOnInit(): void {
         this._matchService.getMatches()
             .subscribe(v => this.matches = v,
-                    error => this.errorMessage = <any>error);        
+                    error => this.errorMessage = error);        
     }
 
     goToDetails(id: number): void {
-        alert(`Match id: ${id}`);
-    }
-
-    addMoreContent(): void {
-        this.matches.push(this.matches[0]);
-        this.matches.push(this.matches[1]);
+        this._router.navigate([`/matches/${id}`]);
     }
 }

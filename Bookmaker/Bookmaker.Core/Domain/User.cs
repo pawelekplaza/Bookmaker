@@ -12,28 +12,29 @@ namespace Bookmaker.Core.Domain
     {
         private readonly Regex _nameRegex = new Regex("^(?![_.-])(?!.*[_.-]{2})[a-zA-Z0-9._.-]+(?<![_.-])$");
         private const int _defaultWalletPoints = 1000;
-        
-        public int Id { get; protected set; }        
-        public string Email { get; protected set; }        
-        public string Password { get; protected set; }        
-        public string Salt { get; protected set; }        
+
+        public int Id { get; protected set; }
+        public string Email { get; protected set; }
+        public string Salt { get; protected set; }
+        public string Hash { get; protected set; }
         public string Username { get; protected set; }
         public string FullName { get; protected set; }
+        public string Role { get; set; }
         public int WalletPoints { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }        
-        public DateTime LastUpdate { get; protected set; }            
+        public DateTime CreatedAt { get; protected set; }
+        public DateTime LastUpdate { get; protected set; }
         public IEnumerable<Bet> Bets { get; protected set; }
 
         protected User()
         {
         }
 
-        public User(string email, string username, string password, string salt, int walletPoints = _defaultWalletPoints)
+        public User(string email, string username, string salt, string hash, int walletPoints = _defaultWalletPoints)
         {
             SetEmail(email);
             SetUsername(username);
-            SetPassword(password);
             SetSalt(salt);
+            SetHash(hash);
             SetWalletPoints(walletPoints);
 
             SetCreationDate();
@@ -104,31 +105,31 @@ namespace Bookmaker.Core.Domain
             Update();
         }
 
-        public void SetPassword(string password)
-        {
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new InvalidDataException("Password cannot be empty.");
-            }
+        //public void SetPassword(string password)
+        //{
+        //    if (string.IsNullOrWhiteSpace(password))
+        //    {
+        //        throw new InvalidDataException("Password cannot be empty.");
+        //    }
 
-            if (password.Length < 4)
-            {
-                throw new InvalidDataException("Password must contain at least 4 characters.");
-            }
+        //    if (password.Length < 4)
+        //    {
+        //        throw new InvalidDataException("Password must contain at least 4 characters.");
+        //    }
 
-            if (password.Length > 100)
-            {
-                throw new InvalidDataException("Password cannot contain more than 100 characters.");
-            }
+        //    if (password.Length > 100)
+        //    {
+        //        throw new InvalidDataException("Password cannot contain more than 100 characters.");
+        //    }
 
-            if (Password == password)
-            {
-                return;
-            }
+        //    if (Password == password)
+        //    {
+        //        return;
+        //    }
 
-            Password = password;
-            Update();
-        }
+        //    Password = password;
+        //    Update();
+        //}
 
         public void SetSalt(string salt)
         {
@@ -141,6 +142,17 @@ namespace Bookmaker.Core.Domain
             Update();
         }
 
+        public void SetHash(string hash)
+        {
+            if (string.IsNullOrWhiteSpace(hash))
+            {
+                throw new InvalidDataException("User: hash cannot be empty.");
+            }
+
+            Hash = hash;
+            Update();
+        }
+
         public void SetFullName(string fullName)
         {
             if (string.IsNullOrWhiteSpace(fullName))
@@ -149,6 +161,17 @@ namespace Bookmaker.Core.Domain
             }
 
             FullName = fullName;
+            Update();
+        }
+
+        public void SetRole(string role)
+        {
+            if (string.IsNullOrWhiteSpace(role))
+            {
+                throw new InvalidDataException("Role cannot be empty.");
+            }
+
+            Role = role;
             Update();
         }
 

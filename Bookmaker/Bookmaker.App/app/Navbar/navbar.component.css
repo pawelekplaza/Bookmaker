@@ -1,26 +1,23 @@
 ﻿.navi-bar {
-	background: url("../../Resources/header.jpg");
-	background-color: rgb(78, 131, 162);
-	background-repeat: repeat;
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-origin: padding-box;
-	background-position-x: 0px;
-	background-position-y: 0px;
-	background-size: auto auto;
-
-	box-shadow: 0 0 5px #999999;
-	border-radius: 0;
-	border-color: #080808;
-	border-width: 0 0 1px;
-	border: 1px solid transparent;
-
-	position: fixed;
-	right: 0;
-	left: 0;
-	z-index: 1030;
-
-	display: block;
+    background: url("../../Resources/header.jpg");
+    background-color: rgb(78, 131, 162);
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-origin: padding-box;
+    background-position-x: 0px;
+    background-position-y: 0px;
+    background-size: auto auto;
+    box-shadow: 0 0 5px #999999;
+    border-radius: 0;
+    border-color: #080808;
+    border-width: 0 0 1px;
+    border: 1px solid transparent;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    display: block;
 }
 
 div {
@@ -33,21 +30,21 @@ a {
 }
 
 li {
-	background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 li > a:hover {
-	color: #c8c8c8 !important;
-	cursor: pointer;
-	/*background-color: #1683aa !important;*/
+    color: #c8c8c8 !important;
+    cursor: pointer;
+    /*background-color: #1683aa !important;*/
 }
 
 li > a {
-	background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 div > .btn {
-    text-align:right;
+    text-align: right;
 }
 
 /*.navbar-nav {

@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using NLog.Extensions.Logging;
 using Bookmaker.Infrastructure.Helpers;
 using Bookmaker.Infrastructure.ServicesInterfaces;
+using Microsoft.IdentityModel.Tokens;
+using Bookmaker.Infrastructure.Settings;
+using System.Text;
 
 namespace Bookmaker.Api
 {
@@ -67,6 +70,10 @@ namespace Bookmaker.Api
             services.AddScoped<IBetService, BetService>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
+            services.AddSingleton<JwtSettings>();
+            services.AddSingleton<IJwtHandler, JwtHandler>();
+            services.AddSingleton<IEncrypter, Encrypter>();
+            
             services.AddMvc();
             services.AddCors();
             services.AddTransient<IMailService, LocalMailService>();
@@ -78,6 +85,19 @@ namespace Bookmaker.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
+
+
+            var jwtSettings = app.ApplicationServices.GetService<JwtSettings>();
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                }
+            });
 
             app.UseCors(builder =>
             {

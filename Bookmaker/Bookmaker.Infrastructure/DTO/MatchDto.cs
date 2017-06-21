@@ -12,6 +12,7 @@ namespace Bookmaker.Infrastructure.DTO
         public int GuestTeamId { get; set; }
         public string GuestTeamName { get; set; }
         public int StadiumId { get; set; }
+        public string StadiumName { get; set; }
         public DateTime StartTime { get; set; }
         public int? ResultId { get; set; }
     }

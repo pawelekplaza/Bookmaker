@@ -19,6 +19,12 @@ export class MatchService {
             .catch(this.handleError);
     }
 
+    getMatch(id: number): Observable<IMatch> {
+        return this._http.get(`${this._url}/${id}`)
+            .map((response: Response) => <IMatch>response.json())
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         console.log(error);
         return Observable.throw(error.json().error || 'Server error');

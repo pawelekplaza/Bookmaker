@@ -14,12 +14,14 @@ namespace Bookmaker.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IEncrypter _encrypter;    
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _encrypter = encrypter;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -51,8 +53,9 @@ namespace Bookmaker.Infrastructure.Services
             }
 
             // #ask3
-            var salt = Guid.NewGuid().ToString("N");
-            newUser = new User(user.Email, user.Username, user.Password, salt);
+            var salt = _encrypter.GetSalt(user.Password);
+            var hash = _encrypter.GetHash(user.Password, salt);
+            newUser = new User(user.Email, user.Username, salt, hash);
 
             await _userRepository.AddAsync(newUser);
         }
@@ -75,7 +78,12 @@ namespace Bookmaker.Infrastructure.Services
                 userToUpdate.SetFullName(user.FullName);
 
             if (!string.IsNullOrWhiteSpace(user.Password))
-                userToUpdate.SetPassword(user.Password);
+            {
+                var salt = _encrypter.GetSalt(user.Password);
+                var hash = _encrypter.GetHash(user.Password, salt);
+                userToUpdate.SetSalt(salt);
+                userToUpdate.SetHash(hash);
+            }
 
             if (!string.IsNullOrWhiteSpace(user.Username))
                 userToUpdate.SetUsername(user.Username);
@@ -99,6 +107,25 @@ namespace Bookmaker.Infrastructure.Services
             }
 
             return betDtos;
+        }
+
+        public async Task LoginAsync(string email, string password)
+        {
+            var user = await _userRepository.GetAsync(email);
+            if (user == null)
+            {
+                throw new InvalidDataException("Invalid credentials.");
+            }
+
+            var salt = _encrypter.GetSalt(password);
+            var hash = _encrypter.GetHash(password, salt);
+
+            if (user.Hash == hash)
+            {
+                return;
+            }
+
+            throw new InvalidDataException("Invalid credentials.");
         }
     }
 }

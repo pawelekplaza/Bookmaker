@@ -70,7 +70,6 @@ namespace Bookmaker.Infrastructure.Repositories
             }
             
             userToUpdate.SetUsername(user.Username);
-            userToUpdate.SetPassword(user.Password);            
             await Task.CompletedTask;
         }
     }

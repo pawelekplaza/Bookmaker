@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './Home/home.component';
 import { UserService } from './Services/user.service';
 import { NavbarComponent } from './Navbar/navbar.component';
+import { LoginComponent } from './Login/login.component';
+import { SignUpComponent } from './SignUp/signUp.component';
 
 @NgModule({
     imports: [
@@ -23,13 +25,17 @@ import { NavbarComponent } from './Navbar/navbar.component';
         TeamModule,
         RouterModule.forRoot([
             { path: 'home', component: HomeComponent },
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: 'login', component: LoginComponent },
+            { path: 'signup', component: SignUpComponent },
+            { path: '', redirectTo: 'home', pathMatch: 'full' },            
             { path: '**', redirectTo: 'home', pathMatch: 'full' }], { useHash: true })
     ],
     declarations: [
         AppComponent,
         HomeComponent,
-        NavbarComponent
+        NavbarComponent,
+        LoginComponent,
+        SignUpComponent
     ],
     providers: [
         UserService

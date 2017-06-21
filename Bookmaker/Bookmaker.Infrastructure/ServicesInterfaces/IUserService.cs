@@ -14,5 +14,6 @@ namespace Bookmaker.Infrastructure.ServicesInterfaces
         Task RemoveAsync(string email);
         Task RegisterAsync(UserCreateDto user);
         Task UpdateUserAsync(UserUpdateDto newUserData);
+        Task LoginAsync(string email, string password);
     }
 }
