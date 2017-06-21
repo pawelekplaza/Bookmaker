@@ -23,23 +23,7 @@ export class AppComponent {
     };
     errorMessage: string;
 
-    constructor(private userService: UserService) { }
-
-    sendPost(): void {
-        this.userService.add(this.user.email, this.user.username, this.user.password)
-            .then(value => {
-                if (value) {
-                    let jsonMessage = (JSON.parse(value) as ErrorMessage).message;
-                    this.errorMessage = jsonMessage;
-                }
-                else {
-                    this.clearUserData();
-                    this.errorMessage = '-';
-                }
-
-            })
-            .catch(error => { console.log(error); this.errorMessage = 'catch'; });
-    }
+    constructor(private userService: UserService) { }    
 
     clearUserData(): void {
         this.user.email = '';

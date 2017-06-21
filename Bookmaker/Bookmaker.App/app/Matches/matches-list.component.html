@@ -1,20 +1,17 @@
 ﻿<div class="container-fluid">
     <div class="row matchesList">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-sm-offset-2 col-sm-8">
             <div class="table-responsive">
                 <table class="table" *ngIf="matches && matches.length">
                     <thead>
-                        <tr>
-                            <th>ID</th>
+                        <tr>                            
                             <th>Host</th>
                             <th>Guest</th>
                             <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="matchRow" *ngFor="let match of matches" (click)="goToDetails(match.id)">                            
-                            <td>{{ match.id }}</td>
+                        <tr class="matchRow" *ngFor="let match of matches" (click)="goToDetails(match.id)">                                                        
                             <td>{{ match.hostTeamName }}</td>
                             <td>{{ match.guestTeamName }}</td>
                             <td>{{ match.startTime }}</td>
@@ -23,6 +20,5 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>

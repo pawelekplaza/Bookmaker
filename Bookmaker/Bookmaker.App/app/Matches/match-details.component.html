@@ -1,7 +1,6 @@
 ﻿<div class="container-fluid">
     <div class="row" style="padding-top: 20px">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-sm-offset-2 col-sm-8">
             <div *ngIf="match">
                 <div class="text-center"><h2>{{ match.hostTeamName }} - {{ match.guestTeamName }}</h2></div>
                 <div style="padding-top: 50px;"><h3>This match is going to be held at {{ match.startTime.toLocaleString() }} at the "{{ match.stadiumName }}" stadium.</h3></div>
@@ -12,6 +11,5 @@
             </div>
             <div class="text-center" *ngIf="notFoundMessage.length"><h3>{{ notFoundMessage }}</h3></div>
         </div>
-        <div class="col-md-2"></div>
     </div>
 </div>

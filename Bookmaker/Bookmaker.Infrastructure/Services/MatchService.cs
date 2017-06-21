@@ -44,8 +44,9 @@ namespace Bookmaker.Infrastructure.Services
                 throw new InvalidDataException($"Guest team with id '{ match.GuestTeamId }' does not exist.");
             }
 
-            var stadium = await _stadiumRepository.GetAsync(match.StadiumId);
+            //var stadium = await _stadiumRepository.GetAsync(match.StadiumId);
 
+            var stadium = hostTeam.Stadium;
             if (stadium == null)
             {
                 throw new InvalidDataException($"Stadium with id '{ match.StadiumId }' does not exist.");
