@@ -29,12 +29,13 @@ namespace Bookmaker.Core.Domain
         {
         }
 
-        public User(string email, string username, string salt, string hash, int walletPoints = _defaultWalletPoints)
+        public User(string email, string username, string salt, string hash, string role, int walletPoints = _defaultWalletPoints)
         {
             SetEmail(email);
             SetUsername(username);
             SetSalt(salt);
             SetHash(hash);
+            SetRole(role);
             SetWalletPoints(walletPoints);
 
             SetCreationDate();

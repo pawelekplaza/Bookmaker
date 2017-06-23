@@ -6,8 +6,32 @@ namespace Bookmaker.Infrastructure.Settings
 {
     public class JwtSettings
     {
-        public string Key { get; set; } = "super_secret_key_123456!";
-        public string Issuer { get; set; } = "http://localhost:5000";
-        public int ExpiryMinutes { get; set; } = 5;
+        private string _key;
+        public string Key
+        {
+            get { return _key; }
+            set { _key = value; }
+        }
+
+        private string _issuer;
+        public string Issuer
+        {
+            get { return _issuer; }
+            set { _issuer = value; }
+        }
+
+        private int _expiryMinutes;    
+        public int ExpiryMinutes
+        {
+            get { return _expiryMinutes; }
+            set { _expiryMinutes = value; }
+        }
+
+        public JwtSettings(string key, string issuer, int expiryMinutes)
+        {
+            Key = key;
+            Issuer = issuer;
+            ExpiryMinutes = expiryMinutes;
+        }
     }
 }

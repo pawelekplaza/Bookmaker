@@ -55,8 +55,11 @@ namespace Bookmaker.Infrastructure.Services
             // #ask3
             var salt = _encrypter.GetSalt(user.Password);
             var hash = _encrypter.GetHash(user.Password, salt);
-            newUser = new User(user.Email, user.Username, salt, hash);
 
+            //System.Diagnostics.Debug.WriteLine($"USR:{user.Email}, PWD:{user.Password}, SALT:{salt}, HASH:{hash}");
+
+
+            newUser = new User(user.Email, user.Username, salt, hash, "user");
             await _userRepository.AddAsync(newUser);
         }
 

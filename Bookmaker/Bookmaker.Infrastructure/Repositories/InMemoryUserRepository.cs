@@ -13,8 +13,8 @@ namespace Bookmaker.Infrastructure.Repositories
     {
         private static ISet<User> _users = new HashSet<User>
         {
-            new User("test1@email.com", "em", "pas13123s", "salt"),
-            new User("test2@email.com", "eq", "pas12312312sx", "saaaalt")
+            new User("test1@email.com", "em", "pas13123s", "salt", "user"),
+            new User("test2@email.com", "eq", "pas12312312sx", "saaaalt", "user")
         };
 
         public InMemoryUserRepository()

@@ -70,7 +70,11 @@ namespace Bookmaker.Api
             services.AddScoped<IBetService, BetService>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
-            services.AddSingleton<JwtSettings>();
+            services.AddSingleton(new JwtSettings(
+                    Configuration["jwt:key"],
+                    Configuration["jwt:issuer"],
+                    int.Parse(Configuration["jwt:expiryMinutes"])
+                ));
             services.AddSingleton<IJwtHandler, JwtHandler>();
             services.AddSingleton<IEncrypter, Encrypter>();
             

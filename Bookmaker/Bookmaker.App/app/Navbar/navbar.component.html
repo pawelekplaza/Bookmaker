@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-offset-2 col-md-8">
                     <div class="navbar-header">
-                        <a class="navbar-brand">{{ name }}</a>
+                        <a [routerLink]="['/home']" class="navbar-brand">{{ name }}</a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a [routerLink]="['/home']">Home</a></li>

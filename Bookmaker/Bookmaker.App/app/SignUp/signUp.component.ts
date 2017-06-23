@@ -16,10 +16,12 @@ export class SignUpComponent {
     userEmailConfirm: string = '';
     userPassword: string = '';
     userPasswordConfirm: string = '';
+    registerButtonEnabled: boolean = false;
+    count: number = 0;
 
     constructor(private _userService: UserService) { }
 
-    sendPost(): void {
+    register(): void {
         this._userService.add(this.userEmail, this.username, this.userPassword)
             .then(value => {
                 if (value) {
@@ -41,5 +43,13 @@ export class SignUpComponent {
         this.userEmailConfirm = '';
         this.userPassword = '';
         this.userPasswordConfirm = '';
+    }
+
+    private checkEmailAndPassword(): void {
+        this.registerButtonEnabled = (this.userPassword == this.userPasswordConfirm) && (this.userEmail == this.userEmailConfirm);
+    }
+
+    private clearUsername(): void {
+        this.username = '';
     }
 }
