@@ -26,21 +26,11 @@ namespace Bookmaker.Api.Controllers
             _encrypter = encrypter;
         }
 
-        // GET: api/Account
-        [HttpGet]
-        [Route("token")]
-        public IActionResult Get()
-        {
-            var token = _jwtHandler.CreateToken("user1@email.com", "user");
-
-            return Json(token);
-        }
-
         [HttpGet]
         [Authorize]
         [Route("auth")]
         public IActionResult GetAuth()
-        {
+        {            
             return Content("Auth");
         }
 
@@ -53,12 +43,18 @@ namespace Bookmaker.Api.Controllers
         
         // POST: api/Account
         [HttpPost]        
-        [Route("authenticate")]
+        [Route("token")]
         public async Task<IActionResult> Post([FromBody]AccountLoginDto login)
         {
             try
             {
                 var user = await _userService.GetAsync(login.Email);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
                 var role = user.Role;
 
                 var hash = _encrypter.GetHash(login.Password, user.Salt);

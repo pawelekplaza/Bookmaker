@@ -4,7 +4,7 @@
 
             <div class="form-login">
                 <h4>Register now to start placing bets</h4>
-                <input type="text" [(ngModel)]="username" class="form-control input-sm" placeholder="username" spellcheck="false" />
+                <input type="text" [(ngModel)]="username" id="username" class="form-control input-sm" placeholder="username" spellcheck="false" />
                 <br />
                 <input type="password" [(ngModel)]="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false" ng-keyup="checkEmailAndPassword()"/>
                 <br />
@@ -18,9 +18,6 @@
                     <span class="group-btn">                        
                         <button class="btn btn-primary btn-md" ng-disabled="true" (click)="register()">Register</button>                        
                     </span>
-                </div>
-                <div>
-                    <input ng-keyup="count = count + 1" ng-init="count = 0" /> <p>Count: {{ count }}</p>
                 </div>
             </div>
 

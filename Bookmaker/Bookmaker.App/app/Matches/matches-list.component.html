@@ -14,7 +14,7 @@
                         <tr class="matchRow" *ngFor="let match of matches" (click)="goToDetails(match.id)">                                                        
                             <td>{{ match.hostTeamName }}</td>
                             <td>{{ match.guestTeamName }}</td>
-                            <td>{{ match.startTime }}</td>
+                            <td>{{ match.startTime | date:'medium' }}</td>
                         </tr>
                     </tbody>
                 </table>

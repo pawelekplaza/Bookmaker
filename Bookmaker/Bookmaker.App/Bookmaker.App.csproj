@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -143,7 +142,9 @@
     <TypeScriptCompile Include="app\Footer\footer.component.ts" />
     <TypeScriptCompile Include="app\Footer\footer.module.ts" />
     <TypeScriptCompile Include="app\Home\home.component.ts" />
+    <TypeScriptCompile Include="app\loading.component.ts" />
     <TypeScriptCompile Include="app\Login\login.component.ts" />
+    <TypeScriptCompile Include="app\Login\login.service.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\Matches\match-details.component.ts" />
     <TypeScriptCompile Include="app\Matches\match.module.ts" />

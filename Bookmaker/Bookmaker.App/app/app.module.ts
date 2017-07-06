@@ -14,6 +14,8 @@ import { UserService } from './Services/user.service';
 import { NavbarComponent } from './Navbar/navbar.component';
 import { LoginComponent } from './Login/login.component';
 import { SignUpComponent } from './SignUp/signUp.component';
+import { LoginService } from './Login/login.service';
+import { LoadingComponent } from './loading.component';
 
 @NgModule({
     imports: [
@@ -27,6 +29,7 @@ import { SignUpComponent } from './SignUp/signUp.component';
             { path: 'home', component: HomeComponent },
             { path: 'login', component: LoginComponent },
             { path: 'signup', component: SignUpComponent },
+            { path: 'loading', component: LoadingComponent },
             { path: '', redirectTo: 'home', pathMatch: 'full' },            
             { path: '**', redirectTo: 'home', pathMatch: 'full' }], { useHash: true })
     ],
@@ -35,10 +38,12 @@ import { SignUpComponent } from './SignUp/signUp.component';
         HomeComponent,
         NavbarComponent,
         LoginComponent,
-        SignUpComponent
+        SignUpComponent,
+        LoadingComponent
     ],
     providers: [
-        UserService
+        UserService,
+        LoginService
     ],
   bootstrap:    [ AppComponent ]
 })

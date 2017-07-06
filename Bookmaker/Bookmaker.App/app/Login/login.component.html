@@ -2,19 +2,18 @@
     <div class="row" style="padding-top: 20px">
         <div class="col-sm-offset-3 col-sm-6">
 
-            <div class="form-login">
+            <div class="form-login" (keyup.enter)="login(inputEmail, inputPassword)">
                 <h4>Welcome back</h4>
-                <input type="text" id="userName" class="form-control input-sm" placeholder="username" spellcheck="false"/>
+                <input [(ngModel)]="inputEmail" type="text" id="userEmail" class="form-control input-sm" placeholder="email" spellcheck="false"/>
                 <br />
-                <input type="password" id="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false"/>
+                <input [(ngModel)]="inputPassword" type="password" id="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false"/>
                 <br />
                 <div class="wrapper">
                     <span class="group-btn">
-                        <a href="#" class="btn btn-primary btn-md">Login</a>
+                        <a [routerLink]="['/loading']" class="btn btn-primary btn-md" (click)="login(inputEmail, inputPassword)">Login</a>
                     </span>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

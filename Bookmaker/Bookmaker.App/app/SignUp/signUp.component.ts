@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, AfterViewInit } from '@angular/core';
 
 import { UserService } from '../Services/user.service';
 import { IUser } from '../Models/user';
@@ -9,7 +9,7 @@ import { ErrorMessage } from '../Models/error-message';
     styleUrls: [ 'app/SignUp/signUp.component.css' ]
 })
 
-export class SignUpComponent {
+export class SignUpComponent implements AfterViewInit {
     errorMessage: string;
     username: string = '';
     userEmail: string = '';
@@ -35,6 +35,10 @@ export class SignUpComponent {
 
             })
             .catch(error => { console.log(error); this.errorMessage = 'catch'; });
+    }
+
+    ngAfterViewInit(): void {
+        document.getElementById('username').focus();
     }
 
     private clearUserData(): void {

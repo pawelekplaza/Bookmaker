@@ -12,9 +12,13 @@
                         <li><a href="#">Teams</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" *ngIf="!authorized">
                         <li><a [routerLink]="['/signup']"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a [routerLink]="['/login']"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>                        
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" *ngIf="authorized">
+                        <li><a [routerLink]="['/account']"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
+                        <li><a [routerLink]="['/loading']" (click)="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
                     </ul>
                 </div>
             </div>
