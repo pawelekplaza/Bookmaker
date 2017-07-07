@@ -16,3 +16,12 @@ form-control {
 #topBannerTitle {
     color: white;
 }
+
+router-outlet {
+    padding-top: 30px;
+    display: flex;
+}
+
+.cursor-default {
+    cursor: default;
+}

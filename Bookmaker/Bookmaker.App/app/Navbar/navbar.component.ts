@@ -24,11 +24,12 @@ export class NavbarComponent implements OnInit {
 
     logout(): void {
         localStorage.setItem('userToken', '_');
+        this._router.navigate(['/loading']);
         this._router.navigate(['/home']);
     }
 
     ngOnInit(): void {
-        this.authorize();
         this._router.events.subscribe(x => this.authorize());
+        this.authorize();
     }
 }

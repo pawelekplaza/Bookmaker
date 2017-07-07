@@ -1,8 +1,4 @@
-﻿.matchesList {
-    padding-top: 20px;
-}
-
-.matchRow:hover {
+﻿.matchRow:hover {
     cursor:pointer;
     background-color: #e5e5e5;
     box-shadow: 0px 1px 3px #999999;

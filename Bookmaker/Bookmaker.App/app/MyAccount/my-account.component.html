@@ -1,0 +1,28 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+
+            <table class="table table-striped" *ngIf="user && authorized && viewPrepared">
+                <tr>
+                    <td> Email </td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td> Username </td>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td> Full name </td>
+                    <td> {{ user.fullName }}</td>
+                </tr>
+                <tr>
+                    <td> Role </td>
+                    <td> {{ user.role }}</td>
+                </tr>
+            </table>
+
+            <h2 class="text-center" *ngIf="!authorized && viewPrepared">You are not allowed to see this page!</h2>
+
+        </div>
+    </div>
+</div>

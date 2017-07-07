@@ -47,14 +47,6 @@ div > .btn {
     text-align: right;
 }
 
-/*.navbar-nav {
-    float: none;
-    margin: 0 auto;
-    display: block;
-    text-align: center;
+.walletButton {
+    padding-top: 8px;
 }
-
-.navbar-nav > li {
-    display: inline-block;
-    float: none;
-}*/

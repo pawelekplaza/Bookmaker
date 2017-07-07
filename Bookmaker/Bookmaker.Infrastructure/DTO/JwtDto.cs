@@ -8,5 +8,6 @@ namespace Bookmaker.Infrastructure.DTO
     {
         public string Token { get; set; }
         public long Expires { get; set; }
+        public string Email { get; set; }
     }
 }

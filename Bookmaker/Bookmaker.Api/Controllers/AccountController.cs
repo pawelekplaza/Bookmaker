@@ -24,15 +24,7 @@ namespace Bookmaker.Api.Controllers
             _jwtHandler = jwtHandler;
             _userService = userService;
             _encrypter = encrypter;
-        }
-
-        [HttpGet]
-        [Authorize]
-        [Route("auth")]
-        public IActionResult GetAuth()
-        {            
-            return Content("Auth");
-        }
+        }        
 
         // GET: api/Account/5
         [HttpGet("{id}", Name = "Get")]
@@ -40,7 +32,24 @@ namespace Bookmaker.Api.Controllers
         {
             return "value";
         }
-        
+
+        [HttpPost]
+        [Authorize]
+        [Route("auth")]
+        public async Task<IActionResult> GetAuth([FromBody]AccountLoginDto login)
+        {
+            var user = await _userService.GetAsync(login.Email);
+
+            if (user == null)
+            {
+                return NoContent();
+            }
+
+            var role = user.Role;
+            var token = _jwtHandler.CreateToken(login.Email, role);
+            return Json(token);
+        }
+
         // POST: api/Account
         [HttpPost]        
         [Route("token")]

@@ -1,3 +1,7 @@
 ﻿.loginInfo {
     padding: 10px;
 }
+
+.cursor-default {
+    cursor: default;
+}

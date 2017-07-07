@@ -89,15 +89,22 @@
     <Content Include="app\Footer\footer.component.css" />
     <Content Include="app\app.component.html" />
     <Content Include="app\Footer\footer.component.html" />
+    <Content Include="app\loading.component.css" />
+    <Content Include="app\loading.component.html" />
     <Content Include="app\Login\login.component.css" />
     <Content Include="app\Login\login.component.html" />
     <Content Include="app\Matches\match-details.component.css" />
     <Content Include="app\Matches\match-details.component.html" />
     <Content Include="app\Matches\matches-list.component.css" />
     <Content Include="app\Matches\matches-list.component.html" />
+    <Content Include="app\MyAccount\my-account.component.html" />
     <Content Include="app\Navbar\navbar.component.html" />
     <Content Include="app\SignUp\signUp.component.css" />
     <Content Include="app\SignUp\signUp.component.html" />
+    <Content Include="app\Wallet\topup.component.css" />
+    <Content Include="app\Wallet\topup.component.html" />
+    <Content Include="app\Wallet\wallet.component.css" />
+    <Content Include="app\Wallet\wallet.component.html" />
     <Content Include="bootstrap-theme.css" />
     <Content Include="bootstrap.css" />
     <Content Include="bootstrap.js" />
@@ -105,6 +112,7 @@
     <Content Include="index.html" />
     <Content Include="jquery-3.2.1.min.js" />
     <Content Include="Resources\loading.gif" />
+    <Content Include="Resources\Under-construction.png" />
     <Content Include="styles.css" />
     <Content Include="systemjs.config.extras.js" />
     <Content Include="systemjs.config.js" />
@@ -152,9 +160,12 @@
     <TypeScriptCompile Include="app\Matches\match.ts" />
     <TypeScriptCompile Include="app\Matches\matches-list.component.ts" />
     <TypeScriptCompile Include="app\Models\error-message.ts" />
+    <TypeScriptCompile Include="app\Models\jwt.ts" />
     <TypeScriptCompile Include="app\Models\loginType.ts" />
     <TypeScriptCompile Include="app\Models\loginType.decorator.ts" />
     <TypeScriptCompile Include="app\Models\user.ts" />
+    <TypeScriptCompile Include="app\Models\userForCreation.ts" />
+    <TypeScriptCompile Include="app\MyAccount\my-account.component.ts" />
     <TypeScriptCompile Include="app\Navbar\navbar.component.ts" />
     <TypeScriptCompile Include="app\Services\user.service.ts" />
     <TypeScriptCompile Include="app\Shared\shared.module.ts" />
@@ -162,6 +173,8 @@
     <TypeScriptCompile Include="app\Teams\team.module.ts" />
     <TypeScriptCompile Include="app\Teams\team.service.ts" />
     <TypeScriptCompile Include="app\Teams\team.ts" />
+    <TypeScriptCompile Include="app\Wallet\topup.component.ts" />
+    <TypeScriptCompile Include="app\Wallet\wallet.component.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

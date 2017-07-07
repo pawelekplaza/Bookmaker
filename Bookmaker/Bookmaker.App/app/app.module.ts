@@ -16,6 +16,9 @@ import { LoginComponent } from './Login/login.component';
 import { SignUpComponent } from './SignUp/signUp.component';
 import { LoginService } from './Login/login.service';
 import { LoadingComponent } from './loading.component';
+import { WalletComponent } from './Wallet/wallet.component';
+import { TopupComponent } from './Wallet/topup.component';
+import { MyAccountComponent } from './MyAccount/my-account.component';
 
 @NgModule({
     imports: [
@@ -30,6 +33,8 @@ import { LoadingComponent } from './loading.component';
             { path: 'login', component: LoginComponent },
             { path: 'signup', component: SignUpComponent },
             { path: 'loading', component: LoadingComponent },
+            { path: 'account', component: MyAccountComponent },
+            { path: 'topup', component: TopupComponent },
             { path: '', redirectTo: 'home', pathMatch: 'full' },            
             { path: '**', redirectTo: 'home', pathMatch: 'full' }], { useHash: true })
     ],
@@ -39,7 +44,10 @@ import { LoadingComponent } from './loading.component';
         NavbarComponent,
         LoginComponent,
         SignUpComponent,
-        LoadingComponent
+        LoadingComponent,
+        WalletComponent,
+        TopupComponent,
+        MyAccountComponent
     ],
     providers: [
         UserService,

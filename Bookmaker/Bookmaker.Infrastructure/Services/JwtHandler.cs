@@ -46,7 +46,8 @@ namespace Bookmaker.Infrastructure.Services
             return new JwtDto
             {
                 Token = token,
-                Expires = expires.ToTimeStamp()
+                Expires = expires.ToTimeStamp(),
+                Email = email
             };
         }
     }

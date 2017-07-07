@@ -1,8 +1,11 @@
 ﻿import { Component, AfterViewInit } from '@angular/core';
+import { Response } from '@angular/http';
+import { Router } from '@angular/router';
 
 import { UserService } from '../Services/user.service';
-import { IUser } from '../Models/user';
 import { ErrorMessage } from '../Models/error-message';
+import { LoginService } from '../Login/login.service';
+import { IUserForCreation } from '../Models/userForCreation';
 
 @Component({
     templateUrl: 'app/SignUp/signUp.component.html',
@@ -10,7 +13,7 @@ import { ErrorMessage } from '../Models/error-message';
 })
 
 export class SignUpComponent implements AfterViewInit {
-    errorMessage: string;
+    errorMessage: string = '';
     username: string = '';
     userEmail: string = '';
     userEmailConfirm: string = '';
@@ -19,26 +22,47 @@ export class SignUpComponent implements AfterViewInit {
     registerButtonEnabled: boolean = false;
     count: number = 0;
 
-    constructor(private _userService: UserService) { }
+    constructor(private _userService: UserService,
+        private _router: Router,
+        private _loginService: LoginService) { }
 
     register(): void {
-        this._userService.add(this.userEmail, this.username, this.userPassword)
+        let user: IUserForCreation = {
+            email: this.userEmail,
+            username: this.username,
+            password: this.userPassword
+        };
+
+        this._userService.add(user)
             .then(value => {
                 if (value) {
                     let jsonMessage = (JSON.parse(value) as ErrorMessage).message;
                     this.errorMessage = jsonMessage;
+                    if (!jsonMessage) {
+                        this._router.navigate(['/loading']);
+                        this._loginService.login(this.userEmail, this.userPassword);
+                    }
                 }
                 else {
                     this.clearUserData();
-                    this.errorMessage = '-';
+                    this.errorMessage = '';
                 }
 
             })
-            .catch(error => { console.log(error); this.errorMessage = 'catch'; });
+            .catch((res: Response) => {
+                console.log(res);
+                this.errorMessage = res.toString();
+            });
     }
 
     ngAfterViewInit(): void {
         document.getElementById('username').focus();
+    }
+
+    private registerOnEnter(): void {
+        if (this.registerButtonEnabled) {
+            this.register();
+        }
     }
 
     private clearUserData(): void {
@@ -49,9 +73,28 @@ export class SignUpComponent implements AfterViewInit {
         this.userPasswordConfirm = '';
     }
 
-    private checkEmailAndPassword(): void {
-        this.registerButtonEnabled = (this.userPassword == this.userPasswordConfirm) && (this.userEmail == this.userEmailConfirm);
-    }
+    private validateData(): void {
+        if (this.userEmail.localeCompare(this.userEmailConfirm)) {
+            this.registerButtonEnabled = false;
+            return;
+        }
+
+        if (this.userPassword.localeCompare(this.userPasswordConfirm)) {
+            this.registerButtonEnabled = false;
+            return;
+        }
+
+        if (this.username.length === 0 ||
+            this.userPassword.length === 0 ||
+            this.userPasswordConfirm.length === 0 ||
+            this.userEmail.length === 0 ||
+            this.userEmailConfirm.length === 0) {
+            this.registerButtonEnabled = false;
+            return;
+        }
+
+        this.registerButtonEnabled = true;
+    }    
 
     private clearUsername(): void {
         this.username = '';

@@ -1,0 +1,10 @@
+﻿.pointsInfo {
+    display: block;
+    padding: 3px 20px;
+    color: #333;
+    font-weight: normal;
+    white-space: nowrap;
+    clear: both;
+    background-color: transparent;
+    cursor: default;
+}

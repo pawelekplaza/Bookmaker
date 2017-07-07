@@ -1,0 +1,9 @@
+﻿<div class="btn-group">
+    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Wallet <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><div class="pointsInfo">Points: {{ walletPoints }}</div></li>
+        <li><a [routerLink]="['/topup']">Top up</a></li>
+    </ul>
+</div>

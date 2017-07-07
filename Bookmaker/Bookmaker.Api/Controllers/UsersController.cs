@@ -77,7 +77,7 @@ namespace Bookmaker.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return Json(new { message = "Invalid email addresss." });
                 }
 
                 await _userService.RegisterAsync(request);

@@ -13,5 +13,6 @@ namespace Bookmaker.Infrastructure.DTO
         public string Role { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
+        public int WalletPoints { get; set; }
     }
 }

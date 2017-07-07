@@ -2,25 +2,27 @@
     <div class="row" style="padding-top: 20px">        
         <div class="col-sm-offset-3 col-sm-6">
 
-            <div class="form-login">
+            <div class="form-login" (keyup.enter)="registerOnEnter()">
                 <h4>Register now to start placing bets</h4>
-                <input type="text" [(ngModel)]="username" id="username" class="form-control input-sm" placeholder="username" spellcheck="false" />
+                <input type="text" [(ngModel)]="username" id="username" class="form-control input-sm" placeholder="username" spellcheck="false" (keyup)="validateData()"/>
                 <br />
-                <input type="password" [(ngModel)]="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false" ng-keyup="checkEmailAndPassword()"/>
+                <input type="password" [(ngModel)]="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false" (keyup)="validateData()" />
                 <br />
-                <input type="password" [(ngModel)]="userPasswordConfirm" class="form-control input-sm" placeholder="confirm password" spellcheck="false" ng-keyup="checkEmailAndPassword()"/>
+                <input type="password" [(ngModel)]="userPasswordConfirm" class="form-control input-sm" placeholder="confirm password" spellcheck="false" (keyup)="validateData()" />
                 <br />
-                <input type="text" [(ngModel)]="userEmail" class="form-control input-sm" placeholder="email address" spellcheck="false" ng-keyup="checkEmailAndPassword()"/>
+                <input type="text" [(ngModel)]="userEmail" class="form-control input-sm" placeholder="email address" spellcheck="false" (keyup)="validateData()" />
                 <br />
-                <input type="text" [(ngModel)]="userEmailConfirm" class="form-control input-sm" placeholder="confirm email address" spellcheck="false" ng-keyup="checkEmailAndPassword()"/>
+                <input type="text" [(ngModel)]="userEmailConfirm" class="form-control input-sm" placeholder="confirm email address" spellcheck="false" (keyup)="validateData()" />
                 <br />
                 <div class="wrapper">
                     <span class="group-btn">                        
-                        <button class="btn btn-primary btn-md" ng-disabled="true" (click)="register()">Register</button>                        
+                        <button class="btn btn-primary btn-md" [disabled]="!registerButtonEnabled" (click)="register()">Register</button>                        
                     </span>
                 </div>
+                <div class="text-center" style="padding-top: 50px;" *ngIf="errorMessage && errorMessage.length">
+                    <div class="alert-danger">{{ errorMessage }}</div>
+                </div>
             </div>
-
         </div>        
-    </div>
+    </div>    
 </div>

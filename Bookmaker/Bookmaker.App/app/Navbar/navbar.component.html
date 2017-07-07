@@ -9,8 +9,7 @@
                     <ul class="nav navbar-nav">
                         <li><a [routerLink]="['/home']">Home</a></li>
                         <li><a [routerLink]="['/matches']">Matches</a></li>
-                        <li><a href="#">Teams</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Teams</a></li>                        
                     </ul>
                     <ul class="nav navbar-nav navbar-right" *ngIf="!authorized">
                         <li><a [routerLink]="['/signup']"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -18,10 +17,16 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right" *ngIf="authorized">
                         <li><a [routerLink]="['/account']"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
-                        <li><a [routerLink]="['/loading']" (click)="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                        <li><a (click)="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>                        
+                        <li><wallet-cmp class="walletButton"></wallet-cmp></li>
                     </ul>
-                </div>
+                </div>                
             </div>
         </div>
-    </nav>
+    </nav>    
 </div>
+<!--<div class="row" *ngIf="authorized">
+    <div class="col-md-offset-7 col-md-1">
+        <wallet-cmp class="walletButton"></wallet-cmp>
+    </div>
+</div>-->

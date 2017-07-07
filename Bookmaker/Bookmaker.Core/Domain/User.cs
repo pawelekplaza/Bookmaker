@@ -1,5 +1,4 @@
-﻿using Bookmaker.Core.Interfaces;
-using Bookmaker.Core.Utils;
+﻿using Bookmaker.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -87,19 +86,6 @@ namespace Bookmaker.Core.Domain
             if (Email == email)
             {
                 return;
-            }
-
-            // TODO: to powinno być w infrastructure?
-            IEmailValidator emailValidator = new EmailValidator();
-
-            if (!emailValidator.IsUnique(email))
-            {
-                throw new InvalidDataException("Provided email is already in use.");
-            }
-
-            if (!emailValidator.IsValid(email))
-            {
-                throw new InvalidDataException("Provided email is not valid.");
             }
 
             Email = email;

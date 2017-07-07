@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Bookmaker.Infrastructure.Extensions;
 using System.Security.Cryptography;
+using Bookmaker.Core.Utils;
 
 namespace Bookmaker.Infrastructure.Services
 {
@@ -16,7 +17,7 @@ namespace Bookmaker.Infrastructure.Services
         {
             if (value.Empty())
             {
-                throw new ArgumentException("Cannot generate a salt from an empty value.", nameof(value));
+                throw new InvalidDataException("Password cannot be empty.");
             }
 
             var random = new Random();

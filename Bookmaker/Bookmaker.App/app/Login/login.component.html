@@ -2,11 +2,11 @@
     <div class="row" style="padding-top: 20px">
         <div class="col-sm-offset-3 col-sm-6">
 
-            <div class="form-login" (keyup.enter)="login(inputEmail, inputPassword)">
+            <div class="form-login" (keyup.enter)="_router.navigate(['/loading']);login(inputEmail, inputPassword)">
                 <h4>Welcome back</h4>
                 <input [(ngModel)]="inputEmail" type="text" id="userEmail" class="form-control input-sm" placeholder="email" spellcheck="false"/>
                 <br />
-                <input [(ngModel)]="inputPassword" type="password" id="userPassword" class="form-control input-sm" placeholder="password" spellcheck="false"/>
+                <input [(ngModel)]="inputPassword" type="password" class="form-control input-sm" placeholder="password" spellcheck="false"/>
                 <br />
                 <div class="wrapper">
                     <span class="group-btn">
