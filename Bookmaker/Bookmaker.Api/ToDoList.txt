@@ -1,2 +1,0 @@
-﻿- do account controllera dodać logowanie (post zwracający odpowiedni token) 
-- ng-keyup ng-click itp, dlaczego nie działa
