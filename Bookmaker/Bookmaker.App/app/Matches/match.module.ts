@@ -5,6 +5,7 @@ import { SharedModule } from '../Shared/shared.module';
 import { MatchesListComponent } from './matches-list.component';
 import { MatchDetailsComponent } from './match-details.component';
 import { MatchService } from './match.service';
+import { PlaceBetComponent } from './place-bet-component';
 
 @NgModule({
     imports: [
@@ -16,14 +17,15 @@ import { MatchService } from './match.service';
     ],
     declarations: [
         MatchesListComponent,
-        MatchDetailsComponent
+        MatchDetailsComponent,
+        PlaceBetComponent
     ],
     providers: [
         MatchService
     ],
     exports: [
         MatchesListComponent,
-        MatchDetailsComponent
+        MatchDetailsComponent        
     ]
 })
 

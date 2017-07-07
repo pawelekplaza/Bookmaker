@@ -19,6 +19,7 @@ import { LoadingComponent } from './loading.component';
 import { WalletComponent } from './Wallet/wallet.component';
 import { TopupComponent } from './Wallet/topup.component';
 import { MyAccountComponent } from './MyAccount/my-account.component';
+import { RefreshService } from './Services/refresh.service';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { MyAccountComponent } from './MyAccount/my-account.component';
     ],
     providers: [
         UserService,
-        LoginService
+        LoginService,
+        RefreshService
     ],
   bootstrap:    [ AppComponent ]
 })

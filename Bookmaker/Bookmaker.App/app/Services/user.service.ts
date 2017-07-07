@@ -45,7 +45,7 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    update(user: IUser): Promise<IUser> {
+    update(user: any): Promise<any> {
         const url = `${this._userUrl}/${user.email}`;
         return this._http
             .put(url, JSON.stringify(user), { headers: this._headers })

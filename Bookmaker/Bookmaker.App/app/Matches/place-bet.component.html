@@ -1,0 +1,11 @@
+﻿<div class="panel panel-primary">
+    <div class="panel-heading"> Place a bet </div>
+    <div class="panel-body">
+        <div class="row" style="height: 39px;">
+            <div class="col-md-3"> Enter a value: </div>
+            <div class="col-md-3"><input id="walletInput" [(ngModel)]="walletPoints" type="number" (keyup)="checkBet()"/></div>
+            <div class="col-md-3"><button class="btn btn-info placeBetButton" [disabled]="betPlaced" (click)="placeBet()"> Bet </button></div>
+            <div class="col-md-3"><h4>{{ information }}</h4></div>
+        </div>        
+    </div>
+</div>

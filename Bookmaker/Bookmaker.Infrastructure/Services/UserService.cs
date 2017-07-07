@@ -91,6 +91,11 @@ namespace Bookmaker.Infrastructure.Services
             if (!string.IsNullOrWhiteSpace(user.Username))
                 userToUpdate.SetUsername(user.Username);
 
+            if (user.WalletPoints != null)
+            {
+                userToUpdate.SetWalletPoints(user.WalletPoints.Value);
+            }
+
             await _userRepository.UpdateAsync(userToUpdate);
         }
 

@@ -97,6 +97,8 @@
     <Content Include="app\Matches\match-details.component.html" />
     <Content Include="app\Matches\matches-list.component.css" />
     <Content Include="app\Matches\matches-list.component.html" />
+    <Content Include="app\Matches\place-bet.component.css" />
+    <Content Include="app\Matches\place-bet.component.html" />
     <Content Include="app\MyAccount\my-account.component.html" />
     <Content Include="app\Navbar\navbar.component.html" />
     <Content Include="app\SignUp\signUp.component.css" />
@@ -159,6 +161,7 @@
     <TypeScriptCompile Include="app\Matches\match.service.ts" />
     <TypeScriptCompile Include="app\Matches\match.ts" />
     <TypeScriptCompile Include="app\Matches\matches-list.component.ts" />
+    <TypeScriptCompile Include="app\Matches\place-bet-component.ts" />
     <TypeScriptCompile Include="app\Models\error-message.ts" />
     <TypeScriptCompile Include="app\Models\jwt.ts" />
     <TypeScriptCompile Include="app\Models\loginType.ts" />
@@ -167,6 +170,7 @@
     <TypeScriptCompile Include="app\Models\userForCreation.ts" />
     <TypeScriptCompile Include="app\MyAccount\my-account.component.ts" />
     <TypeScriptCompile Include="app\Navbar\navbar.component.ts" />
+    <TypeScriptCompile Include="app\Services\refresh.service.ts" />
     <TypeScriptCompile Include="app\Services\user.service.ts" />
     <TypeScriptCompile Include="app\Shared\shared.module.ts" />
     <TypeScriptCompile Include="app\SignUp\signUp.component.ts" />
