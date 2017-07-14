@@ -1,6 +1,9 @@
 ﻿using Bookmaker.Core.Utils;
 using Bookmaker.Infrastructure.DTO;
 using Bookmaker.Infrastructure.ServicesInterfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,12 +21,14 @@ namespace Bookmaker.Api.Controllers
         private readonly IUserService _userService;
         private ILogger _logger;
         private IMailService _mailService;
+        private IHostingEnvironment _hostingEnvironment;
 
-        public UsersController(IUserService userService, ILogger<UsersController> logger, IMailService mailService)
+        public UsersController(IUserService userService, ILogger<UsersController> logger, IMailService mailService, IHostingEnvironment hostingEnvironment)
         {
             _userService = userService;
             _logger = logger;
             _mailService = mailService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Users/test@email.com
@@ -92,12 +97,13 @@ namespace Bookmaker.Api.Controllers
         }
 
         // PUT: api/Users
-        [HttpPut("{email}")]
-        public async Task<IActionResult> UpdateUserAsync(string email, [FromBody]UserUpdateDto request)
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserAsync([FromBody]UserUpdateDto request)
         {
             try
-            {
-                request.Email = email;
+            {                
+                request.Email = this.GetAuthEmail();
                 await _userService.UpdateUserAsync(request);
             }
             catch (InvalidDataException ex)
@@ -134,7 +140,7 @@ namespace Bookmaker.Api.Controllers
 
             var mailFrom = Startup.Configuration["mailSettings:mailFromAddress"];
             var mailTo = Startup.Configuration["mailSettings:mailToAddress"];
-            await _mailService.Send(mailFrom, mailTo, "User deleted.", $"User with mail {email} has been deleted.");
+            await _mailService.Send(mailFrom, mailTo, "User deleted.", $"User with mail {email} has been deleted.");                        
 
             return NoContent();
         }

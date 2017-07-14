@@ -1,25 +1,52 @@
 ﻿<div class="container-fluid">
     <div class="row">
-        <div class="col-md-offset-2 col-md-8">
-            <h2 class="text-center">User account details</h2>
-            <table class="table table-striped" *ngIf="user && authorized && viewPrepared">
-                <tr>
-                    <td> Email </td>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <td> Username </td>
-                    <td>{{ user.username }}</td>
-                </tr>
-                <tr>
-                    <td> Full name </td>
-                    <td> {{ user.fullName }}</td>
-                </tr>
-                <tr>
-                    <td> Role </td>
-                    <td> {{ user.role }}</td>
-                </tr>
-            </table>
+        <div class="col-md-offset-2 col-md-8">            
+            
+            <div *ngIf="user && authorized && viewPrepared">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4>User account details</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <tr>
+                                <td> Email </td>
+                                <td>{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td> Username </td>
+                                <td>{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td> Full name </td>
+                                <td> {{ user.fullName }}</td>
+                            </tr>
+                            <tr>
+                                <td> Role </td>
+                                <td> {{ user.role }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4>Change avatar</h4>
+                    </div>
+                    <div class="panel-body">
+                        <img class="avatar-myaccount" [src]="avatarUrl" alt="Avatar" />
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <input #avatarInput type="file" class="align-bottom" />
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-default" (click)="saveChanges()">Save changes</button>
+
+            </div>
 
             <h2 class="text-center" *ngIf="!authorized && viewPrepared">You are not allowed to see this page!</h2>
 

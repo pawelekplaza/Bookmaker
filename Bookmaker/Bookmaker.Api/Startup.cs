@@ -19,6 +19,7 @@ using Bookmaker.Infrastructure.ServicesInterfaces;
 using Microsoft.IdentityModel.Tokens;
 using Bookmaker.Infrastructure.Settings;
 using System.Text;
+using System.Security.Claims;
 
 namespace Bookmaker.Api
 {
@@ -68,6 +69,8 @@ namespace Bookmaker.Api
 
             services.AddScoped<IBetRepository, DbBetRepository>();
             services.AddScoped<IBetService, BetService>();
+
+            services.AddScoped<ClaimsPrincipal>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddSingleton(new JwtSettings(

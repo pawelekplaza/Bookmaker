@@ -28,7 +28,7 @@ namespace Bookmaker.Infrastructure.Repositories
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
                 var listToAdd = new List<User> { user };
-                var executeString = "dbo.Users_Insert @Email, @Salt, @Hash, @Username, @Role, @FullName, @WalletPoints, @CreatedAt, @LastUpdate";
+                var executeString = "dbo.Users_Insert @Email, @Salt, @Hash, @Username, @Role, @FullName, @WalletPoints, @AvatarFileName, @CreatedAt, @LastUpdate";
 
                 await connection.ExecuteAsync(executeString, listToAdd);
             }            
@@ -134,9 +134,9 @@ namespace Bookmaker.Infrastructure.Repositories
         {
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                var executeString = "dbo.Users_UpdateUser @Email, @Username, @Role, @FullName, @WalletPoints";
+                var executeString = "dbo.Users_UpdateUser @Email, @Username, @Role, @FullName, @WalletPoints, @AvatarFileName";
 
-                await connection.ExecuteAsync(executeString, new { Email = user.Email, Username = user.Username, Role = user.Role, FullName = user.FullName, WalletPoints = user.WalletPoints });
+                await connection.ExecuteAsync(executeString, new { Email = user.Email, Username = user.Username, Role = user.Role, FullName = user.FullName, WalletPoints = user.WalletPoints, AvatarFileName = user.AvatarFileName });
             }
         }
     }

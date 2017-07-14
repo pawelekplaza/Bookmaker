@@ -5,4 +5,5 @@
     walletPoints: number;
     fullName: string;
     role: string;
+    avatarFileName: string;
 }

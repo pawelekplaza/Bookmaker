@@ -20,6 +20,7 @@ namespace Bookmaker.Core.Domain
         public string FullName { get; protected set; }
         public string Role { get; set; }
         public int WalletPoints { get; protected set; }
+        public string AvatarFileName { get; set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime LastUpdate { get; protected set; }
         public IEnumerable<Bet> Bets { get; protected set; }
@@ -36,6 +37,7 @@ namespace Bookmaker.Core.Domain
             SetHash(hash);
             SetRole(role);
             SetWalletPoints(walletPoints);
+            SetAvatarFileName("default-user-avatar.png");
 
             SetCreationDate();
         }
@@ -75,6 +77,22 @@ namespace Bookmaker.Core.Domain
             Username = username;
             Update();
         }
+
+        public void SetAvatarFileName(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new InvalidDataException("Avatar file name cannot be empty.");
+            }
+
+            if (fileName == AvatarFileName)
+            {
+                return;
+            }
+
+            AvatarFileName = fileName;
+            Update();
+        } 
 
         public void SetEmail(string email)
         {

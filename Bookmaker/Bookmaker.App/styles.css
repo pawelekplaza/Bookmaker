@@ -34,3 +34,9 @@ wallet-cmp {
     text-align:center;
     display: table;
 }
+
+.align-bottom {
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+}

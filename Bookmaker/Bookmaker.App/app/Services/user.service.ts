@@ -7,13 +7,15 @@ import 'rxjs/add/operator/toPromise';
 import { IUser } from '../Models/user';
 import { IUserForCreation } from '../Models/userForCreation';
 import { ErrorMessage } from '../Models/error-message';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class UserService {
     private _userUrl = 'http://localhost:5000/api/users';
     private _headers = new Headers({ 'Content-Type': 'application/json' });
 
-    constructor(private _http: Http) { }
+    constructor(private _http: Http,
+        private _authService: AuthService) { }
 
     //_getAll(): Promise<IUser[]> {
     //    return this._http.get(this._userUrl)
@@ -46,12 +48,11 @@ export class UserService {
     }
 
     update(user: any): Promise<any> {
-        const url = `${this._userUrl}/${user.email}`;
-        return this._http
-            .put(url, JSON.stringify(user), { headers: this._headers })
+        const url = `${this._userUrl}`;
+        return this._authService.sendPut(url, JSON.stringify(user))
             .toPromise()
             .then(() => user)
-            .catch(this.handleError);
+            .catch(this.handleError);        
     }
 
     add(user: IUserForCreation): Promise<string> {

@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Remove="wwwroot/uploads\oceny.PNG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\uploads\default-user-avatar.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />

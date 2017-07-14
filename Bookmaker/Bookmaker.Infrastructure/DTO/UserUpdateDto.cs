@@ -12,5 +12,6 @@ namespace Bookmaker.Infrastructure.DTO
         public string Password { get; set; }
         public string FullName { get; set; }       
         public int? WalletPoints { get; set; }
+        public string AvatarFileName { get; set; }
     }
 }

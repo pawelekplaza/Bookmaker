@@ -99,6 +99,7 @@
     <Content Include="app\Matches\matches-list.component.html" />
     <Content Include="app\Matches\place-bet.component.css" />
     <Content Include="app\Matches\place-bet.component.html" />
+    <Content Include="app\MyAccount\my-account.component.css" />
     <Content Include="app\MyAccount\my-account.component.html" />
     <Content Include="app\Navbar\navbar.component.html" />
     <Content Include="app\SignUp\signUp.component.css" />
@@ -140,6 +141,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\Assets\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -170,7 +172,9 @@
     <TypeScriptCompile Include="app\Models\userForCreation.ts" />
     <TypeScriptCompile Include="app\MyAccount\my-account.component.ts" />
     <TypeScriptCompile Include="app\Navbar\navbar.component.ts" />
+    <TypeScriptCompile Include="app\Services\auth.service.ts" />
     <TypeScriptCompile Include="app\Services\refresh.service.ts" />
+    <TypeScriptCompile Include="app\Services\upload.service.ts" />
     <TypeScriptCompile Include="app\Services\user.service.ts" />
     <TypeScriptCompile Include="app\Shared\shared.module.ts" />
     <TypeScriptCompile Include="app\SignUp\signUp.component.ts" />

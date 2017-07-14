@@ -8,6 +8,7 @@ using AutoMapper;
 using Bookmaker.Core.Domain;
 using Bookmaker.Core.Utils;
 using Bookmaker.Infrastructure.ServicesInterfaces;
+using static Bookmaker.Infrastructure.Extensions.StringExtensions;
 
 namespace Bookmaker.Infrastructure.Services
 {
@@ -51,13 +52,9 @@ namespace Bookmaker.Infrastructure.Services
             {
                 throw new InvalidDataException($"User with email '{ user.Email }' already exists.");
             }
-
-            // #ask3
+            
             var salt = _encrypter.GetSalt(user.Password);
             var hash = _encrypter.GetHash(user.Password, salt);
-
-            //System.Diagnostics.Debug.WriteLine($"USR:{user.Email}, PWD:{user.Password}, SALT:{salt}, HASH:{hash}");
-
 
             newUser = new User(user.Email, user.Username, salt, hash, "user");
             await _userRepository.AddAsync(newUser);
@@ -77,10 +74,12 @@ namespace Bookmaker.Infrastructure.Services
                 throw new InvalidDataException($"User with email '{ user.Email }' does not exist.");
             }
 
-            if (!string.IsNullOrWhiteSpace(user.FullName))
+            if (!user.FullName.Empty())
+            {
                 userToUpdate.SetFullName(user.FullName);
+            }
 
-            if (!string.IsNullOrWhiteSpace(user.Password))
+            if (!user.Password.Empty())
             {
                 var salt = _encrypter.GetSalt(user.Password);
                 var hash = _encrypter.GetHash(user.Password, salt);
@@ -88,12 +87,19 @@ namespace Bookmaker.Infrastructure.Services
                 userToUpdate.SetHash(hash);
             }
 
-            if (!string.IsNullOrWhiteSpace(user.Username))
+            if (!user.Username.Empty())
+            {
                 userToUpdate.SetUsername(user.Username);
+            }
 
             if (user.WalletPoints != null)
             {
                 userToUpdate.SetWalletPoints(user.WalletPoints.Value);
+            }
+
+            if (!user.AvatarFileName.Empty())
+            {
+                userToUpdate.SetAvatarFileName(user.AvatarFileName);
             }
 
             await _userRepository.UpdateAsync(userToUpdate);
