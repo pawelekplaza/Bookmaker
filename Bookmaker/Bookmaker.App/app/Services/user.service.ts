@@ -49,7 +49,7 @@ export class UserService {
 
     update(user: any): Promise<any> {
         const url = `${this._userUrl}`;
-        return this._authService.sendPut(url, JSON.stringify(user))
+        return this._authService.sendPut(url, JSON.stringify(user), 'application/json')
             .toPromise()
             .then(() => user)
             .catch(this.handleError);        
