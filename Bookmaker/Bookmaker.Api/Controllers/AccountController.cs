@@ -81,7 +81,17 @@ namespace Bookmaker.Api.Controllers
                 Debug.Write(ex.StackTrace);
                 return NoContent();
             }
-        }        
+        }
+
+        // GET: api/Account/data/get_email
+        [HttpGet]
+        [Authorize]
+        [Route("data/get_email")]
+        public IActionResult GetEmail()
+        {
+            var email = this.GetAuthEmail();
+            return Json(new { email = email });
+        }
         
         // PUT: api/Account/5
         [HttpPut("{id}")]

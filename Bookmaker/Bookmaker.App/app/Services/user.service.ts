@@ -71,6 +71,14 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUserEmailFromApi(): Observable<string> {
+        let url = 'http://localhost:5000/api/account/data/get_email';
+
+        return this._authService.sendGet(url)
+            .map((res: Response) => res.text() ? res.json().email : {})
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         console.log(error);
         return Observable.throw(error.json().error || 'Server error');

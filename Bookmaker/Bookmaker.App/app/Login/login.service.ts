@@ -2,10 +2,12 @@
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
 import { IJwt } from '../Models/jwt';
+import { UserService } from '../Services/user.service';
 
 @Injectable()
 export class LoginService {
@@ -14,7 +16,8 @@ export class LoginService {
     @Output() credentialsChanged: EventEmitter<any> = new EventEmitter();
 
     constructor(private _http: Http,
-        private _router: Router) { }
+        private _router: Router,
+        private _userService: UserService) { }
 
     getToken(email: string, password: string): Promise<IJwt> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -34,34 +37,11 @@ export class LoginService {
             .catch(err => console.log(err));
     }
 
-    getAuth(): Promise<boolean> {
-        let headers = new Headers({'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}` });
-        let options = new RequestOptions({ headers: headers });
+    async getAuth(): Promise<boolean> {
+        let email: string;
 
-        return this._http.post(this._urlAuth, { email: localStorage.getItem('userEmail') }, options)
-            .toPromise()
-            .then((res: Response) => {                
-                if (!res.text()) {
-                    this.setStorageToken('_');
-                    return false;
-                }
-
-                let jwt = res.json() as IJwt;
-                if (jwt === null) {
-                    this.setStorageToken('_');
-                    return false;
-                }
-
-                if (jwt.token.length < 50) {
-                    this.setStorageToken('_');
-                    return false;
-                }
-
-                this.setStorageEmail(jwt.email);
-                this.setStorageToken(jwt.token);
-                return true;
-            })
-            .catch(err => console.log(err));
+        email = await this._userService.getUserEmailFromApi().toPromise();
+        return this.checkIfAuthorized(email);
     }
 
     login(email: string, password: string): void {
@@ -85,5 +65,40 @@ export class LoginService {
 
     private setStorageToken(token: string) {
         localStorage.setItem('userToken', token);
+    }
+
+    private checkIfAuthorized(email: string): Promise<boolean> {
+        let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('userToken')}` });
+        let options = new RequestOptions({ headers: headers }); 
+
+        return this._http.post(this._urlAuth, { email: localStorage.getItem('userEmail') }, options)
+            .toPromise()
+            .then((res: Response) => {
+                if (!res.text()) {
+                    this.setStorageToken('_');
+                    return false;
+                }
+
+                let jwt = res.json() as IJwt;
+                if (jwt === null) {
+                    this.setStorageToken('_');
+                    return false;
+                }
+
+                if (jwt.token.length < 50) {
+                    this.setStorageToken('_');
+                    return false;
+                }
+
+                this.setStorageEmail(jwt.email);
+                this.setStorageToken(jwt.token);
+                return true;
+            })
+            .catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
+        console.log(error);
+        return Observable.throw(error.json().error || 'Server error');
     }
 }
